@@ -1,4 +1,4 @@
-@if (@X)==(@Y) @end/ *** Javascript comment
+@if (@X)==(@Y) @end /*** Javascript comment
 @echo off
 rem :: a UI extension example for bat files
 rem :: that not require enabled WSH as it uses mshta
@@ -11,9 +11,12 @@ rem :: by Vasil "npocmaka" Arnaudov
 rem ::
 
 
-
-mshta "about:<title>chooser</title><body onload='prepare()'><script language='javascript' src='file://%~dpnxf0'></script><span id='container'>buttons:</span></body>" |for /f "tokens=* delims=" %%B in ('more') do (
-	echo selected buton: %%B
+(
+	mshta "about:<title>chooser</title><body onload='prepare()'><script language='javascript' src='file://%~dpnxf0'></script><span id='container'>buttons:</span></body>" 
+)|(
+	for /f "tokens=* delims=" %%B in ('more') do (
+		echo selected buton: %%B
+	)
 )
 exit /b 0
 
