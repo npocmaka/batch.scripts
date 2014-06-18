@@ -124,7 +124,7 @@ function printHelp( ) {
    print( "					be written at the end of the ");
    print( "					string(by default - no)." );
    print( "	-e 		        Evaluates special character " );
-   print( "					sequences like \n\b\r and etc ");
+   print( "					sequences like \\n\\b\\r and etc ");
    print( "" );
    print( "Colors :" );
    for ( var c = 0 ; c < 16 ; c++ ) {
