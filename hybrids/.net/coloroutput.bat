@@ -23,8 +23,8 @@ var arguments:String[] = Environment.GetCommandLineArgs();
 
 var newLine = false;
 var output = "";
-var foregroundColor = 0;
-var backgroundColor = 14;
+var foregroundColor = Console.BackgroundColor;
+var backgroundColor = Console.ForegroundColor;
 var evaluate = false;
 var currentBackground=Console.BackgroundColor;
 var currentForeground=Console.ForegroundColor;
@@ -117,9 +117,9 @@ function printHelp( ) {
    print( " " );
    print( "	string 			String to be printed" );
    print( "	foreground 		Foreground color - a " );
-   print( "					number between 0 and 15.Default is 0" );
+   print( "					number between 0 and 15." );
    print( "	background 		Background color - a " );
-   print( "					number between 0 and 15.Default is 14" );
+   print( "					number between 0 and 15." );
    print( "	-n 		        Indicates if a new line should" );
    print( "					be written at the end of the ");
    print( "					string(by default - no)." );
