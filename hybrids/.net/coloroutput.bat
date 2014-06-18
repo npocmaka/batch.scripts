@@ -113,16 +113,18 @@ function colorSetter( i:Int32 ):ConsoleColor {
 
 
 function printHelp( ) {
-   print( arguments[0] + "  -s string [-f foreground] [-b background] [-n]" );
+   print( arguments[0] + "  -s string [-f foreground] [-b background] [-n] [-e]" );
    print( " " );
    print( "	string 			String to be printed" );
    print( "	foreground 		Foreground color - a " );
    print( "					number between 0 and 15.Default is 0" );
-   print( "	background 		background color - a " );
+   print( "	background 		Background color - a " );
    print( "					number between 0 and 15.Default is 14" );
    print( "	-n 		        Indicates if a new line should" );
    print( "					be written at the end of the ");
    print( "					string(by default - no)." );
+   print( "	-e 		        Evaluates special character " );
+   print( "					sequences like \n\b\r and etc ");
    print( "" );
    print( "Colors :" );
    for ( var c = 0 ; c < 16 ; c++ ) {
