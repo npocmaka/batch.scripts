@@ -23,8 +23,8 @@ var arguments:String[] = Environment.GetCommandLineArgs();
 
 var newLine = false;
 var output = "";
-var foregroundColor = Console.BackgroundColor;
-var backgroundColor = Console.ForegroundColor;
+var foregroundColor = Console.ForegroundColor;
+var backgroundColor = Console.BackgroundColor;
 var evaluate = false;
 var currentBackground=Console.BackgroundColor;
 var currentForeground=Console.ForegroundColor;
@@ -55,62 +55,6 @@ function decodeJsString(s) {
       decodeJsEscape);
 }
 
-function colorSetter( i:Int32 ):ConsoleColor {
-	switch ( i ) {
-		case 0:
-			return ConsoleColor.Black;
-			break;
-		case 1:
-			return ConsoleColor.Blue;
-			break;
-		case 2:
-			return ConsoleColor.Cyan;
-			break;
-		case 3:
-			return ConsoleColor.DarkBlue;
-			break;
-		case 4:
-			return ConsoleColor.DarkCyan;
-			break;
-		case 5:
-			return ConsoleColor.DarkGray;
-			break;
-		case 6:
-			return ConsoleColor.DarkGreen;
-			break;
-		case 7:
-			return ConsoleColor.DarkMagenta;
-			break;
-		case 8:
-			return ConsoleColor.DarkRed;
-			break;
-		case 9:
-			return ConsoleColor.DarkYellow;
-			break;
-		case 10:
-			return ConsoleColor.Gray;
-			break;
-		case 11:
-			return ConsoleColor.Green;
-			break;
-		case 12:
-			return ConsoleColor.Magenta;
-			break;
-		case 13:
-			return ConsoleColor.Red;
-			break;
-		case 14:
-			return ConsoleColor.White;
-			break;
-		case 15:
-			return ConsoleColor.Yellow;
-			break;
-		default: 
-         return ConsoleColor.Black;
-	}
-
-}
-
 
 function printHelp( ) {
    print( arguments[0] + "  -s string [-f foreground] [-b background] [-n] [-e]" );
@@ -129,7 +73,7 @@ function printHelp( ) {
    print( "Colors :" );
    for ( var c = 0 ; c < 16 ; c++ ) {
 		
-		Console.BackgroundColor = colorSetter(c);
+		Console.BackgroundColor = c;
 		Console.Write( " " );
 		Console.BackgroundColor=currentBackground;
 		Console.Write( "-"+c );
@@ -201,10 +145,8 @@ for (var arg = 1; arg <= arguments.length-1; arg++ ) {
 	}
 }
 
-
-
-Console.BackgroundColor = colorSetter( backgroundColor );
-Console.ForegroundColor = colorSetter( foregroundColor );
+Console.BackgroundColor = backgroundColor ;
+Console.ForegroundColor = foregroundColor ;
 
 if ( evaluate ) {
 	output=decodeJsString(output);
