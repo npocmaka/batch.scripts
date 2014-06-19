@@ -15,6 +15,11 @@ if not exist "%~n0.exe" (
 
 endlocal & exit /b %errorlevel%
 
+
+by Vasil "npocmaka" Arnaudov
+most recent version can be found here 
+https://github.com/npocmaka/batch.scripts/edit/master/hybrids/.net/coloroutput.bat
+
 */
 
 import System;
