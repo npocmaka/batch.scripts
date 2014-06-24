@@ -1,0 +1,28 @@
+	
+
+    :strlen0.3  StrVar  [RtnVar]
+    :: http://ss64.org/viewtopic.php?id=424
+    :: by Vasil "npocmaka" Arnaudov
+    ::
+    :: 
+      setlocal EnableDelayedExpansion
+      set "s=#!%~1!"
+      set "len=0"
+      for %%A in (2187 729 243 81 27 9 3 1) do (
+            set /A mod=2*%%A
+            for %%Z in (!mod!) do (
+                    if "!s:~%%Z,1!" neq "" (
+                            set /a "len+=%%Z"
+                            set "s=!s:~%%Z!"
+                           
+                    ) else (
+                            if "!s:~%%A,1!" neq "" (
+                                    set /a "len+=%%A"
+                                    set "s=!s:~%%A!"
+                            )
+                    )
+            )
+      )
+      endlocal & if "%~2" neq "" (set %~2=%len%) else echo **%len%**
+    exit /b
+
