@@ -4,9 +4,6 @@
 cscript //E:JScript //nologo "%~f0" "%~nx0" %*
 
 exit /b %errorlevel%
-
-by Vasil "npocmaka" Arnaudov
-
 @if (@X)==(@Y) @end JScript comment */
    
    
@@ -17,11 +14,11 @@ by Vasil "npocmaka" Arnaudov
    
    function printHelp() {
 	WScript.Echo(scriptName + " -linkfile link -target target [-linkarguments linkarguments]  "+
-	" [-description description] [-iconlocation iconlocation] [-hotkey hotkey] [-relativepath relativepath]"+
+	" [-description description] [-iconlocation iconlocation] [-hotkey hotkey] "+
 	" [-windowstyle 1|3|7] [-workingdirectory workingdirectory] [-adminpermissions yes|no]");
 	WScript.Echo();
 		WScript.Echo(scriptName + " -edit link [-target target] [-linkarguments linkarguments]  "+
-	" [-description description] [-iconlocation iconlocation] [-hotkey hotkey] [-relativepath relativepath]"+
+	" [-description description] [-iconlocation iconlocation] [-hotkey hotkey] "+
 	" [-windowstyle 1|3|7] [-workingdirectory workingdirectory] [-adminpermissions yes|no]");
 	WScript.Echo();
 	WScript.Echo(scriptName + " -examine link");
@@ -108,19 +105,18 @@ by Vasil "npocmaka" Arnaudov
 	   WScript.Echo("Hotkey: " + oLink.HotKey );
 	   WScript.Echo("Working Directory: " + oLink.WorkingDirectory);
 	   WScript.Echo("Window style: " + oLink.WindowStyle);
-	   //WScript.Echo("Relative Path: " + oLink.RelativePath);
 	   WScript.Echo("Admin Permissions: " + hasAdminPermissions(lnkPath));
 	   
 	   WScript.Quit(0);
    }
 
    
-   if (WScript.Arguments.Length==1 || args.Item(1).toLowerCase() == "-h" ||  args.Item(1).toLowerCase() == "-h" ) {
+   if (WScript.Arguments.Length==1 || args.Item(1).toLowerCase() == "-help" ||  args.Item(1).toLowerCase() == "-h" ) {
 	printHelp();
 	WScript.Quit(0);
    }
    
-   if (WScript.Arguments.Length % 2 == 2 ) {
+   if (WScript.Arguments.Length % 2 == 0 ) {
 	WScript.Echo("Illegal arguments ");
 	printHelp();
 	WScript.Quit(1);
@@ -201,10 +197,7 @@ by Vasil "npocmaka" Arnaudov
 			oLink.WorkingDirectory = args.Item(arg+1);
 		}
 		
-		/*if (args.Item(arg).toLowerCase() == "-relativepath") {
-			oLink.RelativePath= args.Item(arg+1);
-		}*/
-		
+	
 		if (args.Item(arg).toLowerCase() == "-adminpermissions") {
 			if(args.Item(arg+1).toLowerCase() == "yes") {
 				var adminPermissions= true;
