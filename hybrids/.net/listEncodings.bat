@@ -54,9 +54,9 @@ while(!encs.atEnd()) {
 	var e=enc.GetEncoding();
 		
 	Console.Write( "{0,-6} {1,-25} ", enc.CodePage, enc.Name );
-    Console.Write( "{0,-8} {1,-8} ", e.IsBrowserDisplay, e.IsBrowserSave );
-    Console.Write( "{0,-8} {1,-8} ", e.IsMailNewsDisplay, e.IsMailNewsSave );
-    Console.WriteLine( "{0,-8} {1,-8} ", e.IsSingleByte, e.IsReadOnly );
+	Console.Write( "{0,-8} {1,-8} ", e.IsBrowserDisplay, e.IsBrowserSave );
+	Console.Write( "{0,-8} {1,-8} ", e.IsMailNewsDisplay, e.IsMailNewsSave );
+ 	Console.WriteLine( "{0,-8} {1,-8} ", e.IsSingleByte, e.IsReadOnly );
 		 
 	encs.moveNext();
 }
