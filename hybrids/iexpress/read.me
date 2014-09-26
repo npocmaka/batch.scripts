@@ -1,0 +1,15 @@
+IExpress is tool intended for self-extracting packages and is built-in every Winows system.
+So scripts based on this are maximum possible compatible.
+Despite its UI wizard it can be used also from command line if it's suplied with SED file - 
+basically an ini file.As ";" is a standard delimiter in batch files and is a remark for ini 
+files so makes makes IExpress perfect for hybridization with batch scripts.
+It's options allows running a command in background,Yes/No pop-up,Licensce agreement message 
+and a single button pop-up (functionlity not possible with simple batch commands)
+
+In all examples here the script copies itself in %temp% directory as sed file , appends parametrized 
+inforrmation at the end and  creates an exe with IExpress.
+Iexpress requires an exe file to be executed at the end otherwise the it will not create .exe 
+but .cab file.So I've put there subst.exe from system32 - which executed without parameterswont do anything.
+As the post install command won't touch the extracted elements they will be deleted by the created .exe file.
+
+The produced exe can be deleted or reused.Depends on the user needs.
