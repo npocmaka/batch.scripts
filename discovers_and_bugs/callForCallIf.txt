@@ -1,0 +1,32 @@
+:: http://stackoverflow.com/questions/19445153/why-i-cant-call-if-and-for-neither-in-batch-nor-in-the-cmd
+
+:: Call command cannot execute IF and FOR commands , despite syntax errors are detected
+:: Examples bellow (should be executed in command prompt but not from batch file)
+
+
+C:\Windows\system32>call @if a==a echo called 
+',' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>call (@if a==a echo called)
+';' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>call if a==a echo called
+'if' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>call for  %a in (1) do @echo called
+'for' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>call @for  %a in (1) do @echo called
+'+' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>call (@for  %a in (1) do @echo called)
+';' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+
