@@ -2,7 +2,7 @@
 @echo off
 
 :: http://www.dostips.com/forum/viewtopic.php?p=36621#p36621
-:: counts pages in a pdf file relying on not mandatory metadata
+:: displays numbers of pages in a pdf file relying on not mandatory metadata
 
 cscript //E:JScript //nologo "%~f0"  %*
 if "%~1" equ "" echo need a path to pdf file & exit /b 1
