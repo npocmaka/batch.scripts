@@ -105,6 +105,7 @@ if ( ! Common.getName ) {
 	}
 }
 
+//file system object has a problem to create a folder with slashes at the end
 if ( ! Common.stripTrailingSlash ) {
 	Common.stripTrailingSlash = function(path){
 		while (path.substr(path.length - 1,path.length) == '\\') {
@@ -261,13 +262,12 @@ if ( ! Shell.Application.ItemCounterL1 ) {
 		}
 	}
 }
-
+// shell application item.size returns the size of uncompressed state of the file.
 if ( ! Shell.Application.getSize ) {
 	Shell.Application.getSize = function(path){
 		var ShellObj=new ActiveXObject("Shell.Application");
 		var targetObject = new Object;
 		var targetObject=ShellObj.NameSpace(path);
-		//check existance
 		if (! Shell.Application.ExistsFolder (path)){
 			WScript.Echo(path + "does not exists or the file is incorrect type.Be sure you are using full path to the file");
 			return 0;
@@ -300,6 +300,14 @@ if ( ! Shell.Application.TakeAction ) {
 	}
 }
 
+//ProcessItem and  ProcessSubItems can be used both for zipping and unzipping
+// When an item is zipped another process is ran and the control is released
+// but when the script stops also the copying to the zipped file stops.
+// Though the zipping is transactional so a zipped files will be visible only after the zipping is done
+// and we can rely on items count when zip operation is performed. 
+// Also is impossible to compress an empty folders.
+// So when it comes to zipping two additional checks are added - for empty folders and for count of items at the 
+// destination.
 
 if ( ! Shell.Application.ProcessItem ) {
 	Shell.Application.ProcessItem = function(toProcess, destination  , move ,isZipping,option){
