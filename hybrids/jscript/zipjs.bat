@@ -538,6 +538,10 @@ if ( ! this.ZIPUtils.UnzipItem) {
 }
 if ( ! this.ZIPUtils.getSize) {	
 	ZIPUtils.getSize = function(path) {
+		// first getting a full path to the file is attempted
+		// as it's required by shell.application
+		// otherwise is assumed that a file within a zip 
+		// is aimed
 		if (Scripting.FileSystemObject.ExistsFile(path)){
 			path=Scripting.FileSystemObject.getFullPath(path);
 		}
@@ -547,6 +551,10 @@ if ( ! this.ZIPUtils.getSize) {
 
 if ( ! this.ZIPUtils.list) {	
 	ZIPUtils.list = function(path) {
+		// first getting a full path to the file is attempted
+		// as it's required by shell.application
+		// otherwise is assumed that a file within a zip 
+		// is aimed
 		if (Scripting.FileSystemObject.ExistsFile(path)){
 			path=Scripting.FileSystemObject.getFullPath(path);
 		}
