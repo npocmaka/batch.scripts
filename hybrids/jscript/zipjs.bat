@@ -18,7 +18,7 @@ http://www.robvanderwoude.com/vbstech_files_zip.php
 https://code.google.com/p/jsxt/source/browse/trunk/js/win32/ZipFile.js?r=161
 
 
-It's possible to be ported for C# and JScript.net so I'm planning to do it at some point.
+It's possible to be ported for C#,Powershell and JScript.net so I'm planning to do it at some time.
 
 For sure there's a lot of room for improvements and optimization and I'm absolutely sure there are some bugs
 as the script is big enough to not have.
