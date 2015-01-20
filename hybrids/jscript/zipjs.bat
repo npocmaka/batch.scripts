@@ -9,8 +9,30 @@
 @if (@X)==(@Y) @end JScript comment */
 
 
+/*
+Compression/uncompression command-line tool that uses Shell.Application and WSH/Jscript -
+http://msdn.microsoft.com/en-us/library/windows/desktop/bb774085(v=vs.85).aspx
+
+Some resources That I've used:
+http://www.robvanderwoude.com/vbstech_files_zip.php
+https://code.google.com/p/jsxt/source/browse/trunk/js/win32/ZipFile.js?r=161
+
+
+It's possible to be ported for C# and JScript.net so I'm planning to do it at some point.
+
+For sure there's a lot of room for improvements and optimization and I'm absolutely sure there are some bugs
+as the script is big enough to not have.
+For suggestions contact me at - npocmaka@gmail.com
+
+
+*/
+
+
 //////////////////////////////////////
 //   CONSTANTS
+
+// TODO - Shell.Application and Scripting.FileSystemObject objects could be set as global variables to avoid theit creation
+// in every method.
 
 //empty zip character sequense
 var ZIP_DATA= "PK" + String.fromCharCode(5) + String.fromCharCode(6) + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
@@ -542,6 +564,10 @@ if ( ! this.ZIPUtils.getSize) {
 		// as it's required by shell.application
 		// otherwise is assumed that a file within a zip 
 		// is aimed
+		
+		//TODO - find full path even if the path points to internal for the 
+		// zip directory
+		
 		if (Scripting.FileSystemObject.ExistsFile(path)){
 			path=Scripting.FileSystemObject.getFullPath(path);
 		}
@@ -555,6 +581,12 @@ if ( ! this.ZIPUtils.list) {
 		// as it's required by shell.application
 		// otherwise is assumed that a file within a zip 
 		// is aimed
+		
+		//TODO - find full path even if the path points to internal for the 
+		// zip directory
+		
+		// TODO - optional printing of each file uncompressed size
+		
 		if (Scripting.FileSystemObject.ExistsFile(path)){
 			path=Scripting.FileSystemObject.getFullPath(path);
 		}
@@ -652,6 +684,7 @@ function printHelp(){
 	WScript.Echo( "	by Vasil \"npocmaka\" Arnaudov - npocmaka@gmail.com" );
 	WScript.Echo( "	ver 0.1 " );
 	WScript.Echo( "	latest version could be found here https://github.com/npocmaka/batch.scripts/blob/master/hybrids/jscript/zipjs.bat" );
+	
 	
 }
 
