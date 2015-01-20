@@ -6,9 +6,9 @@ for /f "tokens=* delims=" %%v in ('dir /b /s /a:-d  /o:-n "%SystemRoot%\Microsof
    set "jsc=%%v"
 )
 
-if not exist "%~n0.exe" (
+::if not exist "%~n0.exe" (
 	"%jsc%" /nologo /out:"%~n0.exe" "%~dpsfnx0"
-)
+::)
 
  %~n0.exe %*
 
@@ -64,7 +64,7 @@ import System.IO.Compression;
 var arguments:String[] = Environment.GetCommandLineArgs();
 
 	function printHelp(){
-		Console.WriteLile("Compress and uncompress gzip files:");
+		Console.WriteLine("Compress and uncompress gzip files:");
 		Console.WriteLine("Compress:");
 		Console.WriteLine(arguments[0]+" -c source destination");
 		Console.WriteLine("Uncompress:");
@@ -74,20 +74,21 @@ var arguments:String[] = Environment.GetCommandLineArgs();
 	}
 
 if (arguments.length!=4){
-	Console.WriteLile("Wrong arguments");
+	Console.WriteLine("Wrong arguments");
 	printHelp();
 	Environment.Exit(1);
 }
 
 switch (arguments[1]){
 	case "-c":
+	
 		CompressFile(arguments[2],arguments[3]);
 		break;
 	case "-u":
 		UncompressFile(arguments[2],arguments[3]);
 		break;
 	default:
-		Console.WriteLile("Wrong arguments");
+		Console.WriteLine("Wrong arguments");
 		printHelp();
 		Environment.Exit(1);
 }
