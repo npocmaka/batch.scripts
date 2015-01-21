@@ -1,7 +1,11 @@
 @echo off
 rem gets Date Parts
 rem by Vasil "npocmaka" Arnaudov
-for /f "skip=10 tokens=2,3,4,5,6,7,8 delims=:    " %%D in ('robocopy /l * %tmp% %tmp% /ns /nc /ndl /nfl /np /njh /XF * /XD * ') do (
+rem 21.01.15 - improvement was proposed by Ildar Shaimordanov - a.k.a siberia-man
+rem - to use empty folder to increase performance
+for /f "skip=10 tokens=2,3,4,5,6,7,8 delims=:    " %%D in ('
+ robocopy /l * "%windir%\System32\wbem\MOF\bad" "%windir%\System32\wbem\MOF\bad" /ns /nc /ndl /nfl /np /njh /XF * /XD * 
+') do (
  set "dow=%%D"
  set "month=%%E"
  set "day=%%F"
