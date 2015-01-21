@@ -1,0 +1,19 @@
+Two internal commands were re-"discovered" here:
+
+http://ss64.org/viewtopic.php?id=1558
+
+
+KEYS and DPATH
+
+
+DPATH help message points to APPEND command and is not useful at all.
+It's syntax is the same as PATH command.Later Carlos Mortinez discovered that
+TYPE command uses %DPATH% variable set by DPATH command and can print files in DPATH 
+directories like there in the same directory.The same with input redirection:
+http://ss64.org/viewtopic.php?id=1876
+http://ss64.org/viewtopic.php?id=1875
+
+
+KEYS command message also is missleading - it claims that has no effect but sets a %KEYS% vaiable (ON or OFF) 
+despite the command itself does not rely on the environment variable to check its status.
+
