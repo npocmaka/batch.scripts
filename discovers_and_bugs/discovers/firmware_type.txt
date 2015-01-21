@@ -1,0 +1,9 @@
+http://www.dostips.com/forum/viewtopic.php?f=3&t=6137
+http://ss64.org/viewtopic.php?id=1950
+
+http://ss64.com/nt/syntax-variables.html
+
+Firmware_type is undocumented variable available form widnsows 8 and above.It describes how the bios is loaded.
+Possible values: Legacy ,UEFI,Not implemented ,Unknown
+
+
