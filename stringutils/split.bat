@@ -1,4 +1,5 @@
 :split [%1 - string to be splitted;%2 - split by;%3 - possition to get; %4 - if defined will store the result in variable with same name]
+::http://ss64.org/viewtopic.php?id=1687
 
 setlocal EnableDelayedExpansion
 
