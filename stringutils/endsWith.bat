@@ -1,4 +1,5 @@
-:endsWith [%1 - string to be checked;%2 - string for checking ] 
+:endsWith [%1 - string to be checked;%2 - string for checking ]
+::http://ss64.org/viewtopic.php?id=1687
 @echo off
 rem :: sets errorlevel to 1 if %1 ends with %2 else sets errorlevel to 0
 
