@@ -1,0 +1,71 @@
+http://ss64.org/viewtopic.php?id=1562
+
+Certutil is available on my WIN 7 and Vista machines by default.I think it should be also available for XP but I'm not 100% sure.
+
+1.  The thing I used this for wad to decode and encode BASE64 strings. (-decode and -encode command switches) .It has two annoying  features here - for decode and encode it needs
+-----END CERTIFICATE----- and -----BEGIN CERTIFICATE----- at begining and at the of base64 file.And it prints decoded file in lines with max length of 64 symbols.
+So here are two very very very simple scripts that use certutil to decode and encode base64 string (and dealing with begin and end tags) (there are no checks for file existence and if the parameters are correct - I rely on certutil error messages):
+decode:
+@echo off
+setlocal
+for /f "delims== tokens=1" %%A  in ('type %1') do (
+	set encoded=%%A
+)
+rem two additional lines are needed by certutil
+echo -----BEGIN CERTIFICATE-----> %2.tmp
+echo %encoded%>>%2.tmp
+echo -----END CERTIFICATE----->> %2.tmp
+
+
+certutil /decode %2.tmp %2
+del /S /Q %2.tmp
+endlocal
+encode:
+@echo off
+setlocal
+certutil /encode %1 %1.encoded
+rem create an empty file
+break > %2
+
+setlocal  ENABLEDELAYEDEXPANSION
+(
+	for  /f  "eol=-" %%A in (' type %1.encoded ') do (
+		rem this not works - left an empty spaxes after each line from typed file
+		rem null< (set /p #=%%A) >>%1.encoded
+		
+		set result=!result!%%A
+	)
+)
+endlocal & set result=%result%
+echo %result%>> %2%
+del /S /Q
+endlocal
+
+
+The bad thing is that the base64 strings are stored in a variable and there's a limitations for it's size.But for a small strings it wokrs.
+
+
+
+
+
+2.   Much more interesting.In the help it shows that there's an -decodehex switch.And I was surprised to find that there's also an undocumentes switch -encodehex (strange - decodehex looks more dangerous , because it can be used to produce binaries). Here's an example structure of encoded file:
+0000	73 65 74 20 78 3d 15 0d  0a 73 65 74 20 79 3d 12   set x=...set y=.
+0010	0d 0a 65 63 68 6f 20 2a  2a 25 78 25 25 79 25 2a   ..echo **%x%%y%*
+0020	2a                                                 *
+ 
+(just as every hex editor)
+This was my attempt to create file that set LF and CR to variables smile - and I still don't know why it was unsuccessful it prints  "§↕"   (any help here will be welcomed - I don't know what goes wrong).
+EDIT: I've set DEC codes instead HEX .Anyway still not works.
+In fact the data that is behind the hexes is not necessary - it's only for visualisation .
+To decode the sample just use this (if this above is saved in sample.hex) :
+certutil -decodehex sample.hex not.working.bat
+
+Any way it works for creation of the famous beep.bat :
+
+0000	65 63 68 6f 20 07
+this pattern can be used for creation of bat that echoes a random symbols by hex.Just edit the last character.
+and this is a pattern for setting a symbol by hex to %#% variable (just edit the last character):
+0000	73 65 74 20 78 3d 15 0d  
+Anyway there are few more things that I want to try with this smile
+
+here's a how forfiles can be used for hex symbols
