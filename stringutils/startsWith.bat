@@ -1,4 +1,5 @@
 :reverse [%1 - string to reverse ; %2 - if defined will store the result in variable with same name]
+::http://ss64.org/viewtopic.php?id=1687
 @echo off
 setlocal disableDelayedExpansion
 set "str=%~1"
