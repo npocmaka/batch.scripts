@@ -6,9 +6,9 @@ for /f "tokens=* delims=" %%v in ('dir /b /s /a:-d  /o:-n "%SystemRoot%\Microsof
    set "jsc=%%v"
 )
 
-::if not exist "%~n0.exe" (
+if not exist "%~n0.exe" (
 	"%jsc%" /nologo /out:"%~n0.exe" "%~dpsfnx0"
-::)
+)
 
  %~n0.exe %*
 
