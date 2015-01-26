@@ -9,6 +9,8 @@
 ::
 :: using delayed expansion
 
+:: some explantations here : http://stackoverflow.com/questions/28000194/why-if-checking-ignores-delimtersome-word-after-the-check-expression
+
 @echo off
 
 setlocal enableDelayedExpansion
