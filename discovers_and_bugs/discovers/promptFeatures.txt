@@ -1,0 +1,20 @@
+Some undocumented prompt command features:
+(http://ss64.org/viewtopic.php?pid=7706#p7706)
+
+
+PROMPT  - (Here I'll list some things   )
+1.By default %PROMPT% variable is not defined (then prompt displays it's default value $P$G)
+
+2.If %PROMPT% variable is defined or pre-set via registry deleting it will set again prompt to its default value.
+
+3.PROMPT command is highly dependable on %PROMPT% variable and editing the variable will lead to the same results (e.g. SET "PROMPT=$P$G")
+
+4. Everything after a dollar sign sequence that is not in the supported list ( $A $B $C $D $E $F $G $H $L $M $N $P $Q $S $T $V $_  $$ $+ ) will be ignored
+
+5. Limitations for prompt length are 400 symbols in Windows XP  and 511 from Vista  and above . Hitting the limit also produces 
+different results in XP/Vista and the fresher versions:
+5.1.On XP it produces error message
+5.2.On 7 and above it just only takes the first 511 symbols.
+
+On XP limitation can be worked-around by setting longer than 400 symbols value directly to PROMPT variable (For these I need clarification by more people so I'll start a separate thread)
+Special $-sequneces will be taken as a single symbol.
