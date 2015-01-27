@@ -1,5 +1,5 @@
 ;@echo off
-
+; rem https://github.com/npocmaka/batch.scripts/edit/master/hybrids/iexpress/bat2exeIEXP.bat
 ;if "%~2" equ "" (
 ; echo usage: %~nx0 batFile.bat target.Exe
 ;)
@@ -19,9 +19,9 @@
 ;(echo(%%FILE0%%=)>>"%temp%\2exe.sed"
 
 
-;iexpress /n %temp%\2exe.sed
-;rem /n /q /m
-;rem del /q /f "%temp%\2exe.sed"
+;iexpress /n /q /m %temp%\2exe.sed
+
+;del /q /f "%temp%\2exe.sed"
 ;exit /b 0
 
 [Version]
