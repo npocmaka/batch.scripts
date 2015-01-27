@@ -17,7 +17,7 @@ endlocal & exit /b %errorlevel%
 
 */
 
-
+//https://github.com/npocmaka/batch.scripts/blob/master/hybrids/.net/bat2exe.bat
 import System;
 import System;
 import System.IO;
@@ -50,6 +50,7 @@ var toCompile="\r\n\
 import System;\r\n\
 import System.IO;\r\n\
 var arguments:String[] = Environment.GetCommandLineArgs();\r\n\
+//Remove the executable name from the command line\r\n\
 var batCommandLIne=Environment.CommandLine.substring(arguments[0].length,Environment.CommandLine.length);\r\n\
 var contet2:byte[]="+content+";\r\n\
 var dt=(new Date()).getTime();\r\n\
@@ -63,3 +64,7 @@ File.Delete(tempBatPath);\r\n\
 File.WriteAllText(tempJS,toCompile);
 System.Diagnostics.Process.Start(compilerLoc,'/nologo /out:'+binName+' '+tempJS);
 File.Delete(tempJS);
+
+
+
+
