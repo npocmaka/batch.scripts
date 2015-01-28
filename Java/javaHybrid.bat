@@ -16,6 +16,7 @@ java -version >nul 2>&1 || (
 )
 
 ::find class name
+::can be different than the script name
 for /f "usebackq tokens=3 delims=} " %%c in (`type %~f0 ^|find /i "public class"^|findstr /v "for /f"`) do (
     set "javaFile=%%c"
     goto :skip
