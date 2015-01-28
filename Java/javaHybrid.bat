@@ -5,7 +5,7 @@
 :: deprecated is the only one annotation that can be used outside the class definition
 :: and is needed for 'mute' start of multi-line java comment
 :: that will be not printed by the batch file.
-:: though it still created two files - the .class and the .java
+:: though it still creates two files - the .class and the .java
 :: it still allows you to embed both batch and java code into one file
 
 @echo off
