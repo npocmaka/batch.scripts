@@ -30,7 +30,7 @@ java "%javaFile%"
 
 ::optional
 ::del %javaFile%.* >nul 2>&1 
-end local
+endlocal
 exit /b 0
 
 *******/
