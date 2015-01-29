@@ -131,12 +131,19 @@ function existsItem(path){
 	return FileSystemObj.FolderExists(path)||FileSystemObj.FileExists(path);
 }
 
+stripTrailingSlash = function(path){
+	while (path.substr(path.length - 1,path.length) == '\\') {
+		path=path.substr(0, path.length - 1);
+	}
+	return path;
+}
+
 function deleteItem(path){
 	if (FileSystemObj.FileExists(path)){
 		FileSystemObj.DeleteFile(path);
 		return true;
 	} else if (FileSystemObj.FolderExists(path) ) {
-		FileSystemObj.DeleteFolder(Common.stripTrailingSlash(path));
+		FileSystemObj.DeleteFolder(stripTrailingSlash(path));
 		return true;
 	} else {
 		return false;
