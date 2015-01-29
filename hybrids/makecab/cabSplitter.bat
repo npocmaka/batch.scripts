@@ -5,7 +5,7 @@
 ;; 
 ;; rem the first parameter is the file you want to split  the second is the size in bytes.
 ;; rem size is not guaranteed but will be not overflown 
-;; 
+;; rem https://github.com/npocmaka/batch.scripts/blob/master/hybrids/makecab/cabSplitter.bat
 ; if "%~2" equ "" (
 ; call :helpmessage
 ; exit /b 1 
