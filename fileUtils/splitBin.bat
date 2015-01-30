@@ -2,7 +2,7 @@
  
 setlocal enableExtensions
 rem :-----------------------------------------
-rem : check if should pront the help message
+rem : check if should prompt the help message
 rem :-----------------------------------------
 if "%~2" equ "" goto :help
 for %%H in (/h -h /help -help) do (
@@ -20,7 +20,7 @@ if %size%0 LSS 00 echo not a valid number passed as a parameter & exit /b 3
  
 rem : -- two hex symbols and an empty space are 1 byte
 rem : -- so the sum of all hex symbols
-rem : -- per part should be tripled
+rem : -- per part should be doubled
 set /a len=%size%*2
 set "file=%~dfn1"
  
@@ -44,26 +44,30 @@ rem : -- decoded with certutil
 rem :-- the delimitier is <tab> wich separates
 rem :-- line number from the rest of the information
 rem :-- in the hex file
-for /f "usebackq tokens=2 delims=       " %%A in ("%temp%\file") do (
-        set "line=%%A"
-        rem : -- there's a double space inthe middle of the line
+rem :---------------------------- v <tab>
+for /f "usebackq tokens=2 delims=	" %%A in ("%temp%\file") do (
+		set "line=%%A"
+        rem : -- there's a double space in the middle of the line
         rem :-- so here the line is get
         set hex_str=!hex_str!!line:~0,48!
+		rem echo hex_str !hex_str!
         rem :-- empty spaces are cleared
         set hex_str=!hex_str: =!
-       
-        rem :-- the length of the hex line
+        rem echo hex_str !hex_str! 
+        rem :-- the length of the hex line 32
         set /a hex_len=hex_len+32
        
         rem : -- len/size is reached
         rem : -- and the content is printed to a hex file
         if !hex_len! GEQ !len! (
+			echo  !hex_len! GEQ !len!
                 set /a rest=hex_len-len
                 for %%A in (!rest!) do (
                         (echo(!hex_str:~0,-%%A!)>>%temp%\fn.p.!part!
                         rem : -- the rest of the content of the line is saved
                         set hex_str=!hex_str:~-%%A!
-                        set /a hex_len=hex_len-rest
+                        set /a hex_len=rest
+						echo !hex_len!
                 )
                 certutil -decodehex -f %temp%\fn.p.!part! %fn%.part.!part! >nul
                 echo -- !part!th part created --
@@ -95,8 +99,8 @@ certutil -decodehex -f %temp%\fn.p.!part! %fn%.part.!part! >nul
 echo -- !part!th part created --
  
 rem : -- clear created temp data
-del /F /Q  %temp%\fn.p.* >nul 2>&1
-del /F /Q  %temp%\file >nul 2>&1
+rem del /F /Q  %temp%\fn.p.* >nul 2>&1
+rem del /F /Q  %temp%\file >nul 2>&1
 endlocal
 endlocal
  
