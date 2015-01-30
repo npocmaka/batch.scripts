@@ -76,7 +76,7 @@ if (!isExist(file)){
 
 if(max_size<=0){
 	WScript.Echo("Size must be bigger than 0.")
-	WScript.Quit();
+	WScript.Quit(3);
 }
 
 chunker(file,max_size);
