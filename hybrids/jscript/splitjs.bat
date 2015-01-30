@@ -1,9 +1,11 @@
- @if (@x)==(@y) @end /***** jscript comment ******
+@if (@x)==(@y) @end /***** jscript comment ******
      @echo off
      cscript //E:JScript //nologo "%~f0" "%~nx0" %* 
      exit /b %errorlevel%
 
  @if (@x)==(@y) @end ******  end comment *********/
+ 
+ //https://github.com/npocmaka/batch.scripts/blob/master/hybrids/jscript/zipjs.bat
  
 var FileSystemObj = new ActiveXObject("Scripting.FileSystemObject");
 var AdoDBObj = new ActiveXObject("ADODB.Stream");
@@ -54,12 +56,9 @@ function chunker(file,size){
 	var position=0;
 	var buffer=readFile(file,size,0);
 	file_size=getSize(file);
-	WScript.Echo("Starting");
 	while (buffer !== null ) {
 		part++;
-		WScript.Echo("Part "+ part);
 		writeFile(file+"."+part,buffer);
-		WScript.Echo(size*part)
 		if (size*part <= file_size) {
 			position=size*part;
 		} else {
@@ -76,7 +75,7 @@ if (!isExist(file)){
 
 if(max_size<=0){
 	WScript.Echo("Size must be bigger than 0.")
-	WScript.Quit(3);
+	WScript.Quit();
 }
 
 chunker(file,max_size);
