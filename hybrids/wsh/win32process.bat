@@ -2,30 +2,93 @@
 @echo off
 cscript //nologo //job:win32process "%~f0?.wsf" "%~nx0" %*
 exit /b %errorlevel%
-rem todo - help messages
-rem todo - verbose mode info
+
 
 <job id="win32process">
 <script language="JScript">
 
-	function returnLines(path){
-		var fso=new ActiveXObject("Scripting.FileSystemObject");
-		stream=fso.OpenTextFile(path,1);
-		var arr=[];
-		while(!stream.AtEndOfStream){
-			arr.push(stream.ReadLine());
-		}
-		return arr;
-	}
+	// strange but modulus cannot be executet in vbs part
+	// and retruns error
 	function modulus2(toCheck){
 		return toCheck % 2;
 	}
+	function printHelp(scriptName){
+		WScript.Echo("");
+		WScript.Echo(scriptName + " command line wrapper of Win32_ProcessStartup ");
+		WScript.Echo("Allows you to start process in different modes and styles")
+		WScript.Echo("For more info execute:");
+		WScript.Echo(scriptName +" -verboseHelp");
+		WScript.Echo("");
+		WScript.Echo("Usage:");
+		WScript.Echo("");
+		WScript.Echo(scriptName+" command [-option value ] [-option value] ...");
+		WScript.Echo("");
+		WScript.Echo("Options:");
+		WScript.Echo("");
+		WScript.Echo("-arguments command_arguments");
+		WScript.Echo("");
+		WScript.Echo("-directory directory_to_start_the_process");
+		WScript.Echo("");
+		WScript.Echo("-ErrorMode 1|2|4|8");
+		WScript.Echo("");
+		WScript.Echo("-CreateFlags 1|2|4|8|16|512|1024|67108864|16777216");
+		WScript.Echo("");
+		WScript.Echo("-EnvironmentVariables path_to_variables_file");
+		WScript.Echo("        points to file with environment variables with format");
+		WScript.Echo("        key=value  . lines starting with '=' are considered for comments");
+		WScript.Echo("");
+		WScript.Echo("-FillAttribute 1|2|4|8|16|32|64|128");
+		WScript.Echo("");
+		WScript.Echo("-PriorityClass 32|64|128|256|16384|32768");
+		WScript.Echo("");
+		WScript.Echo("-ShowWindow 0|1|2|3|4|5|6|7|8|9|10|11");
+		WScript.Echo("");
+		WScript.Echo("-Title title");
+		WScript.Echo("");
+		WScript.Echo("-WinstationDesktop winstationDesktop");
+		WScript.Echo("");
+		WScript.Echo("-X x -Y y");
+		WScript.Echo("");
+		WScript.Echo("-XCountChars xcount -YCountChars ycount");
+		WScript.Echo("");
+		WScript.Echo("-XSize xsize -YCountChars ysize");
+		WScript.Echo("");
+		WScript.Echo("-Verbose yes|no");
+		WScript.Echo("      Verbose yes|no");
+	}
 	function printVerboseHelp(scriptName){
 		printHelp(scriptName);
+		fso = new ActiveXObject("Scripting.FileSystemObject");
+		fileSream=fso.OpenTextFile(scriptName, 1);
+		print=false;
+		while ( fileSream.AtEndOfStream != true ) { 
+            var str = fileSream.Readline();
+			if(str == "##-->") {
+				print = false;
+			}
+			if(print){
+				WScript.Echo(str);
+			}
+			if(str == "<!--##") {
+				print = true;
+			}
+         }
+		
 	}
-	function printHelp(scriptName){
-	}
+	
 
+	function loadEnvVars(fileName){
+		fso = new ActiveXObject("Scripting.FileSystemObject");
+		fileSream=fso.OpenTextFile(fileName, 1);
+		var env_vars=[];
+		while ( fileSream.AtEndOfStream != true ) { 
+			var line = fileSream.Readline();
+			if (! line.substring(0,1) == '"'){
+				env_vars.push(line);
+			}
+		}
+		return env_vars;
+	}
 </script>
 
 <script language="VBScript">
@@ -49,9 +112,11 @@ rem todo - verbose mode info
 	
 	function parseArgs()
 		if LCase(ARGS.Item(1)) = "-help" then
-			printHelp
-		ElseIf ( LCase(ARGS.Item(1)) = "-verbose_help" ) then
-			printVerboseHelp
+			printHelp(scriptName):
+			WScript.Quit(0):
+		ElseIf ( LCase(ARGS.Item(1)) = "-verbosehelp" ) then
+			printVerboseHelp(scriptName):
+			WScript.Quit(0):
 		ElseIf (  arg_mod <> 0 ) then
 			WScript.Echo("invalid number of arguments"):
 			WScript.Quit(4):
@@ -65,7 +130,7 @@ rem todo - verbose mode info
 				directory=ARGS.Item(i+1):
 			case "-variables_file":
 				env_vars_location=ARGS.Item(i+1):
-				config.EnvironmentVariables=returnLines(ARGS.Item(i+1)):
+				config.EnvironmentVariables=loadEnvVars(ARGS.Item(i+1)):
 			case "-verbose":
 				if  LCase(ARGS.Item(i+1)) = "yes" then
 					verbose=true:
@@ -112,31 +177,59 @@ rem todo - verbose mode info
 		end if:
 		If (xCountChars <> -1 and yCountChars ) then
 			config.XCountChars=xCountChars:
-			config.XCountChars=yCountChars:
+			config.YCountChars=yCountChars:
 		end if:
 		If (xSize <> -1 and ySize ) then
 			config.XSize=xSize:
 			config.YSize=ySize:
-		end if:
-		
-		
+		end if:	
 	end function:
 	
 	parseArgs
 	if verbose then
 		WScript.Echo("Starting: " & command):
-		WScript.Echo("Directory: " & command):
-		WScript.Echo(config.CreateFlags):
+		WScript.Echo("Directory: " & directory):
+		WScript.Echo("CreateFlags: " & config.CreateFlags):
+		WScript.Echo("ErrorMore: " & config.ErrorMode):
+		WScript.Echo("showWindow: " & config.showWindow):
+		
+		WScript.Echo("PriorityClass: " & config.PriorityClass):
+		WScript.Echo("Title: " & config.Title):
+		WScript.Echo("FillAttribute: " & config.FillAttribute):
+		WScript.Echo("WinstationDesktop: " & config.WinstationDesktop):
+		WScript.Echo("showWindow: " & config.showWindow):
+		
+		WScript.Echo("X: " & config.X):
+		WScript.Echo("Y: " & config.Y):
+		WScript.Echo("XCountChars: " & config.XCountChars):
+		WScript.Echo("YCountChars: " & config.YCountChars):
+		WScript.Echo("XSize: " & config.XSize):
+		WScript.Echo("YSize: " & config.YSize):
 	end if
+	
+	'pid = 0;
 	errorCode=process.Create(command,directory,config,pid):
-	WScript.Echo(command & "-" & pid ):
-
-
+	
+	if errorCode = 0 then 
+		WScript.Echo("Started process: " & command):
+		WScript.Echo("PID:" & pid):
+	end if
+	
+	WScript.Echo("Return code: " & errorCode):
+	if errorCode <> 0 then
+		WScript.Echo("Error codes info:"):
+		WScript.Echo("0-Successful Completion"):
+		WScript.Echo("2-Access Denied"):
+		WScript.Echo("3-Insufficient Privilege"):
+		WScript.Echo("8-Unknown failure"):
+		WScript.Echo("9-Path Not Found"):
+		WScript.Echo("21-Invalid Parameter"):
+	end if
 </script>
 
 </job>
 
-<!--
+<!--##
 
 https://msdn.microsoft.com/en-us/library/aa394375(v=vs.85).aspx
 
@@ -230,4 +323,4 @@ YCountChars
 YSize
 	Pixel height of a window if a new window is created. For GUI processes, this is used only the first time the new process calls CreateWindow to create an overlapped window if the nWidth parameter of CreateWindow is CW_USEDEFAULT.
 	Note  XSize and YSize cannot be specified independently.
--->
+##-->
