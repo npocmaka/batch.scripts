@@ -1,11 +1,17 @@
 <!-- :
 :: countdown.bat
 @echo off
+
+if "%~1" equ "" (
+  echo seconds not passed
+  exit /b 1
+)
+
 echo %*|mshta.exe "%~f0"|more
 
 
 
-exit /b
+exit /b %errorlevel%
 -->
 
 <html>
