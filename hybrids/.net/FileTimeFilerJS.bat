@@ -146,7 +146,7 @@ function parseArgs(){
 		Environment.Exit(2);
 	}
 	
-	directory==arguments[1];
+	directory=arguments[1];
 	
 	for (var i=2;i<arguments.length-1;i=i+2){
 		var arg=arguments[i].ToLower();
