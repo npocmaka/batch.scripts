@@ -182,7 +182,7 @@ function parseArgs(){
 				break;
 			case "-filetime" :
 				switch(next){
-					case "creation":
+					case "created":
 						getFunct=getDateCreated;
 						break;
 					case "accessed":
