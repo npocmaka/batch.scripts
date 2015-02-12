@@ -46,7 +46,7 @@ function printHelp(){
 	WScript.Echo("		The stated day of the week is ignored if it is incorrect given the remainder of the supplied date. For example, 'Tuesday November 9 1996' is accepted and parsed even though that date actually falls on a Friday. The resulting Date object contains 'Friday November 9 1996'.");
 	WScript.Echo("		JScript handles all standard time zones, as well as Universal Coordinated Time (UTC) and Greenwich Mean Time (GMT).");
 	WScript.Echo("		Hours, minutes, and seconds are separated by colons, although all need not be specified. '10:', '10:11', and '10:11:12' are all valid.");
-	WScript.Echo("		If the 24-hour clock is used, it is an error to specify "PM" for times later than 12 noon. For example, '23:15 PM' is an error.");
+	WScript.Echo("		If the 24-hour clock is used, it is an error to specify 'PM' for times later than 12 noon. For example, '23:15 PM' is an error.");
 	WScript.Echo("		A string containing an invalid date is an error. For example, a string containing two years or two months is an error.");
 	WScript.Echo("-direction before|after  ");
 	WScript.Echo("    will search for files/directories before or after given date.Default is after");
@@ -65,7 +65,7 @@ function printHelp(){
 	WScript.Echo("-recursive yes|no");
 	WScript.Echo("    Will search be recursive or not");
 	WScript.Echo("    Default is yes");
-	WScript.Echo("-show dirs|files");
+	WScript.Echo("-show dirs|files|all");
 	WScript.Echo("    Will search files or directories");
 	WScript.Echo("    Default is files");
 	WScript.Echo("");
@@ -182,7 +182,7 @@ function parseArgs(){
 				break;
 			case "-filetime" :
 				switch(next){
-					case "creation":
+					case "created":
 						getFunct=getDateCreated;
 						break;
 					case "accessed":
@@ -243,6 +243,3 @@ if (min_date > max_date) {
 }
 
 list(directory,getFunct);
-
-
-
