@@ -1,37 +1,21 @@
-@if (@X)==(@Y) @end /* JScript comment
-@echo off
-setlocal
+@if (@x)==(@y) @end /***** jscript comment ******
+     @echo off
+     cscript //E:JScript //nologo "%~f0" "%~nx0" %* 
+     exit /b %errorlevel%
 
-for /f "tokens=* delims=" %%v in ('dir /b /s /a:-d  /o:-n "%SystemRoot%\Microsoft.NET\Framework\*jsc.exe"') do (
-   set "jsc=%%v"
-)
+ @if (@x)==(@y) @end ******  end comment *********/
+ 
+var FileSystemObj = new ActiveXObject("Scripting.FileSystemObject");
 
-::if not exist "%~n0.exe" (
-	"%jsc%" /nologo /out:"%~n0.exe" "%~dpsfnx0"
-::)
+var ARGS = WScript.Arguments;
+var scriptName=ARGS.Item(0);
 
- %~n0.exe %* 2>nul
-
-endlocal & exit /b %errorlevel%
-
-
-*/
-
-import System;
-import System.Globalization;
-import  System.DateTime;
-import System.IO;
-import System.IO.Directory;
-import System.Collections;
-
-
-
-var arguments:String[] = Environment.GetCommandLineArgs();
+//var arguments:String[] = Environment.GetCommandLineArgs();
 
 var directory=".";
 //var filter="creation";
-var max_date=DateTime.Now.Ticks ;
-var min_date=DateTime.MinValue.Ticks ;
+var max_date=(new Date()).getTime();
+var min_date=(new Date(0)).getTime();
 
 var DD=0;
 var hh=0;
@@ -41,116 +25,143 @@ var ss=0;
 var recursive=true;
 var show_dirs=false;
 var show_files=true;
-var mask="*";
 var direction="after";
 
-var getFunct=File.GetCreationTime;
-
-
-
+//var show_files=true;
+//var show_dirs=false;
+var getFunct=getDateCreated;
 function printHelp(){
-	Console.WriteLine(arguments[0] + " filters files/directories by date or time");
-	Console.WriteLine("");
-	Console.WriteLine("Usage:");
-	Console.WriteLine(arguments[0] + " directory [options]");
-	Console.WriteLine("Options:");
-	Console.WriteLine("-beginDate dd-MM-yy#hh:mm:ss -endDate  dd-MM-yy#hh:mm:ss");
-	Console.WriteLine("		will show files/directories between the two dates.Date format can be");
-	Console.WriteLine("		dd-MM-yy#hh:mm:ss|dd-MM-yy (time will be 00:00:00)|#hh:mm:ss( date will be current)|");
-	Console.WriteLine("		dd-MM-yy#hh|dd-MM-yy#hh:mm");
-	Console.WriteLine("		default are  01:01:0001#00:00:00 and the current");
-	Console.WriteLine("-mask pattern  ");
-	Console.WriteLine("    will show files/directories that applies a given pattern.Wildcards are accepted");
-	Console.WriteLine("    Default is '*'");
-	Console.WriteLine("-direction before|after  ");
-	Console.WriteLine("    will search for files/directories before or after given date.Default is after");
-	Console.WriteLine("-hh  Number");
-	Console.WriteLine("    Will add/subtract(if number is negative) hours to given dates");
-	Console.WriteLine("    Default is 0");
-	Console.WriteLine("-mm  Number");
-	Console.WriteLine("    Will add/subtract(if number is negative) minutes to given dates");
-	Console.WriteLine("    Default is 0");
-	Console.WriteLine("-dd  Number");
-	Console.WriteLine("    Will add/subtract(if number is negative) days to given dates");
-	Console.WriteLine("    Default is 0");
-	Console.WriteLine("-ss Number");
-	Console.WriteLine("    Will add/subtract(if number is negative) seconds to given dates");
-	Console.WriteLine("    Default is 0");
-	Console.WriteLine("-recursive yes|no");
-	Console.WriteLine("    Will search be recursive or not");
-	Console.WriteLine("    Default is yes");
-	Console.WriteLine("-show dirs|files");
-	Console.WriteLine("    Will search files or directories");
-	Console.WriteLine("    Default is files");
-	Console.WriteLine("");
-	Console.WriteLine("Examples:");
-	Console.WriteLine("");
-	Console.WriteLine("Will show files older than 5 hours");
-	Console.WriteLine(arguments[0] + '"." -hh -5');
-	Console.WriteLine("");
-	Console.WriteLine("Will show files between the begin and end date with '.jpg' extension");
-	Console.WriteLine(arguments[0] + '"." -beginDate 30-12-14#15:30:00 -endDate  10-01-15#00:00:10 -mask "*.jpg"');
-	Console.WriteLine("Will show files newer than 5 hours starting from given date");
-	Console.WriteLine(arguments[0] + '"." -hh 5 -beginDate -beginDate 30-12-14#15:30:00');
-	Console.WriteLine("");
-	Console.WriteLine("Will show files older than 5 hours starting from given date");
-	Console.WriteLine(arguments[0] + '"." -hh 5 -beginDate -beginDate 30-12-14#15:30:00 -direction before');
-	Console.WriteLine("");
+	WScript.Echo(scriptName + " filters files/directories by date or time");
+	WScript.Echo("");
+	WScript.Echo("Usage:");
+	WScript.Echo(scriptName + " directory [options]");
+	WScript.Echo("Options:");
+	WScript.Echo("-beginDate dd-MM-yy#hh:mm:ss -endDate  dd-MM-yy#hh:mm:ss");
+	WScript.Echo("		will show files/directories between the two dates.Date formats ");
+	WScript.Echo("		Short dates can use either a '/' or "-" date separator, but must follow the month/day/year format, for example '7/20/96'");
+	WScript.Echo("		Long dates of the form 'July 10 1995' can be given with the year, month, and day in any order, and the year in 2-digit or 4-digit form. If you use the 2-digit form, the year must be greater than or equal to 70.");
+	WScript.Echo("		Any text inside parentheses is treated as a comment. These parentheses may be nested.");
+	WScript.Echo("		Both commas and spaces are treated as delimiters. Multiple delimiters are permitted.");
+	WScript.Echo("		Month and day names must have two or more characters. Two character names that are not unique are resolved as the last match. For example, 'Ju' is resolved as July, not June.");
+	WScript.Echo("		The stated day of the week is ignored if it is incorrect given the remainder of the supplied date. For example, 'Tuesday November 9 1996' is accepted and parsed even though that date actually falls on a Friday. The resulting Date object contains 'Friday November 9 1996'.");
+	WScript.Echo("		JScript handles all standard time zones, as well as Universal Coordinated Time (UTC) and Greenwich Mean Time (GMT).");
+	WScript.Echo("		Hours, minutes, and seconds are separated by colons, although all need not be specified. '10:', '10:11', and '10:11:12' are all valid.");
+	WScript.Echo("		If the 24-hour clock is used, it is an error to specify 'PM' for times later than 12 noon. For example, '23:15 PM' is an error.");
+	WScript.Echo("		A string containing an invalid date is an error. For example, a string containing two years or two months is an error.");
+	WScript.Echo("-direction before|after  ");
+	WScript.Echo("    will search for files/directories before or after given date.Default is after");
+	WScript.Echo("-hh  Number");
+	WScript.Echo("    Will add/subtract(if number is negative) hours to given dates");
+	WScript.Echo("    Default is 0");
+	WScript.Echo("-mm  Number");
+	WScript.Echo("    Will add/subtract(if number is negative) minutes to given dates");
+	WScript.Echo("    Default is 0");
+	WScript.Echo("-dd  Number");
+	WScript.Echo("    Will add/subtract(if number is negative) days to given dates");
+	WScript.Echo("    Default is 0");
+	WScript.Echo("-ss Number");
+	WScript.Echo("    Will add/subtract(if number is negative) seconds to given dates");
+	WScript.Echo("    Default is 0");
+	WScript.Echo("-recursive yes|no");
+	WScript.Echo("    Will search be recursive or not");
+	WScript.Echo("    Default is yes");
+	WScript.Echo("-show dirs|files");
+	WScript.Echo("    Will search files or directories");
+	WScript.Echo("    Default is files");
+	WScript.Echo("");
+	WScript.Echo("Examples:");
+	WScript.Echo("");
+	WScript.Echo("Will show files older than 5 hours");
+	WScript.Echo(scriptName + '"." -hh -5');
+	WScript.Echo("");
+	WScript.Echo("Will show files between the begin and end date");
+	WScript.Echo(scriptName + '"." -beginDate "September 1, 2014 10:15 AM" -endDate "November 1, 2014 10:15 PM" ');
+	WScript.Echo("Will show files newer than 5 hours starting from given date");
+	WScript.Echo(scriptName + '"." -hh 5 -beginDate -beginDate "September 1, 2014 10:15 AM"');
+	WScript.Echo("");
+	WScript.Echo("Will show files older than 5 hours starting from given date");
+	WScript.Echo(scriptName + '"." -hh 5 -beginDate -beginDate "September 1, 2014 10:15 AM" -direction before');
+	WScript.Echo("");
+	
 }
 
-function parseDate(stringDate){
-	try {
-		var provider = CultureInfo.InvariantCulture;
-		switch (stringDate.length){
-			case 8:
-				var pattern="dd-MM-yy";
-				return DateTime.ParseExact(stringDate,pattern,provider).Ticks;
-			case 9:
-				var pattern="d-M-yyyy#hh:mm:ss";
-				var c_date=DateTime.Now;
-				var remastered_date=c_date.Month+"-"+c_date.Day+"-"+c_date.Year+stringDate;
-				return DateTime.ParseExact(stringDate,pattern,provider).Ticks;
-			case 11:
-				var pattern="dd-MM-yy#hh";
-				return DateTime.ParseExact(stringDate,pattern,provider).Ticks;		
-			case 14:
-				var pattern="dd-MM-yy#hh:mm";
-				return DateTime.ParseExact(stringDate,pattern,provider).Ticks;
-			case 17:
-				var pattern="dd-MM-yy#hh:mm:ss";
-				return DateTime.ParseExact(stringDate,pattern,provider).Ticks;
-			default:
-				Console.WriteLine("Wrong date format");
-				Environment.Exit(7);
+	
+
+
+function getLastModified(obj){
+	return obj.DateLastModified;
+}
+
+function getDateCreated(obj){
+	return obj.DateCreated;
+}
+
+function getLastAccessed(obj){
+	return obj.DateLastAccessed;
+}
+
+function check(enumObj,filterFunction){
+	for (; !enumObj.atEnd(); enumObj.moveNext()){
+		var dateObj=new Date(filterFunction(enumObj.item()));
+		if ((dateObj.getTime() <= max_date) && 
+			(dateObj.getTime() >= min_date)){
+				WScript.Echo(enumObj.item());
 		}
-	} catch (err) {
-		Console.WriteLine(err.message)
+	}
+}
+
+function parseDate(string){
+	//https://msdn.microsoft.com/en-us/library/k4w173wk(v=vs.84).aspx
+	try {
+		return Date.parse(string);
+	} catch (err){
+		WScript.Echo("Wrong date format");
+		WScript.Echo(err.message);
+		WScript.Quit(4);
+	}
+}
+
+function list(directory,filterFunction){
+	var folder=FileSystemObj.GetFolder(directory);
+	if (show_files){
+		var file_enum = new Enumerator(folder.files);
+		check(file_enum,filterFunction);
+	}
+	if (show_dirs){
+		var folder_enum = new Enumerator(folder.SubFolders );
+		check(folder_enum,filterFunction);
+	}
+	if(recursive){
+		var folder_enum = new Enumerator(folder.SubFolders );
+		for (;!folder_enum.atEnd(); folder_enum.moveNext()){
+			list(folder_enum.item(),filterFunction);
+		}
 	}
 }
 
 function parseArgs(){
 	
-	if (arguments[1] == "-h" || arguments[1] == "-help"){
+	if (ARGS.Item(1) == "-h" || ARGS.Item(1) == "-help"){
 		printHelp();
 	}
 	
-	if (arguments.length<2){
-		Console.WriteLine("Wrong arguments");
+	if (ARGS.length<2){
+		WScript.Echo("Wrong arguments");
 		printHelp();
 		Environment.Exit(1);
 	}
 	
-	if (arguments.length%2 != 0){
-		Console.WriteLine("Wrong number of arguments");
+	if (ARGS.length%2 != 0){
+		WScript.Echo("Wrong number of arguments");
 		printHelp();
 		Environment.Exit(2);
 	}
 	
-	directory=arguments[1];
+	directory=ARGS.Item(1);
 	
-	for (var i=2;i<arguments.length-1;i=i+2){
-		var arg=arguments[i].ToLower();
-		var next=arguments[i+1].ToLower();
+	for (var i=2;i<ARGS.length-1;i=i+2){
+		var arg= ARGS.Item(i).toLowerCase();
+		var next=ARGS.Item(i+1).toLowerCase();
 		switch (arg){
 			case "-direction" :
 				if (next == 'before') {
@@ -158,7 +169,7 @@ function parseArgs(){
 				}
 				break;
 			case "-hh" :
-				hh=Int32.Parse(next);
+				hh=parseInt(next);
 				break;
 			case "-dd" :
 				DD=parseInt(next);
@@ -169,36 +180,20 @@ function parseArgs(){
 			case "-ss" :
 				ss=parseInt(next);
 				break;
-			case "-mask" :
-				mask=next;
-				break;
 			case "-filetime" :
 				switch(next){
-
 					case "creation":
-						if (show_dirs) {
-							getFunct=Directory.GetCreationTime;
-						} else {
-							getFunct=File.GetCreationTime;
-						}
+						getFunct=getDateCreated;
 						break;
 					case "accessed":
-						if (show_dirs) {
-							getFunct=Directory.GetLastAccessTime;
-						} else {
-							getFunct=File.GetLastAccessTime;
-						}
+						getFunct=getLastAccessed;
 						break;
 					case "modified":
-						if (show_dirs) {
-							getFunct=Directory.GetLastWriteTime;
-						} else {
-							getFunct=File.GetLastWriteTime;
-						}
+						getFunct=getLastModified;
 						break;
 					default :
-						Console.WriteLine("invalid value "+ next);
-						Environment.Exit(4);
+						WScript.Echo("invalid value "+ next);
+						WScript.Quit(4);
 				}
 				break;
 			case "-recursive" :
@@ -211,6 +206,10 @@ function parseArgs(){
 					show_dirs = true;
 					show_files = false;
 				}
+				if (next == "all"){
+					show_dirs = true;
+					show_files = true;
+				}
 				break;
 			case "-begindate" :
 				min_date=parseDate(next);
@@ -219,22 +218,22 @@ function parseArgs(){
 				max_date=parseDate(next);
 				break;					
 			default:
-				Console.WriteLine("Wrong argument " + arg);
-				Environment.Exit(5);
+				WScript.Echo("Wrong argument " + arg);
+				WScript.Quit(5);
 		}
 	}
 }
 
-//ticks are in nanoseconds
 parseArgs();
+
+//ticks are in nanoseconds
+
 if (direction=='after'){
-	min_date=max_date + (hh*3600000*10000)+ (DD*86400000*10000) + (ss*1000*10000) + (mm*60000*10000) ;
+	min_date=max_date + (hh*3600000)+ (DD*86400000) + (ss*1000) + (mm*60000) ;
 }else{
-	max_date=max_date + (hh*3600000*10000)+ (DD*86400000*10000) + (ss*1000*10000) + (mm*60000*10000) ;
+	max_date=max_date + (hh*3600000)+ (DD*86400000) + (ss*1000) + (mm*60000) ;
 	
 }
-
-
 
 // swap if needed
 if (min_date > max_date) {
@@ -243,24 +242,4 @@ if (min_date > max_date) {
 	min_date=min_date^max_date;
 }
 
-
-
-function listItems(funct,getFunct){
-	var files:String[]=funct(directory,"*",System.IO.SearchOption.AllDirectories);
-	for (var f=0;f<files.length;f++){
-		if (getFunct(files[f]).Ticks >= min_date && getFunct(files[f]).Ticks <= max_date){
-			
-			Console.WriteLine(files[f]);
-			//Console.WriteLine(" ; " + getFunct(files[f]).Ticks);
-		}
-	}
-}
-
-
-if (show_dirs){
-	listItems(Directory.GetDirectories ,getFunct);
-}
-
-if (show_files){
-	listItems(Directory.GetFiles,getFunct);
-}
+list(directory,getFunct);
