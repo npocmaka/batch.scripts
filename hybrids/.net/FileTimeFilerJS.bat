@@ -83,6 +83,9 @@ function printHelp(){
 	Console.WriteLine("    Will search files or directories");
 	Console.WriteLine("    Default is files");
 	Console.WriteLine("");
+	Console.WriteLine("-filetime created|accessed|modified");
+	Console.WriteLine("    Will search files or directories");
+	Console.WriteLine("    Default is files");
 	Console.WriteLine("Examples:");
 	Console.WriteLine("");
 	Console.WriteLine("Will show files older than 5 hours");
