@@ -65,7 +65,7 @@ function printHelp(){
 	WScript.Echo("-recursive yes|no");
 	WScript.Echo("    Will search be recursive or not");
 	WScript.Echo("    Default is yes");
-	WScript.Echo("-show dirs|files");
+	WScript.Echo("-show dirs|files|all");
 	WScript.Echo("    Will search files or directories");
 	WScript.Echo("    Default is files");
 	WScript.Echo("");
