@@ -69,6 +69,10 @@ function printHelp(){
 	WScript.Echo("    Will search files or directories");
 	WScript.Echo("    Default is files");
 	WScript.Echo("");
+	WScript.Echo("-show dirs|files|all");
+	WScript.Echo("     Will search files or directories by passed time property ");
+	WScript.Echo("    Default is files");
+	WScript.Echo("");
 	WScript.Echo("Examples:");
 	WScript.Echo("");
 	WScript.Echo("Will show files older than 5 hours");
