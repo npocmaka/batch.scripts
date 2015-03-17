@@ -18,6 +18,19 @@ http://www.robvanderwoude.com/vbstech_files_zip.php
 https://code.google.com/p/jsxt/source/browse/trunk/js/win32/ZipFile.js?r=161
 
 
+
+
+UPDATE *17-03-15*
+
+Devnullius Plussed noticed a bug in ZipDirItems  and ZipItem functions (now fixed)
+And also following issues (at the moment not handled by the script):
+- if there's not enough space on the system drive (usually C:\) the script could produce various errors , most often the script halts.
+- Folders and files that contain unicode symbols cannot be handled by Shell.Application object.
+
+
+
+
+
 It's possible to be ported for C#,Powershell and JScript.net so I'm planning to do it at some time.
 
 For sure there's a lot of room for improvements and optimization and I'm absolutely sure there are some bugs
@@ -465,6 +478,9 @@ if ( ! this.ZIPUtils.ZipItem) {
 			ADODB.Stream.writeFile(destination,ZIP_DATA);
 		} else if (!Scripting.FileSystemObject.ExistsFile(destination)) {
 			ADODB.Stream.writeFile(destination,ZIP_DATA);
+		} else {
+			WScript.Echo("Destination "+destination+" already exists.Operation will be aborted");
+			WScript.Quit(15);
 		}
 		source=Scripting.FileSystemObject.getFullPath(source);
 		destination=Scripting.FileSystemObject.getFullPath(destination);
@@ -487,7 +503,11 @@ if ( ! this.ZIPUtils.ZipDirItems) {
 			ADODB.Stream.writeFile(destination,ZIP_DATA);
 		} else if (!Scripting.FileSystemObject.ExistsFile(destination)) {
 			ADODB.Stream.writeFile(destination,ZIP_DATA);
+		} else {
+			WScript.Echo("Destination "+destination+" already exists.Operation will be aborted");
+			WScript.Quit(15);
 		}
+		
 		source=Scripting.FileSystemObject.getFullPath(source);
 		destination=Scripting.FileSystemObject.getFullPath(destination);
 		
@@ -509,7 +529,7 @@ if ( ! this.ZIPUtils.Unzip) {
 		if (Scripting.FileSystemObject.ExistsItem(destination) && force ) {
 			Scripting.FileSystemObject.DeleteItem(destination);
 		} else if (Scripting.FileSystemObject.ExistsItem(destination)){
-			WScript.Echo("Destination already exists");
+			WScript.Echo("Destination " + destination + " already exists");
 			return;
 		}
 		Scripting.FileSystemObject.CreateFolder(destination);
@@ -551,7 +571,8 @@ if ( ! this.ZIPUtils.UnzipItem) {
 		} else if (Scripting.FileSystemObject.ExistsItem(destination)){
 			WScript.Echo(destination+" - Destination already exists");
 			return;
-		}
+		} 
+		
 		Scripting.FileSystemObject.CreateFolder(destination);
 		destination=Scripting.FileSystemObject.getFullPath(destination);
 		Shell.Application.ProcessItem(source, destination, move ,false,NO_PROGRESS_BAR);
