@@ -27,6 +27,8 @@ And also following issues (at the moment not handled by the script):
 - if there's not enough space on the system drive (usually C:\) the script could produce various errors , most often the script halts.
 - Folders and files that contain unicode symbols cannot be handled by Shell.Application object.
 
+-on Windows2003,XP the max suppoerted size of the produced zip file seems to be 2gb and on Vista and above 8gb.
+
 
 
 
