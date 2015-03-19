@@ -52,6 +52,9 @@ For suggestions contact me at - npocmaka@gmail.com
 //empty zip character sequense
 var ZIP_DATA= "PK" + String.fromCharCode(5) + String.fromCharCode(6) + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
 
+//A timeout between every check of the count of the files in the zipped folder when ZipDirItems or Zipitem is used
+// As the zipping is transactional and shell.application starts an external process (without waiting to finish) when
+// zips files , the count of the files is the only reliable way to check when zipping is done.
 var SLEEP_INTERVAL=200;
 
 //copy option(s) used by Shell.Application.CopyHere/MoveHere
