@@ -27,8 +27,6 @@ And also following issues (at the moment not handled by the script):
 - if there's not enough space on the system drive (usually C:\) the script could produce various errors , most often the script halts.
 - Folders and files that contain unicode symbols cannot be handled by Shell.Application object.
 
--on Windows2003,XP the max suppoerted size of the produced zip file seems to be 2gb and on Vista and above 8gb.
-
 
 
 
@@ -52,9 +50,6 @@ For suggestions contact me at - npocmaka@gmail.com
 //empty zip character sequense
 var ZIP_DATA= "PK" + String.fromCharCode(5) + String.fromCharCode(6) + "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
 
-//A timeout between every check of the count of the files in the zipped folder when ZipDirItems or Zipitem is used
-// As the zipping is transactional and shell.application starts an external process (without waiting to finish) when
-// zips files , the count of the files is the only reliable way to check when zipping is done.
 var SLEEP_INTERVAL=200;
 
 //copy option(s) used by Shell.Application.CopyHere/MoveHere
@@ -117,8 +112,22 @@ if ( ! this.Common ) {
 
 if ( ! Common.WaitForCount ) {
 	Common.WaitForCount = function(folderObject,targetCount,countFunction){
+		var shell = new ActiveXObject("Wscript.Shell");
 		while (countFunction(folderObject) < targetCount ){
 			WScript.Sleep(SLEEP_INTERVAL);
+			//checks if a pop-up with error message appears while zipping
+			//at the moment I have no idea how to read the pop-up content
+			// to give the exact reason for failing
+			if (shell.AppActivate("Compressed (zipped) Folders Error")) {
+				WScript.Echo("Error While zipping");
+				WScript.Echo("");
+				WScript.Echo("Possible reasons:");
+				WScript.Echo(" -source contains filename(s) with unicode characters");
+				WScript.Echo(" -produces zip exceeds 8gb size (or 2,5 gb for XP and 2003)");
+				WScript.Echo(" -not enough space on system drive (usually C:\\)");
+				WScript.Quit(432);
+			}
+			
 		}
 	}
 }
