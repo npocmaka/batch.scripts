@@ -27,16 +27,23 @@ And also following issues (at the moment not handled by the script):
 - if there's not enough space on the system drive (usually C:\) the script could produce various errors , most often the script halts.
 - Folders and files that contain unicode symbols cannot be handled by Shell.Application object.
 
+UPDATE *24-03-15*
 
+Error messages are caught in waitforcount method and if shuch pops-up the script is stopped.
+As I don't know hoe to check the content of the pop-up the exact reason for the failure is not given
+but only the possible reasons.
 
-
-
+------
 It's possible to be ported for C#,Powershell and JScript.net so I'm planning to do it at some time.
 
 For sure there's a lot of room for improvements and optimization and I'm absolutely sure there are some bugs
 as the script is big enough to not have.
-For suggestions contact me at - npocmaka@gmail.com
 
+
+
+!!!
+For suggestions contact me at - npocmaka@gmail.com
+!!!
 
 */
 
