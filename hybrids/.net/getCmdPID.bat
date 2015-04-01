@@ -13,7 +13,7 @@ if not exist "%~n0.exe" (
 
 %~n0.exe
 
-pause
+::pause
 endlocal & exit /b %errorlevel%
 
 */
