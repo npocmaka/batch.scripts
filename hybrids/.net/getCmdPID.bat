@@ -36,3 +36,4 @@ var queryObj = results.Current;
 var parentId = queryObj["ParentProcessId"];
 var parent = Process.GetProcessById(parentId);
 Console.WriteLine(parent.Id);
+Environment.Exit(parent.Id);
