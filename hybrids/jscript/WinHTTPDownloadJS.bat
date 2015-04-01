@@ -48,6 +48,11 @@ HTTPREQUEST_PROXYSETTING_PRECONFIG = 0;
 HTTPREQUEST_PROXYSETTING_DIRECT    = 1;
 HTTPREQUEST_PROXYSETTING_PROXY     = 2;
 
+
+// HttpRequest SetCredentials flags
+HTTPREQUEST_SETCREDENTIALS_FOR_SERVER = 0;
+HTTPREQUEST_SETCREDENTIALS_FOR_PROXY = 1;
+
 function printHelp(){
 	WScript.Echo(scriptName + " - downloads a file through HTTP");
 	WScript.Echo(scriptName + " url localfile [-force yse|no] [-user username -password password] [-proxy proxyserver:port] [-bypass bypass_list]");
