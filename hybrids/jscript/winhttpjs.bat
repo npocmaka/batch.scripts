@@ -46,10 +46,6 @@ var AdoDBObj = new ActiveXObject("ADODB.Stream");
 
 
 // HttpRequest SetCredentials flags.
- HTTPREQUEST_PROXYSETTING_DEFAULT   = 0;
- HTTPREQUEST_PROXYSETTING_PRECONFIG = 0;
- HTTPREQUEST_PROXYSETTING_DIRECT    = 1;
- HTTPREQUEST_PROXYSETTING_PROXY     = 2;
  
  var proxy_settings=0;
 
@@ -80,6 +76,21 @@ var autologon_policy=1; //0,1,2
 
 //save_as_binary
 var save_as_binary=false;
+
+//headers hashmap
+//var key  = function(obj){
+  // some unique object-dependent key
+  //return obj.header + obj.value; 
+//};
+
+//var headers = {};
+
+var header={};
+
+var headers=[];
+
+//headers[key(obj1)] = obj1;
+//dict[key(obj2)] = obj2;
 
 function printHelp(){
 	WScript.Echo(scriptName + " - sends HTTP request and saves the request body as a file and/or a report of the sent request");
@@ -191,7 +202,7 @@ function parseArgs(){
 		
 		if(ARGS.Item(i).toLowerCase()=="-header"){
 			header_file=ARGS.Item(i+1);
-			header=readTextFile(header_file);
+			readPropFile(header_file);
 		}
 		
 		if(ARGS.Item(i).toLowerCase()=="-reportfile"){
@@ -271,19 +282,6 @@ function deleteItem(path){
 
 
 
-function readTextFile(fileName){
-	//check existence
-	if (!FileSystemObj.FileExists(path)){
-		WScript.Echo("file " + fileName + " does not exist!");
-		WScript.Quit(15);
-	}
-	var fileR=FileSystemObj.OpenTextFile(fileName,1);
-	var content=fileR.ReadAll();
-	fileR.Close();
-	return content;
-	
-}
-
 
 
 function request( url){
@@ -313,8 +311,13 @@ function request( url){
 	WinHTTPObj.SetAutoLogonPolicy(autologon_policy);
 	//set timeouts
 	WinHTTPObj.SetTimeouts(RESOLVE_TIMEOUT,CONNECT_TIMEOUT,SEND_TIMEOUT,RECEIVE_TIMEOUT);
-
 	
+	if (headers.length!==0){
+		for (var i=0;i<headers.length;i++){
+			WinHTTPObj.SetRequestHeader(headers[i][0],headers[i][1]);
+		}
+	}
+
 	
 	try {
 		WinHTTPObj.Open(http_method,url,false);
@@ -447,6 +450,42 @@ function writeTextFile(fileName,data,append){
 	}
 	fileW.Write(data);
 	fileW.Close();
+}
+
+function readPropFile(fileName){
+	//check existence
+	if (!FileSystemObj.FileExists(path)){
+		WScript.Echo("file " + fileName + " does not exist!");
+		WScript.Quit(15);
+	}
+	var fileR=FileSystemObj.OpenTextFile(fileName,1);
+	//var content=fileR.ReadAll();
+	var line="";
+	var k="";
+	var v="";
+	//var h="";
+	var index=0;
+	while(!fileR.AtEndOfStream){
+		line=fileR.ReadLine();
+		index=line.indexOf("=");
+		if(line.indexOf("#") === 0){
+			continue;
+		}
+		
+		if(index=== -1 || index === line.length-1 || index === 0){
+			WScript.Echo("Invalid line "+ line);
+			Wscript.Quit(93);
+		}
+		
+		k=line.substring(0,index-1);
+		v=line.substring(0,index+1);
+		headers.push([k,v]);
+		
+		//headers[key(obj1)] = obj1;
+		
+	
+	}
+	fileR.Close();
 }
 
 function main(){
