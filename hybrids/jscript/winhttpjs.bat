@@ -74,7 +74,7 @@ var autologon_policy=1; //0,1,2
 
 
 //save_as_binary
-var save_as_binary=true;
+var save_as_binary=false;
 
 function printHelp(){
 	WScript.Echo(scriptName + " - sends HTTP request and saves the request body as a file and/or a report of the sent request");
@@ -122,6 +122,7 @@ function parseArgs(){
 		WScript.Quit(43);
 	}
 	url=ARGS.Item(1);
+	WScript.Echo("URL:"+url);
 	//saveTo=ARGS.Item(2);
 	
 	if(ARGS.Length % 2 != 0) {
@@ -130,80 +131,90 @@ function parseArgs(){
 		WScript.Quit(44);
 	}
 	
+	WScript.Echo(ARGS.Length);
+	
 	for (var i=2;i<ARGS.Length-1;i=i+2){
 		//TODO use switch-case instead of IFs
 		
-		if(ARGS.Item(i).toLowerCase=="-force" && ARGS.Item(i+1)=='no'){
+		WScript.Echo("Parsing args");
+		WScript.Echo(i + "-->"+ ARGS.Item(i).toLowerCase());
+		
+		if(ARGS.Item(i).toLowerCase()=="-force" && ARGS.Item(i+1)=='no'){
 			force=false;
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-saveto"){
+		if(ARGS.Item(i).toLowerCase()==="-saveto"){
 			saveTo=ARGS.Item(i+1);
+			save_as_binary=true;
+			
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-user"){
+		if(ARGS.Item(i).toLowerCase()=="-user"){
 			user=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-password"){
+		if(ARGS.Item(i).toLowerCase()=="-password"){
 			pass=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-proxy"){
+		if(ARGS.Item(i).toLowerCase()=="-proxy"){
 			proxy=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-bypass"){
+		if(ARGS.Item(i).toLowerCase()=="-bypass"){
 			bypass=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-proxyuser"){
+		if(ARGS.Item(i).toLowerCase()=="-proxyuser"){
 			proxy_user=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-proxypassword"){
+		if(ARGS.Item(i).toLowerCase()=="-proxypassword"){
 			proxy_pass=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-certificate"){
+		if(ARGS.Item(i).toLowerCase()=="-certificate"){
 			certificate=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-method"){
-			if (ARGS.Item(i+1).toLowerCase=="post") {
+		if(ARGS.Item(i).toLowerCase()=="-method"){
+			WScript.Echo("Setting the method");
+			if (ARGS.Item(i+1).toLowerCase()=="post") {
 				http_method='POST';
 			}
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-header"){
+		if(ARGS.Item(i).toLowerCase()=="-header"){
 			header_file=ARGS.Item(i+1);
 			header=readTextFile(header_file);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-reportfile"){
+		if(ARGS.Item(i).toLowerCase()=="-reportfile"){
+			WScript.Echo("report file: "+ reportfile);
 			reportfile=ARGS.Item(i+1);
+			
 		}
 		
 		//timeouts
 		try {  // possible parseint error
-			if(ARGS.Item(i).toLowerCase=="-sendtimeout"){
+			if(ARGS.Item(i).toLowerCase()=="-sendtimeout"){
 				SEND_TIMEOUT=parseInt(ARGS.Item(i+1));
 			}
 			
-			if(ARGS.Item(i).toLowerCase=="-resolvetimeout"){
+			if(ARGS.Item(i).toLowerCase()=="-resolvetimeout"){
 				RESOLVE_TIMEOUT=parseInt(ARGS.Item(i+1));
 			}
 			
-			if(ARGS.Item(i).toLowerCase=="-connecttimeout"){
+			if(ARGS.Item(i).toLowerCase()=="-connecttimeout"){
 				CONNECT_TIMEOUT=parseInt(ARGS.Item(i+1));
 			}
 
-			if(ARGS.Item(i).toLowerCase=="-receivetimeout"){
+			if(ARGS.Item(i).toLowerCase()=="-receivetimeout"){
 				RECEIVE_TIMEOUT=parseInt(ARGS.Item(i+1));
 			}
 			
-			//autologon policy	!!!!!		
-			if(ARGS.Item(i).toLowerCase=="-autologonpolicy"){
+					
+			if(ARGS.Item(i).toLowerCase()=="-autologonpolicy"){
 				autologon_policy=parseInt(ARGS.Item(i+1));
 				if (autologon_policy>2||autologon_policy<0){
 					WScript.Echo("out of autologon policy range");
@@ -211,7 +222,7 @@ function parseArgs(){
 				}
 			}
 			
-			if(ARGS.Item(i).toLowerCase=="-proxysettings"){
+			if(ARGS.Item(i).toLowerCase()=="-proxysettings"){
 				proxy_settings=parseInt(ARGS.Item(i+1));
 				if (autologon_policy>2||autologon_policy<0){
 					WScript.Echo("out of autologon policy range");
@@ -253,14 +264,7 @@ function deleteItem(path){
 	}
 }
 
-function writeFile(fileName,data ){
-	AdoDBObj.Type = 1;		 
-	AdoDBObj.Open();
-	AdoDBObj.Position=0;
-	AdoDBObj.Write(data);
-	AdoDBObj.SaveToFile(fileName,2);
-	AdoDBObj.Close();	
-}
+
 
 function readTextFile(fileName){
 	//check existence
@@ -275,16 +279,7 @@ function readTextFile(fileName){
 	
 }
 
-function writeTextFile(fileName,data,append){
-	var fileW;
-	if(append)	{
-		fileW=FileSystemObj.OpenTextFile(fileName,2,true);
-	} else {
-		fileW=FileSystemObj.OpenTextFile(fileName,2,true);
-	}
-	fileW.WriteLine(data);
-	fileW.Close();
-}
+
 
 function request( url){
 
@@ -351,22 +346,66 @@ function request( url){
 	////////////////////////
 	//     report         //
 	////////////////////////
-*/
-	if(reportfile!="") {
+
+	if(reportfile!="" ) {
+	
+		//var report_string="";
+		var n="\r\n";
+		var report_string="Status:"+n;
+		report_string=report_string+"      "+WinHTTPObj.Status;
+		report_string=report_string+"      "+WinHTTPObj.StatusText+n;
+		report_string=report_string+"      "+n;
+		report_string=report_string+"Response:"+n;
+		report_string=report_string+WinHTTPObj.ResponseText+n;
+		report_string=report_string+"      "+n;
+		report_string=report_string+"Headers:"+n;
+		report_string=report_string+WinHTTPObj.GetAllResponseHeaders()+n;
+		
+		WinHttpRequestOption_UserAgentString = 0;    // Name of the user agent
+		WinHttpRequestOption_URL = 1;                // Current URL
+		WinHttpRequestOption_URLCodePage = 2;        // Code page
+		WinHttpRequestOption_EscapePercentInURL = 3; // Convert percents 
+                                             // in the URL
+		
+		report_string=report_string+"URL:"+n;
+		report_string=report_string+WinHTTPObj.Option(WinHttpRequestOption_URL)+n;
+		
+		report_string=report_string+"URL Code Page:"+n;
+		report_string=report_string+WinHTTPObj.Option(WinHttpRequestOption_URLCodePage)+n;
+		
+		report_string=report_string+"User Agent:"+n;
+		report_string=report_string+WinHTTPObj.Option(WinHttpRequestOption_UserAgentString)+n;
+		
+		report_string=report_string+"Escapped URL:"+n;
+		report_string=report_string+WinHTTPObj.Option(WinHttpRequestOption_EscapePercentInURL)+n;
+		
+		WScript.Echo("writing a report ");
 		prepareateFile(force,reportfile);
-		writeTextFile(reportfile,"Status:",false);
-		writeTextFile(reportfile,"      "+WinHTTPObj.Status,true);
-		writeTextFile(reportfile,"      "+WinHTTPObj.StatusText,true);
 		
-		writeTextFile(reportfile,"      ",true);
+		//WScript.Echo(report_string);
+		
+		writeFile(reportfile,report_string);
+		
+		
+		
+		
+		
+		
+		/*WScript.Echo("writing a report ");
+		prepareateFile(force,reportfile);//
+		writeTextFile(reportfile,"Status:",false);//
+		writeTextFile(reportfile,"      "+WinHTTPObj.Status,true);//
+		writeTextFile(reportfile,"      "+WinHTTPObj.StatusText,true);//
+		
+		writeTextFile(reportfile,"      ",true);//
 		writeTextFile(reportfile,"Response:",true);
-		writeTextFile(reportfile,"      "+WinHTTPObj.ResponseText,true);
+		writeTextFile(reportfile,WinHTTPObj.ResponseText,true);//
 		writeTextFile(reportfile,"      ",true);
 		
-		writeTextFile(reportfile,"      ",true);
-		writeTextFile(reportfile,"Headers:",true);
-		//https://msdn.microsoft.com/en-us/library/windows/desktop/aa383961(v=vs.85).aspx
-		writeTextFile(reportfile,WinHTTPObj.GetAllResponseHeaders(),true);
+		writeTextFile(reportfile,"      ",true);//
+		writeTextFile(reportfile,"Headers:",true);//
+		https://msdn.microsoft.com/en-us/library/windows/desktop/aa383961(v=vs.85).aspx
+		writeTextFile(reportfile,""+WinHTTPObj.GetAllResponseHeaders(),true);//
 		
 		WinHttpRequestOption_UserAgentString = 0;    // Name of the user agent
 		WinHttpRequestOption_URL = 1;                // Current URL
@@ -389,7 +428,7 @@ function request( url){
 		writeTextFile(reportfile,"      ",true);
 		writeTextFile(reportfile,"EscapedURL:",true);
 		writeTextFile(reportfile,""+ WinHTTPObj.Option(WinHttpRequestOption_EscapePercentInURL),true);
-		
+		*/
 		
 		
 	}
@@ -397,7 +436,12 @@ function request( url){
 	//if as binary
 	if (save_as_binary){
 		prepareateFile(force,saveTo);
-		writeFile(file,WinHTTPObj.ResponseBody);
+		try {
+			writeBinFile(reportfile,WinHTTPObj.ResponseBody);
+		} catch (err) {
+			WScript.Echo("Failed to save the file as binary.Attempt to save it as text");
+			writeFile(reportfile,WinHTTPObj.ResponseText);
+		}
 	}
 }
 
@@ -411,7 +455,36 @@ function prepareateFile(force,file){
 		WScript.Echo("Item " + file + " already exist");
 		WScript.Quit(9);
 	}
+}
 
+function writeBinFile(fileName,data ){
+	AdoDBObj.Type = 1;		 
+	AdoDBObj.Open();
+	AdoDBObj.Position=0;
+	AdoDBObj.Write(data);
+	AdoDBObj.SaveToFile(fileName,2);
+	AdoDBObj.Close();	
+}
+
+function writeFile(fileName,data ){
+	AdoDBObj.Type = 2;
+	AdoDBObj.CharSet = "iso-8859-1";
+	AdoDBObj.Open();
+	AdoDBObj.Position=0;
+	AdoDBObj.WriteText(data);
+	AdoDBObj.SaveToFile(fileName,2);
+	AdoDBObj.Close();	
+}
+
+function writeTextFile(fileName,data,append){
+	var fileW;
+	if(append)	{
+		fileW=FileSystemObj.OpenTextFile(fileName,8,false,true);
+	} else {
+		fileW=FileSystemObj.OpenTextFile(fileName,2,true,true);
+	}
+	fileW.Write(data);
+	fileW.Close();
 }
 
 function main(){
