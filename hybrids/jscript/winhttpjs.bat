@@ -382,54 +382,9 @@ function request( url){
 		WScript.Echo("writing a report ");
 		prepareateFile(force,reportfile);
 		
-		//WScript.Echo(report_string);
+		WScript.Echo("Writing report to "+reportfile);
 		
 		writeFile(reportfile,report_string);
-		
-		
-		
-		
-		
-		
-		/*WScript.Echo("writing a report ");
-		prepareateFile(force,reportfile);//
-		writeTextFile(reportfile,"Status:",false);//
-		writeTextFile(reportfile,"      "+WinHTTPObj.Status,true);//
-		writeTextFile(reportfile,"      "+WinHTTPObj.StatusText,true);//
-		
-		writeTextFile(reportfile,"      ",true);//
-		writeTextFile(reportfile,"Response:",true);
-		writeTextFile(reportfile,WinHTTPObj.ResponseText,true);//
-		writeTextFile(reportfile,"      ",true);
-		
-		writeTextFile(reportfile,"      ",true);//
-		writeTextFile(reportfile,"Headers:",true);//
-		https://msdn.microsoft.com/en-us/library/windows/desktop/aa383961(v=vs.85).aspx
-		writeTextFile(reportfile,""+WinHTTPObj.GetAllResponseHeaders(),true);//
-		
-		WinHttpRequestOption_UserAgentString = 0;    // Name of the user agent
-		WinHttpRequestOption_URL = 1;                // Current URL
-		WinHttpRequestOption_URLCodePage = 2;        // Code page
-		WinHttpRequestOption_EscapePercentInURL = 3; // Convert percents 
-                                             // in the URL
-											 
-		writeTextFile(reportfile,"      ",true);
-		writeTextFile(reportfile,"Agent:",true);
-		writeTextFile(reportfile,""+ WinHTTPObj.Option(WinHttpRequestOption_UserAgentString),true);
-		
-		writeTextFile(reportfile,"      ",true);
-		writeTextFile(reportfile,"URL:",true);
-		writeTextFile(reportfile,""+ WinHTTPObj.Option(WinHttpRequestOption_URL),true);
-		
-		writeTextFile(reportfile,"      ",true);
-		writeTextFile(reportfile,"CodePage:",true);
-		writeTextFile(reportfile,""+ WinHTTPObj.Option(WinHttpRequestOption_URLCodePage),true);
-		
-		writeTextFile(reportfile,"      ",true);
-		writeTextFile(reportfile,"EscapedURL:",true);
-		writeTextFile(reportfile,""+ WinHTTPObj.Option(WinHttpRequestOption_EscapePercentInURL),true);
-		*/
-		
 		
 	}
 	
@@ -437,10 +392,12 @@ function request( url){
 	if (save_as_binary){
 		prepareateFile(force,saveTo);
 		try {
-			writeBinFile(reportfile,WinHTTPObj.ResponseBody);
+			writeBinFile(saveTo,WinHTTPObj.ResponseBody);
 		} catch (err) {
 			WScript.Echo("Failed to save the file as binary.Attempt to save it as text");
-			writeFile(reportfile,WinHTTPObj.ResponseText);
+			AdoDBObj.Close();
+			prepareateFile(true,saveTo);
+			writeFile(saveTo,WinHTTPObj.ResponseText);
 		}
 	}
 }
