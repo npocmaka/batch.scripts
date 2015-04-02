@@ -89,6 +89,9 @@ var header={};
 
 var headers=[];
 
+var ua_file="";
+var ua="";
+
 //headers[key(obj1)] = obj1;
 //dict[key(obj2)] = obj2;
 
@@ -111,6 +114,9 @@ function printHelp(){
 	WScript.Echo("							[-header header_file]");
 	//reportfile
 	WScript.Echo("							[-reportfile reportfile]");
+	WScript.Echo("							[-ua user-agent]");
+	WScript.Echo("							[-ua-file user-agent-file]");
+	
 	
 	WScript.Echo("-------");
 	
@@ -187,6 +193,14 @@ function parseArgs(){
 		
 		if(ARGS.Item(i).toLowerCase()=="-proxypassword"){
 			proxy_pass=ARGS.Item(i+1);
+		}
+		
+		if(ARGS.Item(i).toLowerCase()=="-ua"){
+			ua=ARGS.Item(i+1);
+		}
+		
+		if(ARGS.Item(i).toLowerCase()=="-ua-file"){
+			ua=readFile(ARGS.Item(i+1));
 		}
 		
 		if(ARGS.Item(i).toLowerCase()=="-certificate"){
@@ -323,6 +337,12 @@ function request( url){
 				WScript.Echo(headers[i][0]+">"+headers[i][1]);
 			}
 		}
+		WinHTTPObj.Option(0) = "test"
+		//WScript.Echo( 'User agent:      '+
+         //    WinHTTPObj.Option(0));
+		if (ua !== ""){
+			WinHTTPObj.Option(0)=ua;
+		}
 		WinHTTPObj.Send();
 		var status=WinHTTPObj.Status
 	} catch (err) {
@@ -446,16 +466,19 @@ function writeFile(fileName,data ){
 	AdoDBObj.Close();	
 }
 
-function writeTextFile(fileName,data,append){
-	var fileW;
-	if(append)	{
-		fileW=FileSystemObj.OpenTextFile(fileName,8,false,true);
-	} else {
-		fileW=FileSystemObj.OpenTextFile(fileName,2,true,true);
+
+function readFile(fileName){
+	//check existence
+	if (!FileSystemObj.FileExists(fileName)){
+		WScript.Echo("file " + fileName + " does not exist!");
+		WScript.Quit(13);
 	}
-	fileW.Write(data);
-	fileW.Close();
+	var fileR=FileSystemObj.OpenTextFile(fileName,1);
+	var content=fileR.ReadAll();
+	fileR.Close();
+	return content;
 }
+
 
 function readPropFile(fileName){
 	//check existence
@@ -505,3 +528,5 @@ function main(){
 }
 
 main();
+
+//https://msdn.microsoft.com/en-us/library/windows/desktop/aa384108(v=vs.85).aspx
