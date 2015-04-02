@@ -249,7 +249,7 @@ function parseArgs(){
 			
 		} catch (err){
 			WScript.Echo(err.message);
-			Wscript.Quit(90);
+			WScript.Quit(90);
 		}
 		
 	}
@@ -320,6 +320,7 @@ function request( url){
 		if (headers.length!==0){
 			for (var i=0;i<headers.length;i++){
 				WinHTTPObj.SetRequestHeader(headers[i][0],headers[i][1]);
+				WScript.Echo(headers[i][0]+">"+headers[i][1]);
 			}
 		}
 		WinHTTPObj.Send();
@@ -329,29 +330,8 @@ function request( url){
 		WScript.Quit(666);
 	}
 	
- 
 	
-	switch(status){
-		case 200:
-			WScript.Echo("Status: 200 OK");
-			break;
-		case 401:
-			WScript.Echo("Status: 401 Unauthorized");
-			WScript.Echo("Check if correct user and password were provided");
-			WScript.Quit(401);
-			break;
-		case 407:
-			Wscript.Echo("Status:407 Proxy Authentication Required");
-			Wscript.Echo("Check if correct proxy user and password were provided");
-			WScript.Quit(407);
-			break;
-		default:
-			Wscript.Echo("Status: "+status);
-			WScript.Echo("Try to help yourself -> https://en.wikipedia.org/wiki/List_of_HTTP_status_codes");
-			WScript.Quit(status);
-	}
-	
-	
+		
 	////////////////////////
 	//     report         //
 	////////////////////////
@@ -396,6 +376,30 @@ function request( url){
 		writeFile(reportfile,report_string);
 		
 	}
+	
+ 
+	
+	switch(status){
+		case 200:
+			WScript.Echo("Status: 200 OK");
+			break;
+		case 401:
+			WScript.Echo("Status: 401 Unauthorized");
+			WScript.Echo("Check if correct user and password were provided");
+			WScript.Quit(401);
+			break;
+		case 407:
+			WScript.Echo("Status:407 Proxy Authentication Required");
+			WScript.Echo("Check if correct proxy user and password were provided");
+			WScript.Quit(407);
+			break;
+		default:
+			WScript.Echo("Status: "+status);
+			WScript.Echo("Try to help yourself -> https://en.wikipedia.org/wiki/List_of_HTTP_status_codes");
+			WScript.Quit(status);
+	}
+	
+
 	
 	//if as binary
 	if (save_as_binary){
@@ -480,8 +484,8 @@ function readPropFile(fileName){
 			WScript.Quit(93);
 		}
 		
-		k=trim(line.substring(0,index-1));
-		v=trim(line.substring(0,index+1));
+		k=trim(line.substring(0,index));
+		v=trim(line.substring(index+1,line.length));
 		headers.push([k,v]);
 		
 		//headers[key(obj1)] = obj1;
