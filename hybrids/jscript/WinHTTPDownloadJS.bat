@@ -84,35 +84,35 @@ function parseArgs(){
 	}
 	
 	for (var i=3;i<ARGS.Length-1;i=i+2){
-		if(ARGS.Item(i).toLowerCase=="-force" && ARGS.Item(i+1)=='no'){
+		if(ARGS.Item(i).toLowerCase()=="-force" && ARGS.Item(i+1)=='no'){
 			force=false;
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-user"){
+		if(ARGS.Item(i).toLowerCase()=="-user"){
 			user=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-password"){
+		if(ARGS.Item(i).toLowerCase()=="-password"){
 			pass=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-proxy"){
+		if(ARGS.Item(i).toLowerCase()=="-proxy"){
 			proxy=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-bypass"){
+		if(ARGS.Item(i).toLowerCase()=="-bypass"){
 			bypass=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-proxyuser"){
+		if(ARGS.Item(i).toLowerCase()=="-proxyuser"){
 			proxy_user=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-proxypassword"){
+		if(ARGS.Item(i).toLowerCase()=="-proxypassword"){
 			proxy_pass=ARGS.Item(i+1);
 		}
 		
-		if(ARGS.Item(i).toLowerCase=="-certificate"){
+		if(ARGS.Item(i).toLowerCase()=="-certificate"){
 			certificate=ARGS.Item(i+1);
 		}
 	}
