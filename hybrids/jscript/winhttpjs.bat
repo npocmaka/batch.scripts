@@ -38,6 +38,9 @@ var certificate=0;
 
 var force=true;
 
+var body="";
+//var body-file="";
+
 //ActiveX objects
 var WinHTTPObj = new ActiveXObject("WinHttp.WinHttpRequest.5.1");
 var FileSystemObj = new ActiveXObject("Scripting.FileSystemObject");
@@ -116,6 +119,9 @@ function printHelp(){
 	WScript.Echo("							[-reportfile reportfile]");
 	WScript.Echo("							[-ua user-agent]");
 	WScript.Echo("							[-ua-file user-agent-file]");
+	
+	WScript.Echo("							[-body body-string]");
+	WScript.Echo("							[-body-file body-file]");
 	
 	
 	WScript.Echo("-------");
@@ -201,6 +207,14 @@ function parseArgs(){
 		
 		if(ARGS.Item(i).toLowerCase()=="-ua-file"){
 			ua=readFile(ARGS.Item(i+1));
+		}
+		
+		if(ARGS.Item(i).toLowerCase()=="-body"){
+			body=ARGS.Item(i+1);
+		}
+		
+		if(ARGS.Item(i).toLowerCase()=="-body-file"){
+			body=readFile(ARGS.Item(i+1));
 		}
 		
 		if(ARGS.Item(i).toLowerCase()=="-certificate"){
@@ -341,7 +355,14 @@ function request( url){
 		if (ua !== ""){
 			WinHTTPObj.Option(0)=ua;
 		}
-		WinHTTPObj.Send();
+		if (body === ""){
+			//WScript.Echo("Empty Body: "+body);
+			WinHTTPObj.Send();
+		}else{
+			//WScript.Echo("Body: "+body);
+			WinHTTPObj.Send(body);
+		}
+		
 		var status=WinHTTPObj.Status
 	} catch (err) {
 		WScript.Echo(err.message);
