@@ -312,15 +312,16 @@ function request( url){
 	//set timeouts
 	WinHTTPObj.SetTimeouts(RESOLVE_TIMEOUT,CONNECT_TIMEOUT,SEND_TIMEOUT,RECEIVE_TIMEOUT);
 	
-	if (headers.length!==0){
-		for (var i=0;i<headers.length;i++){
-			WinHTTPObj.SetRequestHeader(headers[i][0],headers[i][1]);
-		}
-	}
+
 
 	
 	try {
 		WinHTTPObj.Open(http_method,url,false);
+		if (headers.length!==0){
+			for (var i=0;i<headers.length;i++){
+				WinHTTPObj.SetRequestHeader(headers[i][0],headers[i][1]);
+			}
+		}
 		WinHTTPObj.Send();
 		var status=WinHTTPObj.Status
 	} catch (err) {
@@ -454,7 +455,7 @@ function writeTextFile(fileName,data,append){
 
 function readPropFile(fileName){
 	//check existence
-	if (!FileSystemObj.FileExists(path)){
+	if (!FileSystemObj.FileExists(fileName)){
 		WScript.Echo("file " + fileName + " does not exist!");
 		WScript.Quit(15);
 	}
@@ -464,21 +465,23 @@ function readPropFile(fileName){
 	var k="";
 	var v="";
 	//var h="";
+	var lineN=0;
 	var index=0;
 	while(!fileR.AtEndOfStream){
 		line=fileR.ReadLine();
+		lineN++;
 		index=line.indexOf("=");
-		if(line.indexOf("#") === 0){
+		if(line.indexOf("#") === 0 || trim(line)===""){
 			continue;
 		}
 		
 		if(index=== -1 || index === line.length-1 || index === 0){
-			WScript.Echo("Invalid line "+ line);
-			Wscript.Quit(93);
+			WScript.Echo("Invalid line "+ lineN);
+			WScript.Quit(93);
 		}
 		
-		k=line.substring(0,index-1);
-		v=line.substring(0,index+1);
+		k=trim(line.substring(0,index-1));
+		v=trim(line.substring(0,index+1));
 		headers.push([k,v]);
 		
 		//headers[key(obj1)] = obj1;
@@ -486,6 +489,10 @@ function readPropFile(fileName){
 	
 	}
 	fileR.Close();
+}
+
+function trim(str)
+{ return str.replace(/^\s+/,'').replace(/\s+$/,'');
 }
 
 function main(){
