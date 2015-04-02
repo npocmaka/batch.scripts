@@ -48,11 +48,10 @@ var AdoDBObj = new ActiveXObject("ADODB.Stream");
 
 
 
-// HttpRequest SetCredentials flags.
- 
+// HttpRequest SetCredentials flags. 
  var proxy_settings=0;
 
- //
+//
 HTTPREQUEST_SETCREDENTIALS_FOR_SERVER = 0;
 HTTPREQUEST_SETCREDENTIALS_FOR_PROXY = 1;
  
@@ -76,27 +75,17 @@ var reportfile="";
 var autologon_policy=1; //0,1,2
 
 
-
 //save_as_binary
 var save_as_binary=false;
 
-//headers hashmap
-//var key  = function(obj){
-  // some unique object-dependent key
-  //return obj.header + obj.value; 
-//};
 
-//var headers = {};
-
-var header={};
-
+//headers will be stored as multi-dimensional array
 var headers=[];
 
-var ua_file="";
+//user-agent
 var ua="";
 
-//headers[key(obj1)] = obj1;
-//dict[key(obj2)] = obj2;
+
 
 function printHelp(){
 	WScript.Echo(scriptName + " - sends HTTP request and saves the request body as a file and/or a report of the sent request");
@@ -124,7 +113,7 @@ function printHelp(){
 	WScript.Echo("							[-body-file body-file]");
 	
 	
-	WScript.Echo("-------");
+	//WScript.Echo("-------");
 	
 	WScript.Echo("-force  - decide to not or to overwrite if the local exists");
 	
@@ -150,7 +139,7 @@ function parseArgs(){
 		WScript.Quit(43);
 	}
 	url=ARGS.Item(1);
-	WScript.Echo("URL:"+url);
+	//WScript.Echo("URL:"+url);
 	//saveTo=ARGS.Item(2);
 	
 	if(ARGS.Length % 2 != 0) {
@@ -164,8 +153,8 @@ function parseArgs(){
 	for (var i=2;i<ARGS.Length-1;i=i+2){
 		//TODO use switch-case instead of IFs
 		
-		WScript.Echo("Parsing args");
-		WScript.Echo(i + "-->"+ ARGS.Item(i).toLowerCase());
+		//WScript.Echo("Parsing args");
+		//WScript.Echo(i + "-->"+ ARGS.Item(i).toLowerCase());
 		
 		if(ARGS.Item(i).toLowerCase()=="-force" && ARGS.Item(i+1)=='no'){
 			force=false;
@@ -311,7 +300,8 @@ function deleteItem(path){
 
 
 
-
+///-------------------------------
+//
 function request( url){
 
 	if (proxy!=0 && bypass!=0  ) {
@@ -340,26 +330,29 @@ function request( url){
 	//set timeouts
 	WinHTTPObj.SetTimeouts(RESOLVE_TIMEOUT,CONNECT_TIMEOUT,SEND_TIMEOUT,RECEIVE_TIMEOUT);
 	
-
-
 	
 	try {
 		WinHTTPObj.Open(http_method,url,false);
 		if (headers.length!==0){
 			for (var i=0;i<headers.length;i++){
 				WinHTTPObj.SetRequestHeader(headers[i][0],headers[i][1]);
-				WScript.Echo(headers[i][0]+">"+headers[i][1]);
+				WScript.Echo("");
+				WScript.Echo("Sending with headers:");
+				WScript.Echo(headers[i][0]+":"+headers[i][1]);
+				WScript.Echo("");
 			}
 		}
 
 		if (ua !== ""){
+			//user-agent option from:
+			//WinHttpRequestOption enumaration
+			// other options can be added like bellow
+			//https://msdn.microsoft.com/en-us/library/windows/desktop/aa384108(v=vs.85).aspx
 			WinHTTPObj.Option(0)=ua;
 		}
 		if (body === ""){
-			//WScript.Echo("Empty Body: "+body);
 			WinHTTPObj.Send();
 		}else{
-			//WScript.Echo("Body: "+body);
 			WinHTTPObj.Send(body);
 		}
 		
@@ -406,8 +399,7 @@ function request( url){
 		
 		report_string=report_string+"Escapped URL:"+n;
 		report_string=report_string+WinHTTPObj.Option(WinHttpRequestOption_EscapePercentInURL)+n;
-		
-		WScript.Echo("writing a report ");
+
 		prepareateFile(force,reportfile);
 		
 		WScript.Echo("Writing report to "+reportfile);
@@ -453,6 +445,9 @@ function request( url){
 		}
 	}
 }
+
+//
+///------------------------------------
 
 function prepareateFile(force,file){
 	if (force && existsItem(file)){
@@ -510,7 +505,6 @@ function readPropFile(fileName){
 	var line="";
 	var k="";
 	var v="";
-	//var h="";
 	var lineN=0;
 	var index=0;
 	while(!fileR.AtEndOfStream){
@@ -530,9 +524,6 @@ function readPropFile(fileName){
 		v=trim(line.substring(index+1,line.length));
 		headers.push([k,v]);
 		
-		//headers[key(obj1)] = obj1;
-		
-	
 	}
 	fileR.Close();
 }
@@ -548,4 +539,3 @@ function main(){
 
 main();
 
-//https://msdn.microsoft.com/en-us/library/windows/desktop/aa384108(v=vs.85).aspx
