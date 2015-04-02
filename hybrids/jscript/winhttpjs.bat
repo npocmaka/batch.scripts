@@ -337,9 +337,7 @@ function request( url){
 				WScript.Echo(headers[i][0]+">"+headers[i][1]);
 			}
 		}
-		WinHTTPObj.Option(0) = "test"
-		//WScript.Echo( 'User agent:      '+
-         //    WinHTTPObj.Option(0));
+
 		if (ua !== ""){
 			WinHTTPObj.Option(0)=ua;
 		}
