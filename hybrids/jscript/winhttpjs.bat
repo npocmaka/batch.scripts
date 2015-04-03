@@ -16,9 +16,17 @@
 
 // global variables and constants
 
-// ------------------------
-// -- asynch requests not included
-// -----------------------
+
+// ----------------------------------
+// -- asynch requests not included --
+// ----------------------------------
+
+
+//todo - save responceStream instead of responceBody !!
+//todo - set all winthttp options ->//https://msdn.microsoft.com/en-us/library/windows/desktop/aa384108(v=vs.85).aspx
+//todo - log all options
+//todo - improve help message . eventual verbose option
+
 
 var ARGS = WScript.Arguments;
 var scriptName=ARGS.Item(0);
@@ -39,14 +47,11 @@ var certificate=0;
 var force=true;
 
 var body="";
-//var body-file="";
 
 //ActiveX objects
 var WinHTTPObj = new ActiveXObject("WinHttp.WinHttpRequest.5.1");
 var FileSystemObj = new ActiveXObject("Scripting.FileSystemObject");
 var AdoDBObj = new ActiveXObject("ADODB.Stream");
-
-
 
 // HttpRequest SetCredentials flags. 
  var proxy_settings=0;
@@ -55,7 +60,7 @@ var AdoDBObj = new ActiveXObject("ADODB.Stream");
 HTTPREQUEST_SETCREDENTIALS_FOR_SERVER = 0;
 HTTPREQUEST_SETCREDENTIALS_FOR_PROXY = 1;
  
-//timeouts
+//timeouts and their default values
 var RESOLVE_TIMEOUT = 0;
 var CONNECT_TIMEOUT = 60000;
 var SEND_TIMEOUT = 30000;
@@ -66,17 +71,15 @@ var http_method='GET';
 
 //header
 var header_file="";
-var header="";
 
 //report
 var reportfile="";
 
+//test-this:
+var use_stream=false;
+
 //autologon policy
 var autologon_policy=1; //0,1,2
-
-
-//save_as_binary
-var save_as_binary=false;
 
 
 //headers will be stored as multi-dimensional array
@@ -84,8 +87,6 @@ var headers=[];
 
 //user-agent
 var ua="";
-
-
 
 function printHelp(){
 	WScript.Echo(scriptName + " - sends HTTP request and saves the request body as a file and/or a report of the sent request");
@@ -103,7 +104,7 @@ function printHelp(){
 	WScript.Echo("							[-proxySettings 1|2|3] (https://msdn.microsoft.com/en-us/library/windows/desktop/aa384059(v=vs.85).aspx)");
 	
 	//header
-	WScript.Echo("							[-header header_file]");
+	WScript.Echo("							[-headers-file header_file]");
 	//reportfile
 	WScript.Echo("							[-reportfile reportfile]");
 	WScript.Echo("							[-ua user-agent]");
@@ -111,20 +112,19 @@ function printHelp(){
 	
 	WScript.Echo("							[-body body-string]");
 	WScript.Echo("							[-body-file body-file]");
-	
-	
-	//WScript.Echo("-------");
-	
-	WScript.Echo("-force  - decide to not or to overwrite if the local exists");
+
+	WScript.Echo("-force  - decide to not or to overwrite if the local files exists");
 	
 	WScript.Echo("proxyserver:port - the proxy server");
 	WScript.Echo("bypass- bypass list");
 	WScript.Echo("proxy_user , proxy_password - credentials for proxy server");
 	WScript.Echo("user , password - credentials for the server");
 	WScript.Echo("certificate - location of SSL certificate");
-	WScript.Echo("method - what HTTP method will be used.Currently only POST and GET are supported.Default is GET");
+	WScript.Echo("method - what HTTP method will be used.Default is GET");
 	WScript.Echo("saveTo - save the responce as binary file");
-
+	WScript.Echo(" ");
+	WScript.Echo("Header file should contain key=value pairs.Lines starting with \"#\" will be ignored.")
+	WScript.Echo(" ");
 	WScript.Echo("Examples:");
 	
 	WScript.Echo(scriptName +" http://somelink.com/somefile.zip -saveTo c:\\somefile.zip -certificate \"LOCAL_MACHINE\\Personal\\My Middle-Tier Certificate\"");
@@ -138,141 +138,137 @@ function parseArgs(){
 		printHelp();
 		WScript.Quit(43);
 	}
+	// !!!
 	url=ARGS.Item(1);
-	//WScript.Echo("URL:"+url);
-	//saveTo=ARGS.Item(2);
-	
+	// !!!
 	if(ARGS.Length % 2 != 0) {
 		WScript.Echo("illegal arguments");
 		printHelp();
 		WScript.Quit(44);
 	}
-	
-	WScript.Echo(ARGS.Length);
-	
-	for (var i=2;i<ARGS.Length-1;i=i+2){
-		//TODO use switch-case instead of IFs
-		
-		//WScript.Echo("Parsing args");
-		//WScript.Echo(i + "-->"+ ARGS.Item(i).toLowerCase());
-		
-		if(ARGS.Item(i).toLowerCase()=="-force" && ARGS.Item(i+1)=='no'){
-			force=false;
-		}
-		
-		if(ARGS.Item(i).toLowerCase()==="-saveto"){
-			saveTo=ARGS.Item(i+1);
-			save_as_binary=true;
-			
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-user"){
-			user=ARGS.Item(i+1);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-password"){
-			pass=ARGS.Item(i+1);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-proxy"){
-			proxy=ARGS.Item(i+1);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-bypass"){
-			bypass=ARGS.Item(i+1);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-proxyuser"){
-			proxy_user=ARGS.Item(i+1);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-proxypassword"){
-			proxy_pass=ARGS.Item(i+1);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-ua"){
-			ua=ARGS.Item(i+1);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-ua-file"){
-			ua=readFile(ARGS.Item(i+1));
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-body"){
-			body=ARGS.Item(i+1);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-body-file"){
-			body=readFile(ARGS.Item(i+1));
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-certificate"){
-			certificate=ARGS.Item(i+1);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-method"){
-			WScript.Echo("Setting the method");
-			if (ARGS.Item(i+1).toLowerCase()=="post") {
-				http_method='POST';
-			}
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-header"){
-			header_file=ARGS.Item(i+1);
-			readPropFile(header_file);
-		}
-		
-		if(ARGS.Item(i).toLowerCase()=="-reportfile"){
-			WScript.Echo("report file: "+ reportfile);
-			reportfile=ARGS.Item(i+1);
-			
-		}
-		
-		//timeouts
-		try {  // possible parseint error
-			if(ARGS.Item(i).toLowerCase()=="-sendtimeout"){
-				SEND_TIMEOUT=parseInt(ARGS.Item(i+1));
-			}
-			
-			if(ARGS.Item(i).toLowerCase()=="-resolvetimeout"){
-				RESOLVE_TIMEOUT=parseInt(ARGS.Item(i+1));
-			}
-			
-			if(ARGS.Item(i).toLowerCase()=="-connecttimeout"){
-				CONNECT_TIMEOUT=parseInt(ARGS.Item(i+1));
-			}
 
-			if(ARGS.Item(i).toLowerCase()=="-receivetimeout"){
-				RECEIVE_TIMEOUT=parseInt(ARGS.Item(i+1));
-			}
-			
-					
-			if(ARGS.Item(i).toLowerCase()=="-autologonpolicy"){
-				autologon_policy=parseInt(ARGS.Item(i+1));
-				if (autologon_policy>2||autologon_policy<0){
-					WScript.Echo("out of autologon policy range");
-					WScript.Quit(87);
-				}
-			}
-			
-			if(ARGS.Item(i).toLowerCase()=="-proxysettings"){
-				proxy_settings=parseInt(ARGS.Item(i+1));
-				if (autologon_policy>2||autologon_policy<0){
-					WScript.Echo("out of autologon policy range");
-					WScript.Quit(87);
-				}
-			}
-			
-			
-		} catch (err){
-			WScript.Echo(err.message);
-			WScript.Quit(90);
-		}
+	for (var i=2;i<ARGS.Length-1;i=i+2){
+		var arg=ARGS.Item(i).toLowerCase();
+		var next=ARGS.Item(i+1);
 		
+		try { switch(arg) { // the try-catch is set mainly because of the parseInts
+			case "-force":
+				if (next == "no") {
+					force = false;
+				}
+				break;		
+			case "-saveto":
+				saveTo=next;
+				break;		
+			case "-user":
+				user=next;
+				break;
+			case "-proxy":
+				proxy=next;
+				break;
+			case "-bypass":
+				bypass=next;
+				break;
+			case "-proxyyser":
+				proxy_user=next;
+				break;
+			case "-proxypassword":
+				proxy_pass=next;
+				break;
+			case "-ua":
+				ua=next;
+				break;
+			case "-ua-file":
+				ua=readFile(next);
+				break;
+			case "-body":
+				body=next;
+				break;
+			case "-usestream":
+				//WScript.Echo("~~");
+				if(next.toLowerCase()==="yes"){use_stream=true};
+				break;
+			case "-body-file":
+				body=readFile(next);
+				break;
+			case "-certificate":
+				certificate=next;
+				break;
+			case "-method":
+				switch (next.toLowerCase()){
+					case "post":
+						http_method='POST';
+						break;
+					case "get":
+						http_method='GET';
+						break;
+					case "head":
+						http_method='HEAD';
+						break;
+					case "put":
+						http_method='PUT';
+						break;
+					case "options":
+						http_method='OPTIONS';
+						break;
+					case "connect":
+						http_method='CONNECT';
+						break;
+					case "patch":
+						http_method='PATCH';
+						break;
+					default:
+						WScript.Echo("Invalid http method passed " + next);
+						WScript.Echo("possible values are GET,POST,DELETE,PUT,CONNECT,PATCH,HEAD,OPTIONS");
+						WScript.Quit(1326);
+						break;
+				}
+				break;
+			case "-headers-file":
+			case "-header":
+				headers=readPropFile(next);
+				break;
+			case "-reportfile":
+				reportfile=next;
+				break;
+			//timeouts
+			case "-sendtimeout":
+				SEND_TIMEOUT=parseInt(next);
+				break;
+			case "-connecttimeout":
+				CONNECT_TIMEOUT=parseint(next);
+				break;
+			case "-resolvetimeout":
+				RESOLVE_TIMEOUT=parseInt(next);
+				break;
+			case "-receivetimeout":
+				RECEIVE_TIMEOUT=parseInt(next);
+				break;
+				
+			case "-autologonpolicy":
+				autologon_policy=parseInt(next);
+				if (autologon_policy>2||autologon_policy<0) {
+					WScript.Echo("out of autologon policy range");
+					WScript.Quit(87);
+				};
+				break;
+			case "-proxysettings":
+				proxy_settings=parseInt(next);
+				if (proxy_settings>2||proxy_settings<0){
+					WScript.Echo("out of proxy settings range");
+					WScript.Quit(87);
+				};
+				break;			
+			default:
+				WScript.Echo("Invalid  command line switch: "+arg);
+				WScript.Quit(1405);
+				break;			
+		}} catch (err){
+			WScript.Echo(err.message);
+			WScript.Quit(1348);
+		}		
 	}
 }
-
-
 
 stripTrailingSlash = function(path){
 	while (path.substr(path.length - 1,path.length) == '\\') {
@@ -297,11 +293,11 @@ function deleteItem(path){
 	}
 }
 
-
-
-
-///-------------------------------
-//
+//-------------------------------
+//----------------------
+//----------
+//-----
+//--
 function request( url){
 
 	if (proxy!=0 && bypass!=0  ) {
@@ -324,7 +320,6 @@ function request( url){
 		WinHTTPObj.SetClientCertificate(certificate);
 	}
 	
-	
 	//set autologin policy
 	WinHTTPObj.SetAutoLogonPolicy(autologon_policy);
 	//set timeouts
@@ -345,7 +340,7 @@ function request( url){
 
 		if (ua !== ""){
 			//user-agent option from:
-			//WinHttpRequestOption enumaration
+			//WinHttpRequestOption enumeration
 			// other options can be added like bellow
 			//https://msdn.microsoft.com/en-us/library/windows/desktop/aa384108(v=vs.85).aspx
 			WinHTTPObj.Option(0)=ua;
@@ -361,8 +356,6 @@ function request( url){
 		WScript.Echo(err.message);
 		WScript.Quit(666);
 	}
-	
-	
 		
 	////////////////////////
 	//     report         //
@@ -387,6 +380,8 @@ function request( url){
 		WinHttpRequestOption_URLCodePage = 2;        // Code page
 		WinHttpRequestOption_EscapePercentInURL = 3; // Convert percents 
                                              // in the URL
+		// rest of the options can be seen and eventually added using this as reference
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa384108(v=vs.85).aspx
 		
 		report_string=report_string+"URL:"+n;
 		report_string=report_string+WinHTTPObj.Option(WinHttpRequestOption_URL)+n;
@@ -408,35 +403,26 @@ function request( url){
 		
 	}
 	
- 
-	
 	switch(status){
 		case 200:
 			WScript.Echo("Status: 200 OK");
 			break;
-		case 401:
-			WScript.Echo("Status: 401 Unauthorized");
-			WScript.Echo("Check if correct user and password were provided");
-			WScript.Quit(401);
-			break;
-		case 407:
-			WScript.Echo("Status:407 Proxy Authentication Required");
-			WScript.Echo("Check if correct proxy user and password were provided");
-			WScript.Quit(407);
-			break;
 		default:
 			WScript.Echo("Status: "+status);
-			WScript.Echo("Try to help yourself -> https://en.wikipedia.org/wiki/List_of_HTTP_status_codes");
+			WScript.Echo("Status was not OK. More info -> https://en.wikipedia.org/wiki/List_of_HTTP_status_codes");
 			WScript.Quit(status);
 	}
-	
-
-	
+		
 	//if as binary
-	if (save_as_binary){
+	if (saveTo !== "" ){
 		prepareateFile(force,saveTo);
 		try {
-			writeBinFile(saveTo,WinHTTPObj.ResponseBody);
+			if(use_stream){
+				writeBinFile(saveTo,WinHTTPObj.ResponseStream );
+			} else {
+				writeBinFile(saveTo,WinHTTPObj.ResponseBody);
+			}
+			
 		} catch (err) {
 			WScript.Echo("Failed to save the file as binary.Attempt to save it as text");
 			AdoDBObj.Close();
@@ -446,8 +432,11 @@ function request( url){
 	}
 }
 
-//
-///------------------------------------
+//--
+//-----
+//----------
+//----------------------
+//-------------------------------
 
 function prepareateFile(force,file){
 	if (force && existsItem(file)){
@@ -493,15 +482,14 @@ function readFile(fileName){
 	return content;
 }
 
-
 function readPropFile(fileName){
 	//check existence
+	resultArray=[];
 	if (!FileSystemObj.FileExists(fileName)){
 		WScript.Echo("file " + fileName + " does not exist!");
 		WScript.Quit(15);
 	}
 	var fileR=FileSystemObj.OpenTextFile(fileName,1);
-	//var content=fileR.ReadAll();
 	var line="";
 	var k="";
 	var v="";
@@ -511,31 +499,28 @@ function readPropFile(fileName){
 		line=fileR.ReadLine();
 		lineN++;
 		index=line.indexOf("=");
-		if(line.indexOf("#") === 0 || trim(line)===""){
+		if(line.indexOf("#") === 0 || trim(line)==="") {
 			continue;
 		}
-		
-		if(index=== -1 || index === line.length-1 || index === 0){
+		if(index=== -1 || index === line.length-1 || index === 0) {
 			WScript.Echo("Invalid line "+ lineN);
 			WScript.Quit(93);
 		}
-		
 		k=trim(line.substring(0,index));
 		v=trim(line.substring(index+1,line.length));
-		headers.push([k,v]);
-		
+		resultArray.push([k,v]);
 	}
 	fileR.Close();
+	return resultArray;
 }
 
-function trim(str)
-{ return str.replace(/^\s+/,'').replace(/\s+$/,'');
+function trim(str){ 
+	return str.replace(/^\s+/,'').replace(/\s+$/,'');
 }
 
 function main(){
 	parseArgs();
 	request(url);
 }
-
 main();
 
