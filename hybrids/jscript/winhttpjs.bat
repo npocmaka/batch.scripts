@@ -217,6 +217,9 @@ function parseArgs(){
 					case "patch":
 						http_method='PATCH';
 						break;
+					case "delete":
+						http_method='DELETE';
+						break;
 					default:
 						WScript.Echo("Invalid http method passed " + next);
 						WScript.Echo("possible values are GET,POST,DELETE,PUT,CONNECT,PATCH,HEAD,OPTIONS");
@@ -523,4 +526,3 @@ function main(){
 	request(url);
 }
 main();
-
