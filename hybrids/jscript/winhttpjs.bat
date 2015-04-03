@@ -334,10 +334,10 @@ function request( url){
 	try {
 		WinHTTPObj.Open(http_method,url,false);
 		if (headers.length!==0){
+			WScript.Echo("Sending with headers:");
 			for (var i=0;i<headers.length;i++){
 				WinHTTPObj.SetRequestHeader(headers[i][0],headers[i][1]);
 				WScript.Echo("");
-				WScript.Echo("Sending with headers:");
 				WScript.Echo(headers[i][0]+":"+headers[i][1]);
 				WScript.Echo("");
 			}
@@ -528,4 +528,3 @@ function main(){
 	request(url);
 }
 main();
-
