@@ -8,6 +8,12 @@
 	
 @if (@X)==(@Y) @end JScript comment */
 
+//!!! - check https://github.com/npocmaka/batch.scripts/blob/master/hybrids/jscript/winhttpjs.bat  - 
+//  has more features and has fixed bugs still presented here.
+
+//TODO make this simplified version of  https://github.com/npocmaka/batch.scripts/blob/master/hybrids/jscript/winhttpjs.bat
+
+
 // used resources
 //http://www.codeproject.com/Tips/506439/Downloading-files-with-VBScript
 //https://msdn.microsoft.com/en-us/library/windows/desktop/aa384058(v=vs.85).aspx
