@@ -337,10 +337,9 @@ function request( url){
 			WScript.Echo("Sending with headers:");
 			for (var i=0;i<headers.length;i++){
 				WinHTTPObj.SetRequestHeader(headers[i][0],headers[i][1]);
-				WScript.Echo("");
 				WScript.Echo(headers[i][0]+":"+headers[i][1]);
-				WScript.Echo("");
 			}
+			WScript.Echo("");
 		}
 
 		if (ua !== ""){
