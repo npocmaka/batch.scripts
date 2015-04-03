@@ -129,6 +129,8 @@ function printHelp(){
 	
 	WScript.Echo(scriptName +" http://somelink.com/somefile.zip -saveTo c:\\somefile.zip -certificate \"LOCAL_MACHINE\\Personal\\My Middle-Tier Certificate\"");
 	WScript.Echo(scriptName +" http://somelink.com/something.html  -method POST  -certificate \"LOCAL_MACHINE\\Personal\\My Middle-Tier Certificate\" -header c:\\header_file -reportfile c:\\reportfile.txt");
+	WScript.Echo(scriptName +"\"http://somelink\"  -method POST   -header hdrs.txt -reportfile reportfile2.txt -saveTo responsefile2 -ua \"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36\"  -body-file some.json");
+	
 }
 
 function parseArgs(){
@@ -526,3 +528,4 @@ function main(){
 	request(url);
 }
 main();
+
