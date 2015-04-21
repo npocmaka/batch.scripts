@@ -8,6 +8,8 @@
 	
 @if (@X)==(@Y) @end JScript comment */
 
+//TODO - add unpin
+
 //gets an information that normally is acquired by right click-details 
 // can get image dimensions , media file play time and etc.
  
