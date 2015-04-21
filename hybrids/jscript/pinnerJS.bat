@@ -8,8 +8,6 @@
 	
 @if (@X)==(@Y) @end JScript comment */
 
-//TODO - add unpin
-
 //gets an information that normally is acquired by right click-details 
 // can get image dimensions , media file play time and etc.
  
@@ -18,8 +16,8 @@ FSOObj = new ActiveXObject("Scripting.FileSystemObject");
 var ARGS = WScript.Arguments;
 if (ARGS.Length < 1 ) {
  WScript.Echo("No file passed");
- WScript.Echo("Usage:");
- WScript.Echo(WScript.ScriptName + " file [taskbar|startmenu]");
+ WScript.Echo("Usage(pins/unpins items to/from startmenu/taskbar):");
+ WScript.Echo(WScript.ScriptName + " file [taskbar|startmenu|untaskbar|unstartmenu]");
  WScript.Echo("default is taskbar");
  WScript.Quit(1);
 }
@@ -35,6 +33,12 @@ if (ARGS.Length > 1) {
 			break;
 		case "startmenu":
 			verb="startmenu";
+			break;
+		case "untaskbar":
+			verb="untaskbar";
+			break;
+		case "unstartmenu":
+			verb="unstartmenu";
 			break;
 		default:
 			WScript.Echo("invalid verb "+verb);
@@ -68,13 +72,14 @@ getParent = function(path){
 	return result;
 }
 
-
 getName = function(path){
 	var splitted=path.split("\\");
 	return splitted[splitted.length-1];
 }
 //
-
+//Unpin from Tas&kbar
+//Unpin from Start Men&u
+//
 function main(){
 	if (!ExistsItem(filename)) {
 		WScript.Echo(filename + " does not exist");
@@ -93,8 +98,9 @@ function main(){
 	var verbs=objItem.Verbs();
 	
 	if (verbs != null) {
-		//WScript.Echo(verbs.Count);
+		
 		for (var i=0;i<verbs.Count;i++){
+			WScript.Echo(verbs.Item(i).Name);
 			if ( verb === "taskbar" && verbs.Item(i).Name === "Pin to Tas&kbar") {
 				WScript.Echo("pinning "  + name + " to taskbar ");
 				//objItem.InvokeVerb(verbs.Item(i));
@@ -107,9 +113,21 @@ function main(){
 				verbs.Item(i).DoIt();
 				return;
 			}
+			if ( verb === "unstartmenu" && verbs.Item(i).Name === "Unpin from Start Men&u") {
+				WScript.Echo("unpinning "  + name + " from start menu ");
+				//objItem.InvokeVerb(verbs.Item(i));
+				verbs.Item(i).DoIt();
+				return;
+			}
+			if ( verb === "untaskbar" && verbs.Item(i).Name === "Unpin from Tas&kbar") {
+				WScript.Echo("unpinning "  + name + " from taskbar ");
+				//objItem.InvokeVerb(verbs.Item(i));
+				verbs.Item(i).DoIt();
+				return;
+			}
 		}
 		
-		WScript.Echo("the item " + filename + "does not support selected action");
+		WScript.Echo("the item " + filename + "does not support selected action("+verb+")");
 		return;
 	}	
 }
