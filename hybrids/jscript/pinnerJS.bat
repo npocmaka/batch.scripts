@@ -100,7 +100,7 @@ function main(){
 	if (verbs != null) {
 		
 		for (var i=0;i<verbs.Count;i++){
-			WScript.Echo(verbs.Item(i).Name);
+			//WScript.Echo(verbs.Item(i).Name);
 			if ( verb === "taskbar" && verbs.Item(i).Name === "Pin to Tas&kbar") {
 				WScript.Echo("pinning "  + name + " to taskbar ");
 				//objItem.InvokeVerb(verbs.Item(i));
