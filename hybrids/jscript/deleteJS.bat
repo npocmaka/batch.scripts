@@ -72,16 +72,8 @@ function main(){
 	var verbs=objItem.Verbs();
 	
 	if (verbs != null) {
-		//WScript.Echo(verbs.Count);
-		for (var i=0;i<verbs.Count;i++){
-			if(verbs.Item(i).Name === "&Delete"){
-				verbs.Item(i).DoIt();
-				return;
-			}
-			//WScript.Echo(verbs.Item(i).Name);
-		}
-		
-		WScript.Echo("the item " + filename + "does not support delete verb");
+		verbs.Item(verbs.Count-3).DoIt();
+		WScript.Echo();
 		return;
 	}	
 }
