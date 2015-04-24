@@ -93,7 +93,7 @@ main();
 
 ///
 /*
-/*
+
 0 Name: 
 1 Size: 
 2 Item type: 
