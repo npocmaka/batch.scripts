@@ -1,0 +1,22 @@
+@echo off
+dpath /?
+dpath
+type cmd.exe
+set /p=<cmd.exe
+dpath %path%;.
+type cmd.exe
+set /p=<cmd.exe
+
+exit /b 0
+
+::=============
+Demonstration of capabilities of dpath command
+DPATH help message is wrong and points to APPEND command available only in 32bit operating systemns.
+Actually dpath command has the same syntax as PATH and as well edits its own variable %DPATH%.
+Append as well as DPATH should affect the %DPATH%  variable but does not work.
+Mentioned here http://ss64.org/viewtopic.php?id=1558
+Later Carlos Montires (http://consolesoft.com/) found that %DPATH% variable affects input reddirection and
+TYPE command:
+http://ss64.org/viewtopic.php?id=1875
+http://ss64.org/viewtopic.php?id=1876
+::=============
