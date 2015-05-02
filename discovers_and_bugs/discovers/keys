@@ -1,0 +1,17 @@
+@echo off
+keys /?
+set "keys="
+keys off
+echo %keys%
+set "keys="
+keys
+
+exit /b 0
+
+::====
+demonstrates the effects of keys command.
+I've mentioned the command here http://ss64.org/viewtopic.php?id=1558
+and later in the thread Dave Benham discovered that the command sets an environemnt
+variable , which means that the help message is wrong - it  affects the current console.
+Keys does not relly on %keys% variable to display its state correctly
+::=====
