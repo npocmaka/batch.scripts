@@ -96,7 +96,7 @@ function printHelp(){
         WScript.Echo(scriptName + " url  [-force yse|no] [-user username -password password] [-proxy proxyserver:port] [-bypass bypass_list]"); 
         WScript.Echo("                                                        [-proxyuser proxy_username -proxypassword proxy_password] [-certificate certificateString]"); 
         WScript.Echo("                                                        [-method GET|POST|PATCH|DELETE|HEAD|OPTIONS|CONNECT]"); 
-        WScript.Echo("                                                        [-saveTo file]"); 
+        WScript.Echo("                                                        [-saveTo file] - to print response to console use con"); 
         
         WScript.Echo("                                                        [-sendTimeout int(milliseconds)]"); 
         WScript.Echo("                                                        [-resolveTimeout int(milliseconds)]"); 
@@ -172,7 +172,7 @@ function parseArgs(){
                                 } 
                                 break; 
                         case "-saveto": 
-                                saveTo=next; 
+                                saveTo=next;								
                                 break;                 
                         case "-user": 
                                 user=next; 
@@ -432,9 +432,13 @@ function request( url){
         } 
                 
         //if as binary 
-        if (saveTo !== "" ){ 
+		if (saveTo.toLowerCase() === "con") {
+			WScript.Echo(WinHTTPObj.ResponseText);
+		}
+        if (saveTo !== "" && saveTo.toLowerCase() !== "con"){ 
                 prepareateFile(force,saveTo); 
                 try { 
+						
                         if(use_stream){ 
                                 writeBinFile(saveTo,WinHTTPObj.ResponseStream ); 
                         } else { 
