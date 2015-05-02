@@ -2,7 +2,7 @@
 	@echo off
 	
 	rem :: the first argument is the script name as it will be used for proper help message
-	cscript //E:JScript //nologo "%~f0" %*
+	cscript //E:JScript //nologo "%~f0" "%~nx0" %*
 
 	exit /b %errorlevel%
 	
@@ -13,16 +13,8 @@
  
 ////// 
 FSOObj = new ActiveXObject("Scripting.FileSystemObject");
-var ARGS = WScript.Arguments;
-var wshShell = new ActiveXObject( "WScript.Shell" );
-var up=wshShell.ExpandEnvironmentStrings( "%USERPROFILE%" );
-var filename=up+"\\"+"OneDrive";
-
 var objShell=new ActiveXObject("Shell.Application");
-
-
-/////
-
+var ARGS = WScript.Arguments;
 
 //fso
 ExistsItem = function (path) {
@@ -33,6 +25,40 @@ getFullPath = function (path) {
     return FSOObj.GetAbsolutePathName(path);
 }
 //
+
+if ( (ARGS.Length>1) && (ARGS.Item(1).toLowerCase()=="-help")) {
+	WScript.Echo(ARGS.Item(0)+" [oneDriveLocation|OneDriveShortcut]");
+	WScript.Echo("If location not defined default will be taken");
+	WScript.Quit(0);
+}
+
+
+
+if ( ARGS.Length > 1 && ARGS.Item(1).toLowerCase!=="-help") {
+	var filename=ARGS.Item(1);
+} else {
+	var wshShell = new ActiveXObject( "WScript.Shell" );
+	var up=wshShell.ExpandEnvironmentStrings( "%USERPROFILE%" );
+	var filename=up+"\\"+"OneDrive";
+	
+	//WScript.Echo(oneD);
+	if(!ExistsItem(filename)){
+		try {
+			filename=wshShell.RegRead( "HKCU\\Software\\Microsoft\\SkyDrive\\UserFolder");
+		}catch (err){
+			WScript.Echo("OneDrive probably not installed");
+			WScript.Echo(err.message);
+			WScript.Quit(5);
+		}
+		
+		if((!ExistsItem(filename))) {
+			WScript.Echo("OneDrive not found where it should be");
+			WScript.Quit(6);
+		}	
+	}
+}
+
+/////
 
 //paths
 getParent = function(path){
