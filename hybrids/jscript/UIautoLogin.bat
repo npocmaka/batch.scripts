@@ -9,6 +9,13 @@
                 title  #auto-login# 
         ) 
         
+        rem check if arguments are passed to the script
+        if "%~0" == "" ( 
+                mode 15,1 
+                prompt #auto-login# 
+                title  #auto-login# 
+        ) 
+        
         
         rem :: the first argument is the script name as it will be used for proper help message 
         cscript //E:JScript //nologo "%~f0" "%~nx0" %* 
