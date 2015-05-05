@@ -10,7 +10,7 @@
         ) 
         
         rem check if arguments are passed to the script
-        if "%~0" == "" ( 
+        if "%~1" == "" ( 
                 mode 15,1 
                 prompt #auto-login# 
                 title  #auto-login# 
