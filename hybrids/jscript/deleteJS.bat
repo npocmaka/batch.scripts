@@ -8,9 +8,7 @@
 	
 @if (@X)==(@Y) @end JScript comment */
 
-//gets an information that normally is acquired by right click-details 
-// can get image dimensions , media file play time and etc.
- 
+
 ////// 
 FSOObj = new ActiveXObject("Scripting.FileSystemObject");
 var ARGS = WScript.Arguments;
