@@ -201,7 +201,7 @@ function download( url,file){
 	
 	
 	XMLHTTPObj.Send();
-	var status=XMLHTTPObj.Status
+	var status=XMLHTTPObj.Status;
 	
 	switch(status){
 		case 200:
