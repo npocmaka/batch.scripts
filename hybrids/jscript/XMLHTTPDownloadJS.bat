@@ -213,12 +213,12 @@ function download( url,file){
 			WScript.Quit(401);
 			break;
 		case 407:
-			Wscript.Echo("Status:407 Proxy Authentication Required");
-			Wscript.Echo("Check if correct proxy user and password were provided");
+			WScript.Echo("Status:407 Proxy Authentication Required");
+			WScript.Echo("Check if correct proxy user and password were provided");
 			WScript.Quit(407);
 			break;
 		default:
-			Wscript.Echo("Status: "+status);
+			WScript.Echo("Status: "+status);
 			WScript.Echo("Try to help yourself -> https://en.wikipedia.org/wiki/List_of_HTTP_status_codes");
 			WScript.Quit(status);
 	}
