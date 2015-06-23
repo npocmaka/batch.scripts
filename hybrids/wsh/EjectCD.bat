@@ -28,7 +28,7 @@
 					set verbs=item.Verbs():
 					set verb=verbs.Item(verbs.Count-4):
 					verb.DoIt():
-					item.InvokeVerb "Eject" :
+					item.InvokeVerb replace(verb,"&","") :
 					ejectDrive = 1:
 					exit function:
 					
@@ -49,7 +49,7 @@
 					set verbs=item.Verbs():
 					set verb=verbs.Item(verbs.Count-4):
 					verb.DoIt():
-					item.InvokeVerb "Eject" :
+					item.InvokeVerb replace(verb,"&","") :
 				end if
 
 			next
