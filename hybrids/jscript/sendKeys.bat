@@ -17,7 +17,7 @@ var keys="";
 function printHelp(){ 
         WScript.Echo(scriptName + " - sends keys to a applicaion with given title"); 
         WScript.Echo("Usage:"); 
-        WScript.Echo(scriptName + " title strring"); 
+        WScript.Echo("call "scriptName + " title string"); 
         WScript.Echo("title  - the title of the application"); 
         WScript.Echo("string - keys to be send"); 
 		WScript.Echo("to send keys to particular window use \"\" as title (e.g. shortcut keys) "); 
