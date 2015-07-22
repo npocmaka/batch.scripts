@@ -12,8 +12,7 @@ for /f "tokens=* delims=" %%v in ('dir /b /a:d  /o:-n "%SystemRoot%\Microsoft.NE
 )
 :break_loop
 set csc=%frm%%netver%\csc.exe
-:: csc.exe found
-%csc% /nologo /out:"%~n0.exe" "%~dpsfnx0"
+
 if not exist "%~n0.exe" (
 	%csc% /nologo /out:"%~n0.exe" "%~dpsfnx0" || (
 		exit /b %errorlevel% 
