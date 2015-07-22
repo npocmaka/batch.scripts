@@ -172,7 +172,7 @@ using System.Drawing.Imaging;
 	static void  printHelp()
 	{
 		String scriptName=Environment.GetCommandLineArgs()[0];
-		scriptName=scriptName.Substring (0,scriptName.Length-4);
+		//scriptName=scriptName.Substring (0,scriptName.Length-4);
 		Console.WriteLine(scriptName + " captures the screen or the active window and saves it to a file");
 		Console.WriteLine(scriptName + " filename [format] [Y|N]");
 		Console.WriteLine("finename - the file where the screen capture will be saved");
