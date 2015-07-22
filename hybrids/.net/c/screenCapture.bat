@@ -13,6 +13,7 @@ for /f "tokens=* delims=" %%v in ('dir /b /a:d  /o:-n "%SystemRoot%\Microsoft.NE
 :break_loop
 set csc=%frm%%netver%\csc.exe
 :: csc.exe found
+%csc% /nologo /out:"%~n0.exe" "%~dpsfnx0"
 if not exist "%~n0.exe" (
 	%csc% /nologo /out:"%~n0.exe" "%~dpsfnx0" || (
 		exit /b %errorlevel% 
@@ -172,7 +173,7 @@ using System.Drawing.Imaging;
 	static void  printHelp()
 	{
 		String scriptName=Environment.GetCommandLineArgs()[0];
-		//scriptName=scriptName.Substring (0,scriptName.Length-4);
+		scriptName=scriptName.Substring (0,scriptName.Length);
 		Console.WriteLine(scriptName + " captures the screen or the active window and saves it to a file");
 		Console.WriteLine(scriptName + " filename [format] [Y|N]");
 		Console.WriteLine("finename - the file where the screen capture will be saved");
