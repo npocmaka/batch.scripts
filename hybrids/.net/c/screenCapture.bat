@@ -5,19 +5,14 @@
 setlocal
 
 :: find csc.exe
-set "frm=%SystemRoot%\Microsoft.NET\Framework\"
-for /f "tokens=* delims=" %%v in ('dir /b /a:d  /o:-n "%SystemRoot%\Microsoft.NET\Framework\v?.*"') do (
-   set netver=%%v
-   goto :break_loop
-)
-:break_loop
-
-set "csc=%frm%%netver%\csc.exe"
+set "csc="
+for /r "%SystemRoot%\Microsoft.NET\Framework\" %%# in ("*csc.exe") do  set "csc=%%#"
 
 if not exist "%csc%" (
    echo no .net framework installed
    exit /b 10
- )
+)
+
 if not exist "%~n0.exe" (
    %csc% /nologo /r:"Microsoft.VisualBasic.dll" /out:"%~n0.exe" "%~dpsfnx0" || (
       exit /b %errorlevel% 
@@ -273,4 +268,3 @@ public class ScreenCapture
         public static extern IntPtr GetForegroundWindow();
     }
 }
-
