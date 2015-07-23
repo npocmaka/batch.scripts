@@ -171,6 +171,7 @@ public class ScreenCapture
         Console.WriteLine("");
         Console.WriteLine("Usage:");
         Console.WriteLine(" " + scriptName + " filename  [WindowTitle]");
+        Console.WriteLine("");
         Console.WriteLine("finename - the file where the screen capture will be saved");
         Console.WriteLine("     allowed file extensions are - Bmp,Emf,Exif,Gif,Icon,Jpeg,Png,Tiff,Wmf.");
         Console.WriteLine("WindowTitle - instead of capture whole screen you can point to a window ");
