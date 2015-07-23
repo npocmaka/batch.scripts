@@ -13,7 +13,7 @@ for /f "tokens=* delims=" %%v in ('dir /b /a:d  /o:-n "%SystemRoot%\Microsoft.NE
 :break_loop
 
 set "csc=%frm%%netver%\csc.exe"
-echo #%csc%#
+
 if not exist "%csc%" (
    echo no .net framework installed
    exit /b 10
