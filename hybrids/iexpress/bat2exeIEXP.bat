@@ -1,4 +1,4 @@
-;@echo off
+ ;@echo off
 ; rem https://github.com/npocmaka/batch.scripts/edit/master/hybrids/iexpress/bat2exeIEXP.bat
 ;if "%~2" equ "" (
 ; echo usage: %~nx0 batFile.bat target.Exe
@@ -10,6 +10,7 @@
 
 ;copy /y "%~f0" "%temp%\2exe.sed" >nul
 
+;(echo()>>"%temp%\2exe.sed"
 ;(echo(AppLaunched=cmd.exe /c "%bat_name%")>>"%temp%\2exe.sed"
 ;(echo(TargetName=%target.exe%)>>"%temp%\2exe.sed"
 ;(echo(FILE0="%bat_name%")>>"%temp%\2exe.sed"
@@ -21,8 +22,8 @@
 
 ;iexpress /n /q /m %temp%\2exe.sed
 
-;del /q /f "%temp%\2exe.sed"
-;exit /b 0
+;rem del /q /f "%temp%\2exe.sed"
+; exit /b 0
 
 [Version]
 Class=IEXPRESS
@@ -55,4 +56,3 @@ FriendlyName=-
 PostInstallCmd=<None>
 AdminQuietInstCmd=
 UserQuietInstCmd=
-
