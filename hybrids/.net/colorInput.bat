@@ -125,6 +125,10 @@ Console.Error.WriteLine();
 Console.BackgroundColor = currentBackground;
 Console.ForegroundColor = currentForeground;
 
-if (outFile != ""){
-	File.WriteAllText(outFile , input);
+try {
+	if (outFile != ""){
+		File.WriteAllText(outFile , input);
+	}
+}catch(e){
+	errorChecker(e);
 }
