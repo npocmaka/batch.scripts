@@ -101,25 +101,29 @@ function main(){
 		
 		for (var i=0;i<verbs.Count;i++){
 			//WScript.Echo(verbs.Item(i).Name);
-			if ( verb === "taskbar" && verbs.Item(i).Name === "Pin to Tas&kbar") {
+			if ( verb === "taskbar" && 
+			replaceAll("&","",verbs.Item(i).Name).indexOf("Pin to Taskbar") > -1 ) {
 				WScript.Echo("pinning "  + name + " to taskbar ");
 				//objItem.InvokeVerb(verbs.Item(i));
 				verbs.Item(i).DoIt();
 				return;
 			}
-			if ( verb === "startmenu" && verbs.Item(i).Name === "Pin to Start Men&u") {
+			if ( verb === "startmenu" && 
+			replaceAll("&","",verbs.Item(i).Name).indexOf("Pin to Start") > -1) {
 				WScript.Echo("pinning "  + name + " to start menu ");
 				//objItem.InvokeVerb(verbs.Item(i));
 				verbs.Item(i).DoIt();
 				return;
 			}
-			if ( verb === "unstartmenu" && verbs.Item(i).Name === "Unpin from Start Men&u") {
+			if ( verb === "unstartmenu" &&
+			replaceAll("&","",verbs.Item(i).Name).indexOf("Unpin from Start") > -1) {
 				WScript.Echo("unpinning "  + name + " from start menu ");
 				//objItem.InvokeVerb(verbs.Item(i));
 				verbs.Item(i).DoIt();
 				return;
 			}
-			if ( verb === "untaskbar" && verbs.Item(i).Name === "Unpin from Tas&kbar") {
+			if ( verb === "untaskbar" &&
+			replaceAll("&","",verbs.Item(i).Name).indexOf("Unpin from Taskbar") > -1 ) {
 				WScript.Echo("unpinning "  + name + " from taskbar ");
 				//objItem.InvokeVerb(verbs.Item(i));
 				verbs.Item(i).DoIt();
@@ -132,3 +136,7 @@ function main(){
 	}	
 }
 main();
+
+function replaceAll(find, replace, str) {
+  return str.replace(new RegExp(find, 'g'), replace);
+}
