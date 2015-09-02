@@ -20,7 +20,7 @@ echo jsc.exe not found && exit /b 0
 :break_loop
 
 
-call %jsc% /nologo /out:"pagelister.exe" "%~n0"
+call %jsc% /nologo /out:"%~n0.exe" "%~nx0"
 ::::::::::::::::::::::::::::::::::::
 :::       end of compilation    ::::
 ::::::::::::::::::::::::::::::::::::
