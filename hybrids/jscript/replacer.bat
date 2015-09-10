@@ -8,7 +8,7 @@ exit /b %errorlevel% */0;
 	var ARGS = WScript.Arguments;
 	
 	if (ARGS.Item(0).toLowerCase() == "-help") {
-		WScript.Echo(Wscript.ScriptName + " path_to_file search replace [search replace[search replace [...]]]");
+		WScript.Echo(WScript.ScriptName + " path_to_file search replace [search replace[search replace [...]]]");
 		WScript.Echo(Wscript.ScriptName + " e?path_to_file search replace [search replace[search replace [...]]]");
 		WScript.Echo("if filename starts with \"e?\" search and replace string will be evaluated for special characters ")
 		WScript.Quit(0);
