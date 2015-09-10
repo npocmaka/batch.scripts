@@ -7,17 +7,22 @@ exit /b %errorlevel% */0;
 	
 	var ARGS = WScript.Arguments;
 	
-	if (ARGS.Item(0).toLowerCase() == "-help") {
+	if (ARGS.Length < 3 ) {
+		WScript.Echo("Wrong arguments");
+		WScript.Echo(WScript.ScriptName + " path_to_file search replace [search replace[search replace [...]]]");
+		WScript.Echo(WScript.ScriptName + " e?path_to_file search replace [search replace[search replace [...]]]");
+		WScript.Echo("if filename starts with \"e?\" search and replace string will be evaluated for special characters ")
+		WScript.Quit(1);
+	}
+	
+	if (ARGS.Item(0).toLowerCase() == "-help" || ARGS.Item(0).toLowerCase() == "-h") {
 		WScript.Echo(WScript.ScriptName + " path_to_file search replace [search replace[search replace [...]]]");
 		WScript.Echo(WScript.ScriptName + " e?path_to_file search replace [search replace[search replace [...]]]");
 		WScript.Echo("if filename starts with \"e?\" search and replace string will be evaluated for special characters ")
 		WScript.Quit(0);
 	}
 
-	if (ARGS.Length < 3 ) {
-		WScript.Echo("Wrong arguments");
-		WScript.Quit(1);
-	}
+
 
 	if (ARGS.Length % 2 !== 1 ) {
 		WScript.Echo("Wrong arguments");
