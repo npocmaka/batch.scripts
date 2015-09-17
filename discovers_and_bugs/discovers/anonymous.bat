@@ -15,12 +15,22 @@
 setlocal 
 set "anonymous=/?"
 
+rem simpliest case
+call :%%anonymous%% a b c 3>&1 >nul
+if "%0" == ":%anonymous%" (
+  echo Anonymous called
+  exit /b 0
+)>&3
+
+
+rem example with code block ecnlosed with brackets
 echo Before anonymous call:
 echo %%1=%1 %%2=%2 %%3=%3 
 
 for /l %%N in (1 1 5) do (
-   set /a N=%%N*2
+  set /a N=%%N*2
   call :%%anonymous%% a b c 3>&1 >nul
+  echo ---
 )
 if "%0" == ":%anonymous%" (
   echo(
