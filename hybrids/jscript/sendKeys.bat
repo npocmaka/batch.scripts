@@ -20,7 +20,7 @@ function printHelp(){
         WScript.Echo("call "scriptName + " title string"); 
         WScript.Echo("title  - the title of the application"); 
         WScript.Echo("string - keys to be send"); 
-		WScript.Echo("to send keys to particular window use \"\" as title (e.g. shortcut keys) "); 
+		WScript.Echo("to send keys to no particular window use \"\" as title (e.g. shortcut keys) "); 
 		WScript.Echo("  refence with special keys -> http://social.technet.microsoft.com/wiki/contents/articles/5169.vbscript-sendkeys-method.aspx")
 } 
 
