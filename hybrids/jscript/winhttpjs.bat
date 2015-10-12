@@ -8,7 +8,10 @@
         
 @if (@X)==(@Y) @end JScript comment */ 
 
-// used resources 
+// used resources
+
+// update 12.10.15 
+// osvikvi(https://github.com/osvikvi) has nodited that the -password option is not set , so this is fixed
 
 //https://msdn.microsoft.com/en-us/library/windows/desktop/aa384058(v=vs.85).aspx 
 //https://msdn.microsoft.com/en-us/library/windows/desktop/aa384055(v=vs.85).aspx 
@@ -93,7 +96,7 @@ var escape=false;
 
 function printHelp(){ 
         WScript.Echo(scriptName + " - sends HTTP request and saves the request body as a file and/or a report of the sent request"); 
-        WScript.Echo(scriptName + " url  [-force yse|no] [-user username -password password] [-proxy proxyserver:port] [-bypass bypass_list]"); 
+        WScript.Echo(scriptName + " url  [-force yes|no] [-user username -password password] [-proxy proxyserver:port] [-bypass bypass_list]"); 
         WScript.Echo("                                                        [-proxyuser proxy_username -proxypassword proxy_password] [-certificate certificateString]"); 
         WScript.Echo("                                                        [-method GET|POST|PATCH|DELETE|HEAD|OPTIONS|CONNECT]"); 
         WScript.Echo("                                                        [-saveTo file] - to print response to console use con"); 
@@ -174,9 +177,15 @@ function parseArgs(){
                         case "-saveto": 
                                 saveTo=next;								
                                 break;                 
-                        case "-user": 
+                        case "-user":
+			case "-u":
                                 user=next; 
-                                break; 
+                                break;
+                        case "-pass":
+			case "-password":
+			case "-p":
+                                pass=next; 
+                                break; 								
                         case "-proxy": 
                                 proxy=next; 
                                 break; 
