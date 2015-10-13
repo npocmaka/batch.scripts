@@ -193,10 +193,12 @@ function parseArgs() {
                 case "-bypass":
                     bypass = next;
                     break;
-                case "-proxyyser":
+                case "-proxyuser":
+                case "-pu":
                     proxy_user = next;
                     break;
                 case "-proxypassword":
+                case "-pp":
                     proxy_pass = next;
                     break;
                 case "-ua":
