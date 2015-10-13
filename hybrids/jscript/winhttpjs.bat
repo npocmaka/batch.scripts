@@ -325,35 +325,36 @@ function deleteItem(path){
 //----- 
 //-- 
 function request( url){ 
-
-        if (proxy!=0 && bypass!=0  ) { 
-                WinHTTPObj.SetProxy(proxy_settings,proxy,bypass); 
-        } 
-        
-        if (proxy!=0 ) { 
-                WinHTTPObj.SetProxy(proxy_settings,proxy); 
-        } 
-        
-        if (user!=0 && pass!=0){ 
-                 WinHTTPObj.SetCredentials(user,pass,HTTPREQUEST_SETCREDENTIALS_FOR_SERVER); 
-        } 
-        
-        if (proxy_user!=0 && proxy_pass!=0 ) { 
-                WinHTTPObj.SetCredentials(proxy_user,proxy_pass,HTTPREQUEST_SETCREDENTIALS_FOR_PROXY ); 
-        } 
-        
-        if(certificate!=0) { 
-                WinHTTPObj.SetClientCertificate(certificate); 
-        } 
-        
-        //set autologin policy 
-        WinHTTPObj.SetAutoLogonPolicy(autologon_policy); 
-        //set timeouts 
-        WinHTTPObj.SetTimeouts(RESOLVE_TIMEOUT,CONNECT_TIMEOUT,SEND_TIMEOUT,RECEIVE_TIMEOUT); 
-        
-        
+ 
         try { 
-                WinHTTPObj.Open(http_method,url,false); 
+		
+                WinHTTPObj.Open(http_method,url,false);
+                
+				if (proxy!=0 && bypass!=0  ) { 
+						WinHTTPObj.SetProxy(proxy_settings,proxy,bypass); 
+				} 
+				
+				if (proxy!=0 ) { 
+						WinHTTPObj.SetProxy(proxy_settings,proxy); 
+				} 
+				
+				if (user!=0 && pass!=0){ 
+						 WinHTTPObj.SetCredentials(user,pass,HTTPREQUEST_SETCREDENTIALS_FOR_SERVER); 
+				} 
+				
+				if (proxy_user!=0 && proxy_pass!=0 ) { 
+						WinHTTPObj.SetCredentials(proxy_user,proxy_pass,HTTPREQUEST_SETCREDENTIALS_FOR_PROXY ); 
+				} 
+				
+				if(certificate!=0) { 
+						WinHTTPObj.SetClientCertificate(certificate); 
+				} 
+        
+				//set autologin policy 
+				WinHTTPObj.SetAutoLogonPolicy(autologon_policy); 
+				//set timeouts 
+				WinHTTPObj.SetTimeouts(RESOLVE_TIMEOUT,CONNECT_TIMEOUT,SEND_TIMEOUT,RECEIVE_TIMEOUT); 
+				
                 if (headers.length!==0){ 
                         WScript.Echo("Sending with headers:"); 
                         for (var i=0;i<headers.length;i++){ 
