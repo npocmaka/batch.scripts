@@ -16,6 +16,7 @@ for %%# in (-h -help /h /help) do (
 		(echo()
 		echo variable string in which the generated checksum will be stored
 		(echo()
+		exit /b 0
 	)
 )
 
