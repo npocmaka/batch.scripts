@@ -24,6 +24,7 @@ if not exist "%~f1" (
 
 if exist "%~f1\" (
 	echo "%~f1" is a directory but not a file
+	exit /b 3
 )
 (echo()
 echo file timestamps for %~f1 :
