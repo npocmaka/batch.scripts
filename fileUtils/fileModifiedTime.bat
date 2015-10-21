@@ -23,6 +23,7 @@ if not exist "%~f1" (
 
 if exist "%~f1\" (
 	echo "%~f1" is a directory but not a file
+	exit /b 3
 ) 
 set "file_loc=%~f1"
 for %%# in ("%file_loc%") do set file_dir=%%~dp#
