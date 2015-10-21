@@ -28,6 +28,7 @@ if exist "%~f1\" (
 set "file_loc=%~f1"
 set file_loc=%file_loc:\=\\%
 echo file timestamps for %~f1 :
+(echo()
 for /f "useback delims=." %%t in (`"WMIC DATAFILE WHERE name="%file_loc%" get LastModified,CreationDate,LastAccessed  /format:value"`) do (
     for /f %%$ in ("%%t") do if "%%$" neq "" echo %%$
 )
