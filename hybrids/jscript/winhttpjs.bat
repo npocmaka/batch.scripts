@@ -144,7 +144,7 @@ function printHelp() {
 
 function parseArgs() {
     // 
-    if (ARGS.Length < 3) {
+    if (ARGS.Length < 2) {
         WScript.Echo("insufficient arguments");
         printHelp();
         WScript.Quit(43);
