@@ -17,15 +17,15 @@ var keys="";
 function printHelp(){ 
         WScript.Echo(scriptName + " - sends keys to a applicaion with given title"); 
         WScript.Echo("Usage:"); 
-        WScript.Echo("call "scriptName + " title string"); 
+        WScript.Echo("call " + scriptName + " title string"); 
         WScript.Echo("title  - the title of the application"); 
         WScript.Echo("string - keys to be send"); 
 		WScript.Echo("to send keys to no particular window use \"\" as title (e.g. shortcut keys) "); 
-		WScript.Echo("  refence with special keys -> http://social.technet.microsoft.com/wiki/contents/articles/5169.vbscript-sendkeys-method.aspx")
+		WScript.Echo("  refence with special keys -> http://social.technet.microsoft.com/wiki/contents/articles/5169.vbscript-sendkeys-method.aspx");
 } 
 
 function parseArgs(){ 
-                // 
+                
         if (ARGS.Length < 3) { 
                 WScript.Echo("insufficient arguments"); 
                 printHelp(); 
