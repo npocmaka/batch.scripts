@@ -36,12 +36,23 @@ function parseArgs(){
 		keys=ARGS.Item(2);
 }
 
+
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
 parseArgs();
+keys=replaceAll(keys,"^^","^");
+
 if (title === "") {
 	sh.SendKeys(keys); 
 	WScript.Quit(0);
 }
-if (sh.AppActivate(title)){ 
+if (sh.AppActivate(title)){
     sh.SendKeys(keys); 
 	WScript.Quit(0);
 } else {
