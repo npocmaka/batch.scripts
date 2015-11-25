@@ -46,6 +46,7 @@ function replaceAll(str, find, replace) {
 }
 
 parseArgs();
+//in case the script is called with CALL command the carets will be doubled
 keys=replaceAll(keys,"^^","^");
 
 if (title === "") {
