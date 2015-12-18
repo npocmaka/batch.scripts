@@ -39,8 +39,8 @@ Console.Error.Write("Enter password: ");
               Console.Error.Write("*");
            }
 		   
-		   if ( key.Key == ConsoleKey.Backspace ) {
-		       pwd=pwd.Remove(pwd.Length-1);
+		   if ( key.Key == ConsoleKey.Backspace && pwd.Length > 0 ) {
+			   pwd=pwd.Remove(pwd.Length-1);
 			   Console.Error.Write("\b \b");
 		   }
 		   
