@@ -1,0 +1,16 @@
+http://ss64.org/viewtopic.php?id=2075
+Some tests I've made over MSG command (aware that you need installed terminal services to make this command available) showed that there are some special characters that cannot be set at the beginning of the message ( /  and  - ):
+msg "%username%" "--#"
+msg "%username%" "//#"
+both lines will print the help message .
+
+They can be esacped with \ (only the first appearance need to be escaped):
+msg "%username%" "\--#"
+msg "%username%" "\//#"
+
+it can be used also to put as message with quotes in :
+msg "%username%" "\"message with quotes\""
+I havent found other special sequences that can be used with    \
+
+
+Max length of the symbols in the message is 255
