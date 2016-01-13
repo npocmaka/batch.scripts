@@ -38,8 +38,21 @@ exit /b %errorlevel%
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 var directory=fso.GetFolder(WScript.Arguments.Item(0));
 
+function toDoubleDigit(number){
+	if (number<10){
+	  return "0"+number;
+	}
+	return number;
+}
+
 function printDateInfo(timeTag,date){
-	WScript.Echo( timeTag + " : " + date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" +date.getMinutes() + ":" + date.getSeconds());
+	var month=toDoubleDigit(date.getMonth()+1);
+	var dayOfTheMonth=toDoubleDigit(date.getHours());
+	var hours=toDoubleDigit(date.getHours());
+	var minutes=toDoubleDigit(date.getMinutes());
+	var seconds=toDoubleDigit(date.getSeconds());
+
+	WScript.Echo( timeTag + " : " + date.getFullYear() + "-" + month + "-" + dayOfTheMonth + " " + hours + ":" + minutes + ":" + seconds );
 	WScript.Echo(timeTag + " - milliseconds passed : " + date.getTime());
 	WScript.Echo( timeTag + " day of the week : " + date.getDay());
 	WScript.Echo();
