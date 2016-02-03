@@ -2,7 +2,7 @@
 :stringToHex
 del tmp.hex >nul 2>nul
 del tmp.str >nul 2>nul
-echo|(set /p=%~1)>tmp.str
+(echo|set /p=%~1)>tmp.str
 
 certutil -encodehex tmp.str tmp.hex >nul
 setlocal enableDelayedExpansion
@@ -13,6 +13,5 @@ for /f "usebackq tokens=2 delims=	" %%A in ("tmp.hex") do (
     set hex_str=!hex_str: =!
 
 )
-::clears EOF character
-set "hex_str=%hex_str:~0,-2%"
-(echo(!hex_str!)
+echo !hex_str!
+exit /b %errorlevel%
