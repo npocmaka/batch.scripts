@@ -728,7 +728,7 @@ function printHelp(){
 	WScript.Echo( "	" + scriptName + " addToZip -source  C:\\some_file -destination C:\\myDir\\myZip.zip " );
 	
 	WScript.Echo( "	by Vasil \"npocmaka\" Arnaudov - npocmaka@gmail.com" );
-	WScript.Echo( "	ver 0.1 " );
+	WScript.Echo( "	ver 0.1.2 " );
 	WScript.Echo( "	latest version could be found here https://github.com/npocmaka/batch.scripts/blob/master/hybrids/jscript/zipjs.bat" );
 	
 	
