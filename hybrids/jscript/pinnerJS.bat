@@ -11,6 +11,8 @@
 //gets an information that normally is acquired by right click-details 
 // can get image dimensions , media file play time and etc.
  
+// Thanks to help by Alexis Viala now it supports pin to start screen
+
 ////// 
 FSOObj = new ActiveXObject("Scripting.FileSystemObject");
 var ARGS = WScript.Arguments;
@@ -76,10 +78,26 @@ getName = function(path){
 	var splitted=path.split("\\");
 	return splitted[splitted.length-1];
 }
-//
-//Unpin from Tas&kbar
-//Unpin from Start Men&u
-//
+
+//get windows version
+var version=0;
+var objWMIService = GetObject('winmgmts:').InstancesOf ("Win32_OperatingSystem") ;
+//var oss = objWMIService.ExecQuery ("Select * from Win32_OperatingSystem");
+var osEnum=new Enumerator(objWMIService);
+for (;!osEnum.atEnd();osEnum.moveNext()) {
+	version=osEnum.item().Version;
+}
+version=parseInt(version.replace(/\./g,''));
+//WScript.Echo(version);
+
+// if version is later than windows 7 there's pin to start screen instead pin to start menu
+var startVerb1="startpin";
+var startVerb2="";
+if (version>619999){
+	startVerb1="pintostartscreen";
+}
+
+
 function main(){
 	if (!ExistsItem(filename)) {
 		WScript.Echo(filename + " does not exist");
@@ -125,7 +143,7 @@ function main(){
 			if ( verb === "startmenu" ) {
 			// &&  replaceAll("&","",verbs.Item(i).Name).indexOf("Pin to Start") > -1) {
 				WScript.Echo("pinning "  + name + " to start menu ");
-				objItem.InvokeVerb("startpin");
+				objItem.InvokeVerb(startVerb1);
 				//verbs.Item(i).DoIt();
 				return;
 			}
