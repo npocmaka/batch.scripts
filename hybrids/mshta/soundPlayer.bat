@@ -15,7 +15,7 @@ exit /b
 <meta http-equiv="x-ua-compatible" content="ie=9" />
 
 <html>
-<bgsound src="">
+<bgsound src="" volume=''>
 <body>
 
 
@@ -79,7 +79,11 @@ function parseArguments(args){
 		output.write('no arguments passed\n\r');
 		output.write('usage:\n\r');
 		output.write('\n\r');
-		output.write(getName(scriptPath)+' "mediaFile" \n\r');
+		output.write(getName(scriptPath)+' "soundFile" [volume]\n\r');
+		output.write('soundFile - path to sound file to play\n\r');
+		output.write('volume - a number from -10000 to 0 that will set volume to the sound (0 is loudest and default value)\n\r');
+		output.write('Example:\n\r');
+		output.write('allplayer.bat "C:\Windows\Media\Ring05.wav" -1000\n\r');
 		close();
 	}
 	
@@ -116,7 +120,8 @@ function main(arguments){
 	output.write('\r\n');
 	//output.write(seconds+'\r\n')
 	var bgsoundElems = document.getElementsByTagName('bgsound');
-	bgsoundElems[0].src=fullFilename;	
+	bgsoundElems[0].src=fullFilename;
+	bgsoundElems[0].volume=''+volume;
 }
 
 try {
