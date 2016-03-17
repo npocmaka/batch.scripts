@@ -136,7 +136,7 @@ catch(err) {
 
 <script language="javascript" type="text/javascript">
 
-window.setTimeout('close()', seconds*1000);
+window.setTimeout('close()', seconds*1000+600);
 
 </script>
 </body>
