@@ -28,6 +28,7 @@ function clckd(a){
 }
 
 function prepare(){
+	window.resizeTo(200,150);
 	var element1 = document.createElement("input");
 	element1.setAttribute("type", "button");
 	element1.setAttribute("value", "yep");
@@ -49,4 +50,3 @@ function prepare(){
 
 	//alert(document.getElementById('container').innerHTML);	
 }
-
