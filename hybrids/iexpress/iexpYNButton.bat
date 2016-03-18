@@ -82,5 +82,5 @@ FinishMessage=
 ;FinishMessage=message2
 ;TargetName=F:\scriptests\popup1.exe
 ;FriendlyName=popuppkg
-
+;
 
