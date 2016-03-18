@@ -14,7 +14,7 @@ rem ::
 (
 	mshta "about:<title>chooser</title><body onload='prepare()'><script language='javascript' src='file://%~dpnxf0'></script><span id='container'>buttons:</span></body>" 
 )|(
-	for /f "tokens=* delims=" %%B in ('more') do (
+	for /f "tokens=* delims=" %%B in ('more') do @(
 		echo selected buton: %%B
 	)
 )
