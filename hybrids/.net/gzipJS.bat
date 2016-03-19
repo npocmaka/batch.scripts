@@ -7,7 +7,7 @@ for /f "tokens=* delims=" %%v in ('dir /b /s /a:-d  /o:-n "%SystemRoot%\Microsof
 )
 
 if not exist "%~n0.exe" (
-	"%jsc%" /nologo /out:"%~n0.exe" "%~dpsfnx0"
+	"%jsc%" /nologo /w:0 /out:"%~n0.exe" "%~dpsfnx0"
 )
 
  %~n0.exe %*
@@ -61,6 +61,29 @@ import System.IO.Compression;
 		
 	}
 	
+	function isGzip(source,errorlevel){
+		var sourceFile=File.OpenRead(source);
+		
+		var input = new GZipStream(sourceFile,
+            CompressionMode.Decompress, false);
+		var onSuccess;
+		try{
+			onSuccess=Int32.Parse(errorlevel);
+		}catch(err){
+			Console.WriteLine('Invalid Number passed');
+			onSuccess=0;
+		}
+		try {
+			var b=input.ReadByte();
+			input.Close();
+			Console.WriteLine('valid');
+			Environment.Exit(onSuccess);
+		}catch(err){
+			Console.WriteLine('invalid');
+		}
+			
+	}
+	
 var arguments:String[] = Environment.GetCommandLineArgs();
 
 	function printHelp(){
@@ -69,8 +92,9 @@ var arguments:String[] = Environment.GetCommandLineArgs();
 		Console.WriteLine(arguments[0]+" -c source destination");
 		Console.WriteLine("Uncompress:");
 		Console.WriteLine(arguments[0]+" -u source destination");
-		
-		
+		Console.WriteLine("Check gzip file:");
+		Console.WriteLine(arguments[0]+" -k source errorlevelOnSuccess");
+			
 	}
 
 if (arguments.length!=4){
@@ -81,11 +105,13 @@ if (arguments.length!=4){
 
 switch (arguments[1]){
 	case "-c":
-	
 		CompressFile(arguments[2],arguments[3]);
 		break;
 	case "-u":
 		UncompressFile(arguments[2],arguments[3]);
+		break;
+	case "-k":
+		isGzip(arguments[2],arguments[3]);
 		break;
 	default:
 		Console.WriteLine("Wrong arguments");
