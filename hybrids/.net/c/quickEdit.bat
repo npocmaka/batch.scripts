@@ -48,7 +48,7 @@ class QE
     {
         //clears the extension from the script name
         String scriptName = Environment.GetCommandLineArgs()[0];
-        scriptName = scriptName.Substring(0, scriptName.Length);
+        scriptName = scriptName.Substring(0, scriptName.Length-4);
         Console.WriteLine(scriptName + " enables or disables quick edit mode");
         Console.WriteLine("");
         Console.WriteLine("Enable:");
