@@ -14,7 +14,7 @@ if not exist "%csc%" (
 )
 
 if not exist "%~n0.exe" (
-   call %csc% /nologo /w:0 /r:"Microsoft.VisualBasic.dll" /out:"%~n0.exe" "%~dpsfnx0" || (
+   call %csc% /nologo /w:0 /out:"%~n0.exe" "%~dpsfnx0" || (
       exit /b %errorlevel% 
    )
 )
