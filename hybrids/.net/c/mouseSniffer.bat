@@ -3,7 +3,7 @@
 :batch
 @echo off
 setlocal
-del "%~n0.exe" /q
+::del "%~n0.exe" /q
 :: find csc.exe
 set "csc="
 for /r "%SystemRoot%\Microsoft.NET\Framework\" %%# in ("*csc.exe") do  set "csc=%%#"
