@@ -56,3 +56,4 @@ FriendlyName=-
 PostInstallCmd=<None>
 AdminQuietInstCmd=
 UserQuietInstCmd=
+;
