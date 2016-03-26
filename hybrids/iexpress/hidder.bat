@@ -2,7 +2,6 @@
 ;:: to start a hidden process
 ;:: requires admin privileges 
 ;::http://www.dostips.com/forum/viewtopic.php?f=3&t=5901
-;:: check the read.me file
 
 
 ;@echo off
