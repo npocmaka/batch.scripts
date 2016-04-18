@@ -4,6 +4,7 @@
 ; if "%~2" EQU "" (
 ;	echo invalid arguments.For help use:
 ;	echo %~nx0 /h
+;   exit /b 1
 ;)
 ;for %%a in (/h /help -h -help) do ( 
 ;	if "%~1" equ "%%~a" (
