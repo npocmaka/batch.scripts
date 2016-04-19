@@ -22,15 +22,17 @@ if (!FSOObj.FileExists(filename)){
 	WScript.Echo("File "+filename+" does not exists");
 	WScript.Quit(2);
 }
+
+var img=new ActiveXObject("WIA.ImageFile");
 try {
-	var img=new ActiveXObject("WIA.ImageFile");
+	img.LoadFile(filename);
 }catch(err){
 	WScript.Echo("Probably "+ filename + " is not an image");
 	WScript.Echo(err.message);
 	WScript.Quit(3);
 	
 }
-img.LoadFile(filename);
+
 WScript.Echo("Height:"+img.Height);
 WScript.Echo("Width:"+img.Width);
 WScript.Echo("HorizontalResolution:"+img.HorizontalResolution);
