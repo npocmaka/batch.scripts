@@ -219,18 +219,17 @@ namespace Purify
                 MSLLHOOKSTRUCT hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
                 bool inside = false;
                 getProcRect();
-               /* Console.WriteLine("==");
-                Console.WriteLine(((hookStruct.pt.x > left) && (hookStruct.pt.x < right)) + "::" + hookStruct.pt.x + ":x:" + left + "::" + right);
-                Console.WriteLine((hookStruct.pt.y > top && hookStruct.pt.y < bottom) + "::" + hookStruct.pt.y + ":x:" + top + "::" + bottom);
-                Console.WriteLine("=="); */
+
                 if (hookStruct.pt.x > left && hookStruct.pt.x < right &&
                     hookStruct.pt.y < bottom && hookStruct.pt.y > top)
                 {
 
                     inside = true;
                 }
+                
 
-                Console.WriteLine(hookStruct.pt.x + ", " + hookStruct.pt.y + ":" + hookStruct.time + "-" + inside);
+
+                Console.WriteLine("Click on: "+hookStruct.pt.x + ", " + hookStruct.pt.y + ";Time: " + hookStruct.time + ";Inside console: " + inside);
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
@@ -289,12 +288,12 @@ namespace Purify
             IntPtr ptr = parent.MainWindowHandle;
             Rect rect = new Rect();
             GetWindowRect(ptr, ref rect);
-            Console.WriteLine(rect.Left + "-" + rect.Right + "-" + rect.Top + "-" + rect.Bottom);
+            Console.WriteLine("Console window position:" +rect.Left + "-" + rect.Right + "-" + rect.Top + "-" + rect.Bottom);
 
             top = rect.Top;
             bottom = rect.Bottom;
             right = rect.Right;
-            bottom = rect.Bottom;
+            left = rect.Left;
 
             return rect;
         }
