@@ -99,13 +99,13 @@ exit /b %errorlevel%
 	   WScript.Echo("");	
 	   WScript.Echo(lnkPath + " properties:");	
 	   WScript.Echo("");
-	   WScript.Echo("Target: " + oLink.TargetPath);
-	   WScript.Echo("Icon Location: " + oLink.IconLocation);
-	   WScript.Echo("Description: " + oLink.Description);
-	   WScript.Echo("Hotkey: " + oLink.HotKey );
-	   WScript.Echo("Working Directory: " + oLink.WorkingDirectory);
-	   WScript.Echo("Window style: " + oLink.WindowStyle);
-	   WScript.Echo("Admin Permissions: " + hasAdminPermissions(lnkPath));
+	   WScript.Echo("Target:" + oLink.TargetPath);
+	   WScript.Echo("Icon Location:" + oLink.IconLocation);
+	   WScript.Echo("Description:" + oLink.Description);
+	   WScript.Echo("Hotkey:" + oLink.HotKey );
+	   WScript.Echo("Working Directory:" + oLink.WorkingDirectory);
+	   WScript.Echo("Window style:" + oLink.WindowStyle);
+	   WScript.Echo("Admin Permissions:" + hasAdminPermissions(lnkPath));
 	   
 	   WScript.Quit(0);
    }
