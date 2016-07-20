@@ -8,19 +8,20 @@ for /f "tokens=* delims=" %%v in ('dir /b /s /a:-d  /o:-n "%SystemRoot%\Microsof
    set "jsc=%%v"
 )
 
-if not exist "%~n0.exe" (
-    rem del /q /f "%~n0.exe" >nul 2>&1
+::if not exist "%~n0.exe" (
+    del /q /f "%~n0.exe" >nul 2>&1
     "%jsc%" /nologo /out:"%~n0.exe" "%~dpsfnx0"
-)
+::)
 %~n0.exe %*
 exit /b %errorlevel%
 
 */
 
 
+//http://stackoverflow.com/questions/57615/how-to-add-a-timeout-to-console-readline
 import System;
 import System.Threading;
-//import System.Threading.Thread;
+
 
 class Reader {
    static  var inputThread;
@@ -39,9 +40,14 @@ class Reader {
 
    static function reader() {
     while (true) {
-		getInput.WaitOne();
-		input = Console.ReadKey();
-		gotInput.Set();
+		try{
+			getInput.WaitOne();
+			input = Console.ReadKey();
+			gotInput.Set();
+		}catch(err){
+			var key=Console.Read();
+			Environment.Exit(key);
+		}
 
     }
   }
@@ -50,18 +56,22 @@ class Reader {
     getInput.Set();
     var success = gotInput.WaitOne(timeOutMillisecs);
     if (success) {
-      //return input;
 	  Environment.Exit(input.KeyChar.ToString().charCodeAt(0));
     }else{
       Environment.Exit(0);
 	}
   }
 }
-//var to:int;
+
 var arguments:String[] = Environment.GetCommandLineArgs();
 if (arguments.length == 1){
-	var key = Console.ReadKey(true);
-    Environment.Exit(key.KeyChar.ToString().charCodeAt(0));
+	try{
+		var key = Console.ReadKey(true);
+		Environment.Exit(key.KeyChar.ToString().charCodeAt(0));
+	}catch(err){
+		var key=Console.Read();
+		Environment.Exit(key);
+	}
 } else {
 	if(arguments[1]=="/?" || arguments[1].toLowerCase().ToLower().Contains("help")) {
 		print("Usage:");
