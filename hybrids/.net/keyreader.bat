@@ -16,32 +16,25 @@ exit /b %errorlevel%
 
 */
 
-
 //http://stackoverflow.com/questions/57615/how-to-add-a-timeout-to-console-readline
 import System;
 import System.Threading;
 
 
 class Reader {
-    static
-    var inputThread;
-    static
-    var getInput, gotInput;
-    static
-    var input;
+    static var inputThread;
+    static var getInput, gotInput;
+    static var input;
 
     function Reader() {
         getInput = new AutoResetEvent(false);
         gotInput = new AutoResetEvent(false);
-
         inputThread = new Thread(ThreadStart(Reader.reader));
-
         inputThread.IsBackground = true;
         inputThread.Start();
     }
 
-    static
-    function reader() {
+    static function reader() {
         while (true) {
             try {
                 getInput.WaitOne();
@@ -51,7 +44,6 @@ class Reader {
                 var key = Console.Read();
                 Environment.Exit(key);
             }
-
         }
     }
 
@@ -61,7 +53,7 @@ class Reader {
         if (success) {
             Environment.Exit(input.KeyChar.ToString().charCodeAt(0));
         } else {
-            Environment.Exit(0);
+            Environment.Exit(-2);
         }
     }
 }
@@ -80,19 +72,21 @@ if (arguments.length == 1) {
         print("Usage:");
         print("	" + arguments[0] + "  [timeout-in-milliseconds]");
         print("	reads a key and exits with its ascii code");
-        print("	if a timeout is passed it will wait for input and if no key is pressed it will return 0");
+        print("	if a timeout is passed it will wait for input and if no key is pressed it will return -2");
     } else {
         try {
             var to = Int32.Parse(arguments[1]);
             var rdr = new Reader();
-
             rdr.ReadKey(to);
-
-
         } catch (err) {
-            print("no valid number passed as timeout");
-            var key = Console.ReadKey(true);
-            Environment.Exit(key.KeyChar.ToString().charCodeAt(0));
+		    try {
+				print("no valid number passed as timeout");
+				var key = Console.ReadKey(true);
+				Environment.Exit(key.KeyChar.ToString().charCodeAt(0));
+			} catch (err) {
+				var key = Console.Read();
+				Environment.Exit(key);
+            }
         }
     }
 }
