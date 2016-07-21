@@ -78,14 +78,17 @@ class QE
             sw = int.Parse(args[0]);
             switch (sw) {
                 case 1:
+					//enable
                     //mode |= ENABLE_QUICK_EDIT_MODE;
-                    SetConsoleMode(handle, ENABLE_QUICK_EDIT_MODE);
+                    SetConsoleMode(handle, mode|(ENABLE_QUICK_EDIT_MODE));
                     break;
                 case 2:
+				    //disable
                     //mode |= DISABLE_QUICK_EDIT_MODE;
-                    SetConsoleMode(handle, DISABLE_QUICK_EDIT_MODE);
+                    SetConsoleMode(handle, mode &= ~CHECK_QUICK_EDIT);
                     break;
                 case 3:
+				    // get state
                     if (mode == (mode | ENABLE_QUICK_EDIT_MODE))
                     {
                         Console.WriteLine("enabled");
@@ -108,4 +111,3 @@ class QE
 
     }
 }
-
