@@ -18,7 +18,7 @@ for %%P in ("%verp%") do (
     )
 )
 :end_for2
- echo --
+
 echo internal version: %office_version%
 echo %office_version% | find /i "office7" >nul 2>&1&& (
         echo "Office 97"
