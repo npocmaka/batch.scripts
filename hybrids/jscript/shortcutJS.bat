@@ -193,7 +193,7 @@ exit /b %errorlevel%
 			oLink.WindowStyle = args.Item(arg+1);
 		}
 		
-		if (args.Item(arg).toLowerCase() == "-workingdirectory") {
+		if (args.Item(arg).toLowerCase() == "-workingdirectory" || args.Item(arg).toLowerCase() == "-workdir") {
 			oLink.WorkingDirectory = args.Item(arg+1);
 		}
 		
