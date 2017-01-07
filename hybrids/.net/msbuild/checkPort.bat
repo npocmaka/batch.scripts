@@ -1,6 +1,6 @@
 <!-- :
     @echo off
-
+	:: checks if a port on a remote server is open
         setlocal
 		for %%h in (/h /help -help -h "") do (
 			if /I "%~1" equ "%%~h" (
