@@ -63,7 +63,7 @@ if(!loaded){
 	WScript.Echo("");
 	WScript.Echo("Error Code:"+objDoc.parseError.errorCode);
 	WScript.Echo("");
-	WScript.Echo("Line:"+objDoc.parseError.line+" Posotion:"+objDoc.parseError.line);
+	WScript.Echo("Line:"+objDoc.parseError.line+" Posotion:"+objDoc.parseError.filepos);
 	WScript.Echo("");
 	WScript.Echo("Reason:"+objDoc.parseError.reason);
 	WScript.Echo("");
