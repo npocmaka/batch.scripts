@@ -54,7 +54,7 @@ try {
 	loaded=objDoc.load(WScript.Arguments.Named.Item("file"));
 } catch (err){
 	WScript.Echo("Error while parsing the xml");
-	WScript.Echo(err);
+	WScript.Echo(err.message);
 	WScript.Quit(1);
 }
 
