@@ -77,7 +77,7 @@ try {
 	var objNodes = objDoc.selectNodes(WScript.Arguments.Named.Item("xpath"));
 } catch (err){
 	WScript.Echo("invalid xpath expression");
-	WScript.Echo(err);
+	WScript.Echo(err.message);
 	WScript.Quit(2);
 }
 
