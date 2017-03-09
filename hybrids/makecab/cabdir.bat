@@ -57,7 +57,7 @@
 ;	)
 
 ;makecab /F "%~f0" /f "%tmp%\makecab.dir.ddf" /d DiskDirectory1=%cd% /d CabinetNameTemplate=%cab_file%.cab
-;rem del /q /f "%tmp%\makecab.dir.ddf"
+;del /q /f "%tmp%\makecab.dir.ddf"
 ;exit /b %errorlevel%
 
 ;;
