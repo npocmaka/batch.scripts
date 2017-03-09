@@ -160,7 +160,7 @@ public class ScreenCapture {
      title = args[i + 1];
      break;
     case "-mode":
-     if (modes.TryGetValue(args[i + 1], out mode)) {} else {
+     if (modes.TryGetValue(args[i + 1].ToLower(), out mode)) {} else {
       Console.WriteLine("Invalid mode passed: " + args[i + 1]);
       Environment.Exit(3);
      }
