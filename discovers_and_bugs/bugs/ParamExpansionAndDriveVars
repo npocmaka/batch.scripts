@@ -1,0 +1,23 @@
+C:\>for %I in (a: b: c: ">:" "&:") do @echo %~fI
+C:\>pushd c:
+C:\>set "
+
+the output is:
+
+=&:=&:\
+
+=>:=>:\
+
+=A:=A:\
+
+=B:=B:\
+
+=C:=C:\
+
+....
+
+
+
+Will not work if there's path attached to the mimic drives in the for set or if the "push ." (cd . also can be used) is skipped.
+Looks like the parameter expansion splits the paths in two parts - drive and the rest of the path and later concattanes them.
+And used drives are stored somewhere  - and if there's no path part they are not deleted. CD and PUSHD resets drive variables.

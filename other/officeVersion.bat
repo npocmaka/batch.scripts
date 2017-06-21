@@ -2,14 +2,14 @@
 :office_ver
 setlocal enableDelayedExpansion
 echo %~1 | find /i "help" >nul 2>&1 && ( goto :help )
- 
+
 for /f "tokens=2 delims==" %%O in ('ftype ^|findstr /r /I "\\OFFICE[0-9]*" 2^>nul') do (
     set "verp=%%~O"
     goto :end_for
 )
 :end_for
- 
-for %%P in (%verp%) do (
+  
+for %%P in ("%verp%") do (
     set "off_path=%%~dpP"
     for %%V in ("!off_path:~0,-1!") do (
  
@@ -18,7 +18,7 @@ for %%P in (%verp%) do (
     )
 )
 :end_for2
- 
+
 echo internal version: %office_version%
 echo %office_version% | find /i "office7" >nul 2>&1&& (
         echo "Office 97"
@@ -68,6 +68,14 @@ echo %office_version% | find /i "office15" >nul 2>&1 && (
         exit /b 0
         )
 )
+
+echo %office_version% | find /i "office16" >nul 2>&1 && (
+        echo "Office 2016"
+        if "%~1" neq ""  ( endlocal & set "%~1=Office 2016"
+        exit /b 0
+        )
+)
+
 endlocal
 goto :eof
 rem MAPPING:
@@ -79,6 +87,7 @@ rem Office 2003 - 11.0
 rem Office 2007 - 12.0
 rem Office 2010 - 14.0
 rem Office 2013 - 15.0
+rem Office 2016 - 16.0
 :help
 echo %~n0 - displays current microsoft office version
 echo %~n0 [RtnVar]

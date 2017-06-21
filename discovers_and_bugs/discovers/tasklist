@@ -1,0 +1,9 @@
+tasklist filters support wildcard (*) if it is put at the end ->
+http://stackoverflow.com/questions/36602024/regular-expression-or-wild-card-in-tasklist/36602530#36602530
+tasklist /FI "IMAGENAME eq cm*"
+
+
+And a double quotes can be escaped with \" unless they are not at the end.
+title "aa"
+tasklist /FI "WINDOWTITLE eq \"aa*"
+and backslash can be escaped with double backslash

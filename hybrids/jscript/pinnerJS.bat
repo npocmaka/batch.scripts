@@ -11,6 +11,8 @@
 //gets an information that normally is acquired by right click-details 
 // can get image dimensions , media file play time and etc.
  
+// Thanks to help by Alexis Viala now it supports pin to start screen
+
 ////// 
 FSOObj = new ActiveXObject("Scripting.FileSystemObject");
 var ARGS = WScript.Arguments;
@@ -76,10 +78,26 @@ getName = function(path){
 	var splitted=path.split("\\");
 	return splitted[splitted.length-1];
 }
-//
-//Unpin from Tas&kbar
-//Unpin from Start Men&u
-//
+
+//get windows version
+var version=0;
+var objWMIService = GetObject('winmgmts:').InstancesOf ("Win32_OperatingSystem") ;
+//var oss = objWMIService.ExecQuery ("Select * from Win32_OperatingSystem");
+var osEnum=new Enumerator(objWMIService);
+for (;!osEnum.atEnd();osEnum.moveNext()) {
+	version=osEnum.item().Version;
+}
+version=parseInt(version.replace(/\./g,''));
+//WScript.Echo(version);
+
+// if version is later than windows 7 there's pin to start screen instead pin to start menu
+var startVerb1="startpin";
+var startVerb2="";
+if (version>619999){
+	startVerb1="pintostartscreen";
+}
+
+
 function main(){
 	if (!ExistsItem(filename)) {
 		WScript.Echo(filename + " does not exist");
@@ -96,37 +114,51 @@ function main(){
 	//WScript.Echo(objFolder.GetDetailsOf(objItem,-1));
 	
 	var verbs=objItem.Verbs();
-	
+	/* 
+		verbs persisten handlers are {90AA3A4E-1CBA-4233-B8BB-535773D48449} and 
+		{a2a9545d-a0c2-42b4-9708-a0b2badd77c8} and verbs language independent names can be seen in 
+		HKEY_CLASSES_ROOT\CLSID\
+		
+		
+		the language dependable version is commented out along with replaceAll function.
+		To use it you need to add the && conditions in if statements and use DoIt() function instead of
+		invokeVerb.
+		
+		The good thing in it is that it checks if the verbs are supported by the passed file.
+		Though it will not work properly on not english language settings.
+		
+	*/
 	if (verbs != null) {
 		
 		for (var i=0;i<verbs.Count;i++){
 			//WScript.Echo(verbs.Item(i).Name);
-			if ( verb === "taskbar" && 
-			replaceAll("&","",verbs.Item(i).Name).indexOf("Pin to Taskbar") > -1 ) {
+			if ( verb === "taskbar") {
+			//&& replaceAll("&","",verbs.Item(i).Name).indexOf("Pin to Taskbar") > -1 ) {
 				WScript.Echo("pinning "  + name + " to taskbar ");
-				//objItem.InvokeVerb(verbs.Item(i));
-				verbs.Item(i).DoIt();
+				objItem.InvokeVerb("TaskbarPin");
+				//verbs.Item(i).DoIt();
 				return;
 			}
-			if ( verb === "startmenu" && 
-			replaceAll("&","",verbs.Item(i).Name).indexOf("Pin to Start") > -1) {
+			
+			if ( verb === "startmenu" ) {
+			// &&  replaceAll("&","",verbs.Item(i).Name).indexOf("Pin to Start") > -1) {
 				WScript.Echo("pinning "  + name + " to start menu ");
-				//objItem.InvokeVerb(verbs.Item(i));
-				verbs.Item(i).DoIt();
+				objItem.InvokeVerb(startVerb1);
+				//verbs.Item(i).DoIt();
 				return;
 			}
-			if ( verb === "unstartmenu" &&
-			replaceAll("&","",verbs.Item(i).Name).indexOf("Unpin from Start") > -1) {
+			if ( verb === "unstartmenu"){
+			//	&&	replaceAll("&","",verbs.Item(i).Name).indexOf("Unpin from Start") > -1) {
 				WScript.Echo("unpinning "  + name + " from start menu ");
-				//objItem.InvokeVerb(verbs.Item(i));
-				verbs.Item(i).DoIt();
+				objItem.InvokeVerb("startunpin");
+				//verbs.Item(i).DoIt();
 				return;
 			}
-			if ( verb === "untaskbar" &&
-			replaceAll("&","",verbs.Item(i).Name).indexOf("Unpin from Taskbar") > -1 ) {
+			if ( verb === "untaskbar"  ) {
+			//&& replaceAll("&","",verbs.Item(i).Name).indexOf("Unpin from Taskbar") > -1 ) {
 				WScript.Echo("unpinning "  + name + " from taskbar ");
-				//objItem.InvokeVerb(verbs.Item(i));
-				verbs.Item(i).DoIt();
+				objItem.InvokeVerb("TaskbarUnPin");
+				//verbs.Item(i).DoIt();
 				return;
 			}
 		}
@@ -137,6 +169,6 @@ function main(){
 }
 main();
 
-function replaceAll(find, replace, str) {
-  return str.replace(new RegExp(find, 'g'), replace);
-}
+//function replaceAll(find, replace, str) {
+//  return str.replace(new RegExp(find, 'g'), replace);
+//}

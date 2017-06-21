@@ -33,6 +33,10 @@ Error messages are caught in waitforcount method and if shuch pops-up the script
 As I don't know hoe to check the content of the pop-up the exact reason for the failure is not given
 but only the possible reasons.
 
+UPDATE *22-02-16*
+
+Javid Pack(https://github.com/JavidPack) has found two bugs in zipItem command and in ZipItem function.Now fixed. 
+
 ------
 It's possible to be ported for C#,Powershell and JScript.net so I'm planning to do it at some time.
 
@@ -488,7 +492,7 @@ if ( ! this.ZIPUtils ) {
 
 if ( ! this.ZIPUtils.ZipItem) {	
 	ZIPUtils.ZipItem = function(source, destination ) {
-		if (!Scripting.FileSystemObject.ExistsFolder(source)) {
+		if (!Scripting.FileSystemObject.ExistsItem(source)) {
 			WScript.Echo("");
 			WScript.Echo("file " + source +" does not exist");
 			WScript.Quit(2);	
@@ -724,7 +728,7 @@ function printHelp(){
 	WScript.Echo( "	" + scriptName + " addToZip -source  C:\\some_file -destination C:\\myDir\\myZip.zip " );
 	
 	WScript.Echo( "	by Vasil \"npocmaka\" Arnaudov - npocmaka@gmail.com" );
-	WScript.Echo( "	ver 0.1 " );
+	WScript.Echo( "	ver 0.1.2 " );
 	WScript.Echo( "	latest version could be found here https://github.com/npocmaka/batch.scripts/blob/master/hybrids/jscript/zipjs.bat" );
 	
 	
@@ -793,7 +797,7 @@ var main=function(){
 		break;
 	case "zipitem":
 		checkDestination();
-		ZIPUtils.ZipDirItems(source,destination);
+		ZIPUtils.ZipItem(source,destination);
 		break;
 	case "unzip":
 		checkDestination();

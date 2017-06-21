@@ -71,7 +71,15 @@ function main(){
 	//WScript.Echo(objFolder.GetDetailsOf(objItem,-1));
 	
 	var verbs=objItem.Verbs();
+	objItem.InvokeVerb("Print");
+/*
+	Language dependent version commented bellow.
+	InovkeVerb("Print") cannot check if the print action is supported, but works independently of language settings
+*/
 	
+	/*	
+
+
 	if (verbs != null) {
 		//WScript.Echo(verbs.Count);
 		for (var i=0;i<verbs.Count;i++){
@@ -84,6 +92,7 @@ function main(){
 		
 		WScript.Echo("the item " + filename + "does not support print verb");
 		return;
-	}	
+	}
+*/	
 }
 main();
