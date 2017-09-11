@@ -73,7 +73,7 @@ if exist "%dest%" if defined force (
         del /Q /F "%dest%"
 )
  
-esentutl /y"%source%" /d"%dest%" /o
+esentutl /y "%source%" /d"%dest%" /o
 endlocal
 goto :eof
  
