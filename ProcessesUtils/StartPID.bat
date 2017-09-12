@@ -150,6 +150,5 @@ goto :eof
        echo %~n0  -exec "notepad" -workdir "c:/"  -record "test.xml" -commandline "/A startpid.txt"
        echo %~n0  -exec "cmd" -workdir "c:/"  -record "test.xml" -host remoteHost -user User
        echo\
-       echo by Vasil "npocmaka" Arnaudov
  
 goto :eof
