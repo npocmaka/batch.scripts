@@ -143,6 +143,7 @@ goto :eof
  
  
 :echoHelp
+       echo starts process on the local or a remote machine and returns it's PID to the ERRORLEVEL
        echo %~n0 -exec executubale [-commandline command_line] [ -workdir working_directory] [-host  remote_host [-user user [-pass password]]] [-record path_to_xml_output] [-debug debug]
        echo\
        echo localhost cant' be used as in -host variable
