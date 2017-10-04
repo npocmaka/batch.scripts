@@ -122,7 +122,7 @@ function parseArguments(){
 		
 		if (ARGS.Item(arg).toLowerCase() == "-frame-index") {
 			try {
-				fameIndex=parseFloat(ARGS.Item(arg +1));
+				frameIndex=parseFloat(ARGS.Item(arg +1));
 				if(fameIndex<-0.5 || fameIndex > 1){
 					WScript.Echo("Wrong argument - frame index should be between -0.5 and 1");
 					WScript.Quit(25);
