@@ -152,6 +152,15 @@ function printHelp(){
 
 	WScript.Echo( WScript.ScriptName + " - resizes an image");
 	WScript.Echo(" ");
+	WScript.Echo(WScript.ScriptName + "-source source.file -target file.format [-max-height height] [-max-width width] [-percentage yes|no] [-keep-ratio yes|no] [-frame-index -0.5..1] ");
+	WScript.Echo("-source  - the image that will flipped or rotated.");
+	WScript.Echo("-target  - the file where the transformations will be saved in.If the file extension format is different than the source it will be converted to the pointed one.Supported formats are BMp,JPG,GIF,TIFF,PNG");
+	WScript.Echo("-percentage  - whether the rescale will be calculated in pixels or in percentages.If yes percentages will be used.Default is no.");
+	WScript.Echo("-force  - If yes and the target file already exists , it will be overwritten");
+	WScript.Echo("-max-height - max height of the image");
+	WScript.Echo("-max-width - max width of the image");
+	WScript.Echo("-keep-ratio - if dimensions ratio will be preserved.Default is yes");
+	WScript.Echo("-frame-index - Have no idea what this is used for , but it is pressented in the rotation filter capabilities.Images with this and without looks the same.Accepted values are from -0.5 to 1");
 	
 }
 
@@ -266,6 +275,15 @@ var sourceFormat=ID2Format(imageFile.FormatID);
 if(percentage){
 	fromPerc();
 }
+
+if(maxWidth==0){
+	maxWidth=width;
+}
+
+if(maxHeight==0){
+	maxHeight=height;
+}
+
 ///
 scale();
 ///
