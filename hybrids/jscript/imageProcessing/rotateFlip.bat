@@ -18,7 +18,7 @@ var ARGS=WScript.Arguments;
 
 var flipVertical=false;
 var flipHorizontal=false;
-var fameIndex=0;
+var frameIndex=0;
 var rotation=0;
 
 var force=false;
@@ -123,7 +123,7 @@ function parseArguments(){
 		if (ARGS.Item(arg).toLowerCase() == "-frame-index") {
 			try {
 				frameIndex=parseFloat(ARGS.Item(arg +1));
-				if(fameIndex<-0.5 || fameIndex > 1){
+				if(frameIndex<-0.5 || frameIndex > 1){
 					WScript.Echo("Wrong argument - frame index should be between -0.5 and 1");
 					WScript.Quit(25);
 				}
@@ -223,7 +223,7 @@ var sourceFormat=ID2Format(imageFile.FormatID);
 imageProcess.Filters(1).Properties("RotationAngle") = rotation;
 imageProcess.Filters(1).Properties("FlipHorizontal") = flipHorizontal;
 imageProcess.Filters(1).Properties("FlipVertical") = flipVertical;
-imageProcess.Filters(1).Properties("FrameIndex") = fameIndex;
+imageProcess.Filters(1).Properties("FrameIndex") = frameIndex;
 
 
 if (sourceFormat !== targetFormat ){
