@@ -133,7 +133,7 @@ function scale(){
 	
 	imageProcess.Filters(ic+1).Properties("MaximumWidth").Value = maxWidth;
 	imageProcess.Filters(ic+1).Properties("MaximumHeight").Value = maxHeight;
-	WScript.Echo(pRatio+"::"+maxWidth+"::"+maxHeight+">>"+width+"++"+height);
+	//WScript.Echo(pRatio+"::"+maxWidth+"::"+maxHeight+">>"+width+"++"+height);
 	imageProcess.Filters(ic+1).Properties("PreserveAspectRatio").Value = pRatio;
 	imageProcess.Filters(ic+1).Properties("FrameIndex").Value = frameIndex;
 }
@@ -272,17 +272,29 @@ var targetFormat=target.split(".")[target.split(".").length-1].toUpperCase();
 loadImage(imageFile,source);
 var sourceFormat=ID2Format(imageFile.FormatID);
 
+
+if(maxWidth==0 && !percentage){
+	maxWidth=width;
+}
+
+if(maxHeight==0 && !percentage){
+	maxHeight=height;
+}
+
+if(maxWidth==0 && percentage){
+	maxWidth=100;
+}
+
+if(maxHeight==0 && percentage){
+	maxHeight=100;
+}
+
+
 if(percentage){
 	fromPerc();
 }
 
-if(maxWidth==0){
-	maxWidth=width;
-}
 
-if(maxHeight==0){
-	maxHeight=height;
-}
 
 ///
 scale();
