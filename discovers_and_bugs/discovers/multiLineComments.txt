@@ -1,0 +1,148 @@
+https://stackoverflow.com/questions/8526946/commenting-multiple-lines-in-dos-batch-file/28522310#28522310
+
+The update in the dbenham's answer gave me some ideas. First - there are two different cases where we can need multi line comments - in a bracket's context where GOTO cannot be used and outside it. Inside brackets context we can use another brackets if there's a condition which prevents the code to be executed.Though the code thede will still be parsed and some syntax errors will be detected (FOR,IF ,improperly closed brackets, wrong parameter expansion ..).So if it is possible it's better to use GOTO.
+
+Though it is not possible to create a macro/variable used as a label - but is possible to use macros for bracket's comments.Still two tricks can be used make the GOTO comments more symetrical and more pleasing (at least for me). For this I'll use two tricks - 1) you can put a single symbol in front of a label and goto will still able to find it (I have no idea why is this.My guues it is searching for a drive). 2) you can put a single : at the end of a variable name and a replacement/subtring feature will be not triggered (even under enabled extensions). Wich combined with the macros for brackets comments can make the both cases to look almost the same.
+
+So here are the examples (in order I like them most):
+
+With rectangular brackets:
+
+@echo off
+
+::GOTO comment macro
+set "[:=goto :]%%"
+::brackets comment macros
+set "[=rem/||(" & set "]=)"
+
+::testing
+echo not commented 1
+
+%[:%
+  multi 
+  line
+  comment outside of brackets
+%:]%
+
+echo not commented 2
+
+%[:%
+  second multi 
+  line
+  comment outside of brackets
+%:]%
+
+::GOTO cannot be used inside for
+for %%a in (first second) do (
+    echo first not commented line of the %%a execution
+    %[%
+        multi line
+        comment
+    %]%
+    echo second not commented line of the %%a execution
+)
+With curly brackets:
+
+@echo off
+
+::GOTO comment macro
+set "{:=goto :}%%"
+::brackets comment macros
+set "{=rem/||(" & set "}=)"
+
+::testing
+echo not commented 1
+
+%{:%
+  multi 
+  line
+  comment outside of brackets
+%:}%
+
+echo not commented 2
+
+%{:%
+  second multi 
+  line
+  comment outside of brackets
+%:}%
+
+
+for %%a in (first second) do (
+    echo first not commented line of the %%a execution
+    %{%
+        multi line
+        comment
+    %}%
+    echo second not commented line of the %%a execution
+)
+With parentheses:
+
+@echo off
+
+::GOTO comment macro
+set "(:=goto :)%%"
+::brackets comment macros
+set "(=rem/||(" & set ")=)"
+
+::testing
+echo not commented 1
+
+%(:%
+  multi 
+  line
+  comment outside of brackets
+%:)%
+
+echo not commented 2
+
+%(:%
+  second multi 
+  line
+  comment outside of brackets
+%:)%
+
+
+for %%a in (first second) do (
+    echo first not commented line of the %%a execution
+    %(%
+        multi line
+        comment
+    %)%
+    echo second not commented line of the %%a execution
+)
+Mixture between powershell and C styles (< cannot be used because the redirection is with higher prio.* cannot be used because of the %*) :
+
+@echo off
+
+::GOTO comment macro
+set "/#:=goto :#/%%"
+::brackets comment macros
+set "/#=rem/||(" & set "#/=)"
+
+::testing
+echo not commented 1
+
+%/#:%
+  multi 
+  line
+  comment outside of brackets
+%:#/%
+
+echo not commented 2
+
+%/#:%
+  second multi 
+  line
+  comment outside of brackets
+%:#/%
+
+
+for %%a in (first second) do (
+    echo first not commented line of the %%a execution
+    %/#%
+        multi line
+        comment
+    %#/%
+    echo second not commented line of the %%a execution
+)
