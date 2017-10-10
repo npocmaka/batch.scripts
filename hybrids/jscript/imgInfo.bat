@@ -53,7 +53,7 @@ WScript.Echo("HorizontalResolution:"+img.HorizontalResolution);
 WScript.Echo("VerticalResolution:"+img.VerticalResolution);
 //WScript.Echo("Format:"+img.FormatID);
 WScript.Echo("ActiveFrame:"+img.ActiveFrame);
-WScript.Echo("Type:"+img.FileExtension);
+WScript.Echo("Extension:"+img.FileExtension);
 WScript.Echo("Format: "+ID2Format(img.FormatID));
 WScript.Echo("FrameCount:"+img.FrameCount);
 WScript.Echo("IsAnimated:"+img.IsAnimated);
