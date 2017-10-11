@@ -252,6 +252,11 @@ if(!existsFile(source)){
 	WScript.Quit(40);
 }
 
+if(!existsFile(stamp)){
+	WScript.Echo("Stamp image: " + stamp +" does not exists");
+	WScript.Quit(41);
+}
+
 if(existsFile(target) && !force){
 	WScript.Echo("Target image: " + target +" already exists");
 	WScript.Quit(45);
