@@ -69,14 +69,11 @@ function printHelp(){
 	WScript.Echo( WScript.ScriptName + " - creates multi page tiff image");
 	WScript.Echo(" ");
 	WScript.Echo(WScript.ScriptName + "-source source.file -target target.tiff [-force yes|no]" +
-	"[-left left] [-percentage yes|no]  [-frame-index -0.5..1] ");
-	WScript.Echo("-source  - the image that will flipped or rotated.");
-	WScript.Echo("-target  - the file where the transformations will be saved in.If the file extension format is different than the source it will be converted to the pointed one.Supported formats are BMp,JPG,GIF,TIFF,PNG");
-	WScript.Echo("-stamp  - path to image that will be stamped over the source image");
-	WScript.Echo("-percentage  - whether the rescale will be calculated in pixels or in percentages.If yes percentages will be used.Default is no.");
+	"-image-list \"file[;file2[;..]]\"");
+	WScript.Echo("-source  - the image over which tiff pages will be set");
+	WScript.Echo("-target  - file where the multi page tiff will be saves");
+	WScript.Echo("-image-list  - list of files separated with \";\" which will be used as tiff pages");
 	WScript.Echo("-force  - If yes and the target file already exists , it will be overwritten");
-	WScript.Echo("-top - offset from the top.Cannot be bigger than the source height.Default is 0.");
-	WScript.Echo("-left - offset from the left.Cannot be bigger than the source width.Default is 0.");
 	WScript.Echo("-frame-index - Have no idea what this is used for , but it is pressented in the rotation filter capabilities.Images with this and without looks the same.Accepted values are from -0.5 to 1");
 }
 
