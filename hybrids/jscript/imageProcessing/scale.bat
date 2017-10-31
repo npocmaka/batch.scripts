@@ -50,6 +50,8 @@ var force=false;
 var height=0;
 var width=0;
 
+var percentage=false;
+
 ////////////////////////////
 ////                      //
 /**/     var QUALITY=100; //
