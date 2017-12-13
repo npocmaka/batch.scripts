@@ -52,22 +52,24 @@ var toCompile="\r\n\
 import System;\r\n\
 import System.IO;\r\n\
 import  System.Diagnostics;\r\n\
-var batCommandLIne:String='';\r\n\
+var batCommandLine:String='';\r\n\
 //Remove the executable name from the command line\r\n\
 try{\r\n\
 var arguments:String[] = Environment.GetCommandLineArgs();\r\n\
-batCommandLIne=Environment.CommandLine.substring(arguments[0].length,Environment.CommandLine.length);\r\n\
+batCommandLine=Environment.CommandLine.substring(arguments[0].length,Environment.CommandLine.length);\r\n\
 }catch(e){}\r\n\
-var contet2:byte[]="+content+";\r\n\
+var content2:byte[]="+content+";\r\n\
 var dt=(new Date()).getTime();\r\n\
 var temp=Path.GetTempPath();\r\n\
 var nm=Process.GetCurrentProcess().ProcessName.substring(0,Process.GetCurrentProcess().ProcessName.length-3);\r\n\
 var tempBatPath=Path.Combine(temp,nm+dt+'.bat');\r\n\
-File.WriteAllBytes(tempBatPath,contet2);\r\n\
-System.Diagnostics.Process.Start('cmd.exe','/c '+' '+tempBatPath+' '+batCommandLIne);\r\n\
+File.WriteAllBytes(tempBatPath,content2);\r\n\
+var pr=System.Diagnostics.Process.Start('cmd.exe','/c '+' '+tempBatPath+' '+batCommandLine);\r\n\
+pr.WaitForExit();\r\n\
 File.Delete(tempBatPath);\r\n\
 ";
 
 File.WriteAllText(tempJS,toCompile);
-System.Diagnostics.Process.Start(compilerLoc,'/nologo /out:"'+binName+'" "'+tempJS+'"');
+var pr=System.Diagnostics.Process.Start(compilerLoc,'/nologo /out:"'+binName+'" "'+tempJS+'"');
+pr.WaitForExit();
 File.Delete(tempJS);
