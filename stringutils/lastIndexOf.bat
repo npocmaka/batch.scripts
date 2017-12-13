@@ -12,6 +12,7 @@ set LF=^
 
 rem ** Two empty lines are required
 echo off
+setlocal
 for %%L in ("!LF!") DO (
 	for /f "delims=" %%R in ("!splitter!") do ( 
 		set "var=!str:%%R=%%L!"
@@ -53,5 +54,9 @@ set $strLen=for /L %%n in (1 1 2) do if %%n==2 (%\n%
 %$strlen% slen,splitter
 
 set /a lio=strlen-plen-slen
-endlocal & if "%~3" NEQ "" (set %~3=%lio%) else echo %lio%
+endlocal & endlocal & endlocal & if "%~3" NEQ "" (
+	set "%~3=%lio%"
+) else (
+	echo %lio%
+)
 exit /b 0
