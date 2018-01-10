@@ -28,8 +28,7 @@ if "!var!" equ "" (
 )
 if !position! LEQ 0 ( set "_skip=" ) else (set  "_skip=skip=%position%")
 
-for /f  "eol= %_skip% delims=" %%P in (""!var!"") DO (
-	
+for /f  "eol= %_skip% delims=" %%P in ("!var!") DO (
 	if "%%~P" neq "" ( 
 		set "part=%%~P" 
 		goto :end_for 
