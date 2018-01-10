@@ -48,6 +48,8 @@ namespace MouseMover
         static extern IntPtr CopyImage(IntPtr hImage, uint uType, int cxDesired, int cyDesired, uint fuFlags);
         [DllImport("user32.dll")]
         static extern bool CopyRect(out Rect lprcDst, [In] ref Rect lprcSrc);
+		[DllImport("user32.dll")]
+		static extern int GetSystemMetrics(SystemMetric smIndex);
 
 
         [StructLayout(LayoutKind.Sequential)]
@@ -143,6 +145,22 @@ namespace MouseMover
             InputKeyboard,
             InputHardware
         }
+		
+		enum SystemMetric
+		{
+		  SM_CXSCREEN = 0,
+		  SM_CYSCREEN = 1,
+		}
+		
+		static int CalculateAbsoluteCoordinateX(int x)
+		{
+		  return (x * 65536) / GetSystemMetrics(SystemMetric.SM_CXSCREEN);
+		}
+
+		static int CalculateAbsoluteCoordinateY(int y)
+		{
+		  return (y * 65536) / GetSystemMetrics(SystemMetric.SM_CYSCREEN);
+		}
 
         static void DoubleClick()
         {
@@ -164,8 +182,8 @@ namespace MouseMover
             INPUT mouseInput = new INPUT();
             mouseInput.type = SendInputEventType.InputMouse;
             mouseInput.mkhi.mi.dwFlags = MouseEventFlags.MOUSEEVENTF_MOVE|MouseEventFlags.MOUSEEVENTF_ABSOLUTE;
-            mouseInput.mkhi.mi.dx = x;
-            mouseInput.mkhi.mi.dy = y;
+            mouseInput.mkhi.mi.dx = CalculateAbsoluteCoordinateX(x);
+            mouseInput.mkhi.mi.dy = CalculateAbsoluteCoordinateY(y);
             SendInput(1, ref mouseInput, Marshal.SizeOf(mouseInput));
 
         }
@@ -179,8 +197,8 @@ namespace MouseMover
             //does not work with MouseEventFlags.MOUSEEVENTF_MOVE | MouseEventFlags.MOUSEEVENTF_LEFTDOWN
             // so two consec. send inputs
             mouseInput.mkhi.mi.dwFlags = MouseEventFlags.MOUSEEVENTF_MOVE;
-            mouseInput.mkhi.mi.dx = x;
-            mouseInput.mkhi.mi.dy = y;
+            mouseInput.mkhi.mi.dx = CalculateAbsoluteCoordinateX(x);
+            mouseInput.mkhi.mi.dy = CalculateAbsoluteCoordinateY(y);
             SendInput(1, ref mouseInput, Marshal.SizeOf(mouseInput));
 
             mouseInput.mkhi.mi.dwFlags = MouseEventFlags.MOUSEEVENTF_LEFTUP;
