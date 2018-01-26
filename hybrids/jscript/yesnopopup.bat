@@ -55,7 +55,7 @@ for (var arg = 1 ; arg<args.Length;arg=arg+2) {
 }
  
 function runPopup(){
-	var btn = wshShell.Popup(message, timeout, title, 0x4 + 0x10);
+	var btn = wshShell.Popup(message, timeout, title, 0x4 + 0x20);
 	//WScript.Echo(btn)
 	switch(btn) {
 		// yes pressed.
