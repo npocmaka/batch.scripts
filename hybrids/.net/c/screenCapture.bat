@@ -172,7 +172,7 @@ public class ScreenCapture
         Console.WriteLine("Usage:");
         Console.WriteLine(" " + scriptName + " filename  [WindowTitle]");
         Console.WriteLine("");
-        Console.WriteLine("finename - the file where the screen capture will be saved");
+        Console.WriteLine("filename - the file where the screen capture will be saved");
         Console.WriteLine("     allowed file extensions are - Bmp,Emf,Exif,Gif,Icon,Jpeg,Png,Tiff,Wmf.");
         Console.WriteLine("WindowTitle - instead of capture whole screen you can point to a window ");
         Console.WriteLine("     with a title which will put on focus and captuted.");
@@ -182,6 +182,8 @@ public class ScreenCapture
 
     public static void Main()
     {
+        User32.SetProcessDPIAware();
+        
         parseArguments();
         ScreenCapture sc = new ScreenCapture();
         if (!fullscreen && !windowTitle.Equals(""))
@@ -267,5 +269,7 @@ public class ScreenCapture
         public static extern IntPtr GetWindowRect(IntPtr hWnd, ref RECT rect);
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        public static extern int SetProcessDPIAware();
     }
 }
