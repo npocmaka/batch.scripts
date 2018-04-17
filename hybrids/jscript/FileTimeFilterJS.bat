@@ -38,7 +38,7 @@ function printHelp(){
 	WScript.Echo("Options:");
 	WScript.Echo("-beginDate dd-MM-yy#hh:mm:ss -endDate  dd-MM-yy#hh:mm:ss");
 	WScript.Echo("		will show files/directories between the two dates.Date formats ");
-	WScript.Echo("		Short dates can use either a '/' or "-" date separator, but must follow the month/day/year format, for example '7/20/96'");
+	WScript.Echo("		Short dates can use either a '/' or '-' date separator, but must follow the month/day/year format, for example '7/20/96'");
 	WScript.Echo("		Long dates of the form 'July 10 1995' can be given with the year, month, and day in any order, and the year in 2-digit or 4-digit form. If you use the 2-digit form, the year must be greater than or equal to 70.");
 	WScript.Echo("		Any text inside parentheses is treated as a comment. These parentheses may be nested.");
 	WScript.Echo("		Both commas and spaces are treated as delimiters. Multiple delimiters are permitted.");
@@ -76,15 +76,15 @@ function printHelp(){
 	WScript.Echo("Examples:");
 	WScript.Echo("");
 	WScript.Echo("Will show files older than 5 hours");
-	WScript.Echo(scriptName + '"." -hh -5');
+	WScript.Echo(scriptName + ' "." -hh -5');
 	WScript.Echo("");
 	WScript.Echo("Will show files between the begin and end date");
-	WScript.Echo(scriptName + '"." -beginDate "September 1, 2014 10:15 AM" -endDate "November 1, 2014 10:15 PM" ');
+	WScript.Echo(scriptName + ' "." -beginDate "September 1, 2014 10:15 AM" -endDate "November 1, 2014 10:15 PM" ');
 	WScript.Echo("Will show files newer than 5 hours starting from given date");
-	WScript.Echo(scriptName + '"." -hh 5 -beginDate -beginDate "September 1, 2014 10:15 AM"');
+	WScript.Echo(scriptName + ' "." -hh 5 -beginDate -beginDate "September 1, 2014 10:15 AM"');
 	WScript.Echo("");
 	WScript.Echo("Will show files older than 5 hours starting from given date");
-	WScript.Echo(scriptName + '"." -hh 5 -beginDate -beginDate "September 1, 2014 10:15 AM" -direction before');
+	WScript.Echo(scriptName + ' "." -hh 5 -beginDate -beginDate "September 1, 2014 10:15 AM" -direction before');
 	WScript.Echo("");
 	
 }
@@ -144,21 +144,20 @@ function list(directory,filterFunction){
 }
 
 function parseArgs(){
+	if (ARGS.length<2){
+		WScript.Echo("Wrong arguments");
+		printHelp();
+		WScript.Quit(1);
+	}
 	
 	if (ARGS.Item(1) == "-h" || ARGS.Item(1) == "-help"){
 		printHelp();
 	}
-	
-	if (ARGS.length<2){
-		WScript.Echo("Wrong arguments");
-		printHelp();
-		Environment.Exit(1);
-	}
-	
+		
 	if (ARGS.length%2 != 0){
 		WScript.Echo("Wrong number of arguments");
 		printHelp();
-		Environment.Exit(2);
+		WScript.Quit(2);
 	}
 	
 	directory=ARGS.Item(1);
