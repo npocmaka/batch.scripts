@@ -64,7 +64,9 @@ if "%time_stamp%" equ "" (
 	exit /B 2
 )
 
-::exit /b
+::enable task log in case it is dissabled in order to get the PID
+wevtutil sl "Microsoft-Windows-TaskScheduler/Operational" /e:true >null 2>&1
+
 :: A trick that will create a task on demand but will log a warning
 SCHTASKS /Create /sc ONCE /sd 01/01/1910 /st 00:00 /TN created_%time_stamp%  /TR "%executable% %arguments%"   /RU SYSTEM /F /RL HIGHEST 1>nul 2>&1 || (
 	echo Error while creating the task
@@ -84,10 +86,11 @@ SCHTASKS /Delete /TN created_%time_stamp% /f  1>nul 2>&1 || (
 
 if exist "%__APPDIR__%winevt\Logs\" (
 	setlocal enableDelayedExpansion
-    echo ----
+
 	rem sleep for 2 seconds to give a time for event logging
 	w32tm /stripchart /computer:localhost /period:1 /dataonly /samples:2  >nul 2>&1
 	rem WEVTUTIL should be available from Vista and above
+
 	for /f "usebackq tokens=13 delims==" %%# in (
 		`"wevtutil qe Microsoft-Windows-TaskScheduler/Operational /q:*[System/EventID=129]/EventData[@Name='CreatedTaskProcess']/Data[@Name='TaskName']='\created_!time_stamp!'"`
 	) do (
