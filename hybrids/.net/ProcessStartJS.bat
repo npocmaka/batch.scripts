@@ -179,9 +179,9 @@ process.StartInfo.CreateNoWindow=newWindows;
 
 try {
 
-	var np=process.Start(startInfo);
+	process.Start(startInfo);
 	Console.WriteLine("Started: " + command + " " + command_args);
-	Console.WriteLine("PID:" + np.Id);
+	Console.WriteLine("PID:" + process.Id);
 } catch(err) {
 	Console.WriteLine(err.message);
 }
