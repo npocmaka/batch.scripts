@@ -23,7 +23,7 @@ endlocal & exit /b %errorlevel%
 
 */
 
-// To create I've 'stole' code from :
+// To create this I've stole code from :
 // http://inputsimulator.codeplex.com/
 // https://stackoverflow.com/a/8022534/388389
 
