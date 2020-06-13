@@ -12,11 +12,28 @@
 
 //https://stackoverflow.com/questions/105034/how-to-create-guid-uuid/2117523#2117523
 
-function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
+UUIDv4 =
+
+function b(
+  a // placeholder
+){
+  return a // if the placeholder was passed, return
+    ? ( // a random number from 0 to 15
+      a ^ // unless b is 8,
+      Math.random() // in which case
+      * 16 // a random number from
+      >> a/4 // 8 to 11
+      ).toString(16) // in hexadecimal
+    : ( // or otherwise a concatenated string:
+      [1e7] + // 10000000 +
+      -1e3 + // -1000 +
+      -4e3 + // -4000 +
+      -8e3 + // -80000000 +
+      -1e11 // -100000000000,
+      ).replace( // replacing
+        /[018]/g, // zeroes, ones, and eights with
+        b // random hex digits
+      )
 }
 
-WScript.Echo(uuidv4());
+WScript.Echo(UUIDv4());
