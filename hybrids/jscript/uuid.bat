@@ -1,10 +1,10 @@
 @if (@X) == (@Y) @end /* JScript comment 
     @echo off  	
 		for /f "tokens=*" %%a in ('cscript //E:JScript //nologo "%~f0" "%~nx0"') do (
-			if "%~2" equ "" (
+			if "%~1" equ "" (
 				echo %%a
 			) else (
-				set "%~2=%%a"
+				set "%~1=%%a"
 			)
 		)
     exit /b %errorlevel%       
