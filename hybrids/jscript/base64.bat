@@ -257,7 +257,7 @@ parseArgs();
 if(ev && toCall==Base64.encode) {
 	input=decodeJsString(input);
 }
-//Why this is not working?
+//Why is this not working?
 //WScript.Echo(toCall(input));
 
 if(toCall==Base64.encode){
