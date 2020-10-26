@@ -119,7 +119,7 @@ public class ScreenCapture {
  static HadlerWrapper windowByPID(Int32 pid) {
   Process[] processlist = Process.GetProcesses();
   foreach(Process process in processlist) {
-   if (!String.IsNullOrEmpty(process.MainWindowTitle)) {
+   if (process.MainWindowTitle!=null) {
     if (process.Id == pid) {
      return new HadlerWrapper(process.MainWindowHandle);
     }
