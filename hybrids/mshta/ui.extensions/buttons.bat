@@ -23,7 +23,6 @@ exit /b 0
 **/
 
 var argline;
-var result;
 var errmessage;
 var elements = new Array();
 var textnode;
