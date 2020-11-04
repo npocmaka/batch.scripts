@@ -27,7 +27,7 @@ var result;
 var errmessage;
 var elements = new Array();
 var textnode;
-var _VALUE=-1;
+
 
 function clckd(a){
     var fso= new ActiveXObject('Scripting.FileSystemObject').GetStandardStream(1);
