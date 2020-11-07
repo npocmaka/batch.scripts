@@ -98,7 +98,7 @@ public class ScreenCapture {
  static HadlerWrapper windowByString(String title) {
   Process[] processlist = Process.GetProcesses();
   foreach(Process process in processlist) {
-   if (!String.IsNullOrEmpty(process.MainWindowTitle)) {
+   if (process.MainWindowTitle != null) {
     if (process.MainWindowTitle.Equals(title)) {
      return new HadlerWrapper(process.MainWindowHandle);
     }
@@ -119,10 +119,13 @@ public class ScreenCapture {
  static HadlerWrapper windowByPID(Int32 pid) {
   Process[] processlist = Process.GetProcesses();
   foreach(Process process in processlist) {
-   if (process.MainWindowTitle!=null) {
+   if (process.MainWindowHandle!= null) {
     if (process.Id == pid) {
+	 Console.WriteLine("process found with pid:" + pid);
      return new HadlerWrapper(process.MainWindowHandle);
     }
+   } else {
+	 Console.WriteLine("main window handle is null for pid:" + pid);
    }
   }
   return null;
@@ -182,7 +185,9 @@ public class ScreenCapture {
   Console.WriteLine("");
   Console.WriteLine(script + " {[-title \"Title\"]|[-pid PID_Number]} [-mode mode]");
   Console.WriteLine("");
-  Console.WriteLine("Possible modes are hidden,normal,minimized,maximized.");
+  Console.WriteLine("Possible modes are hidden,normal,minimized,maximized,force_minimized,");
+  Console.WriteLine("  force_minimized,maximize_next,restore,show,show_default,no_active_minimized,");
+  Console.WriteLine("  no_active_show,no_active_normal.");
   Console.WriteLine("If both title and pid are passed only the title will be taken into account");
   Console.WriteLine("If there's no title matching the given string a");
   Console.WriteLine("	title starting with it will be searched for");
