@@ -1,6 +1,6 @@
 @if (@X)==(@Y) @end /*JScript comment
 @echo off
-
+echo -- %~f0 --
 if "%~1" equ "" (
 	echo usage:
 	echo %~nx0 [button_name [button_name[..]]]
@@ -34,7 +34,7 @@ function clckd(a){
 }
 
 function prepare(){
-   
+	window.resizeTo(400,250);
    try {
       var fso2= new ActiveXObject('Scripting.FileSystemObject').GetStandardStream(0);
       argline=fso2.ReadLine();
