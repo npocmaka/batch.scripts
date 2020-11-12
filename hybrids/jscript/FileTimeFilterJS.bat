@@ -73,8 +73,8 @@ function printHelp(){
 	WScript.Echo("     Will search files or directories by passed time property ");
 	WScript.Echo("    Default is files");
 	WScript.Echo("-filetime created|accessed|modified");
-	WScript.Echo("     Will search files or directories by passed time property ");
-	WScript.Echo("    Default is files");
+	WScript.Echo("    Will compare dates by creation,modification or accessing time");
+	WScript.Echo("    Default is created");
 	WScript.Echo("");
 	WScript.Echo("Examples:");
 	WScript.Echo("");
