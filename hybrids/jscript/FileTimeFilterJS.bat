@@ -72,6 +72,9 @@ function printHelp(){
 	WScript.Echo("-show dirs|files|all");
 	WScript.Echo("     Will search files or directories by passed time property ");
 	WScript.Echo("    Default is files");
+	WScript.Echo("-filetime created|accessed|modified");
+	WScript.Echo("     Will search files or directories by passed time property ");
+	WScript.Echo("    Default is files");
 	WScript.Echo("");
 	WScript.Echo("Examples:");
 	WScript.Echo("");
