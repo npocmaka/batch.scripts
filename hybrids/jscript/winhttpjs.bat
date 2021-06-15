@@ -48,6 +48,7 @@ var proxy_pass = 0;
 var certificate = 0;
 
 var force = true;
+var ignoreCertError = false;
 
 var body = "";
 
@@ -120,8 +121,10 @@ function printHelp() {
 
     WScript.Echo("                                                        [-body body-string]");
     WScript.Echo("                                                        [-body-file body-file]");
+    WScript.Echo("                                                        [-ignoreCertError yes|no]");
 
     WScript.Echo("-force  - decide to not or to overwrite if the local files exists");
+    WScript.Echo("-ignoreCertError - ignore certificate error");
 
     WScript.Echo("proxyserver:port - the proxy server");
     WScript.Echo("bypass- bypass list");
@@ -168,6 +171,11 @@ function parseArgs() {
                 case "-force":
                     if (next == "no") {
                         force = false;
+                    }
+                    break;
+                case "-ignorecerterror":
+                    if (next == "yes") {
+                        ignoreCertError = true;
                     }
                     break;
                 case "-escape":
@@ -353,6 +361,12 @@ function request(url) {
 
         if (certificate != 0) {
             WinHTTPObj.SetClientCertificate(certificate);
+        }
+
+        if (ignoreCertError) {
+            // https://stackoverflow.com/questions/20261520/microsoft-jscript-bypassing-certificate-error
+            WScript.Echo("ignore cert error...");
+            WinHTTPObj.Option(4)  = 0x3300; // SslErrorIgnoreFlags = IgnoreAll;
         }
 
         //set autologin policy 
