@@ -23,10 +23,6 @@ endlocal & exit /b %errorlevel%
 
 */
 
-
-
-
-// Credit: https://stackoverflow.com/a/19024531/388389
 using System;
 using System.Runtime.InteropServices;
 
@@ -34,6 +30,10 @@ public class Taskbar
 {
     [DllImport("user32.dll")]
     private static extern int FindWindow(string className, string windowText);
+	
+	[DllImport("user32.dll")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	static extern bool IsWindowVisible(IntPtr hWnd);
 
     [DllImport("user32.dll")]
     private static extern int ShowWindow(int hwnd, int command);
@@ -82,7 +82,15 @@ public class Taskbar
         ShowWindow(HandleOfStartButton, SW_HIDE);
     }
 	
-	    static void printHelp()
+	public static void GetStatus()
+    {
+		IntPtr xAsIntPtr = new IntPtr(Handle);
+        Console.WriteLine("TaskBar visible : " + IsWindowVisible(xAsIntPtr));
+		xAsIntPtr = new IntPtr(HandleOfStartButton);
+        Console.WriteLine("StartButton visible : " + IsWindowVisible(xAsIntPtr));
+    }
+	
+	static void printHelp()
     {
         //clears the extension from the script name
         String scriptName = Environment.GetCommandLineArgs()[0];
@@ -93,8 +101,8 @@ public class Taskbar
         Console.WriteLine(" " + scriptName + "  1");
         Console.WriteLine("Show:");
         Console.WriteLine(" " + scriptName + "  2");
-//        Console.WriteLine("Get State:");
-//        Console.WriteLine(" " + scriptName + "  3");
+        Console.WriteLine("Get State:");
+        Console.WriteLine(" " + scriptName + "  3");
     }
 	
 	static void Main(string[] args)
@@ -121,9 +129,10 @@ public class Taskbar
 				    //show
                     Taskbar.Show();
                     break;
-                /*case 3:
+                case 3:
 				    // get state
-                    break;*/
+					Taskbar.GetStatus();
+                    break;
                 default:
                     Console.WriteLine("Invalid argument: "+args[0]);
                     Environment.Exit(10);
