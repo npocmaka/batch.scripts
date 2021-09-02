@@ -26,7 +26,7 @@ endlocal & exit /b %errorlevel%
 
 
 
-
+// Credit: https://stackoverflow.com/a/19024531/388389
 using System;
 using System.Runtime.InteropServices;
 
