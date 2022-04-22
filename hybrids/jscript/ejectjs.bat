@@ -85,7 +85,7 @@ function ejectByLetter(letter) {
 					} else if (itemType===cdType) {
 						callVerbFromBottom(item,cdVerbFB);
 					} else {
-						WScript.Echo("Drive "+ letter + " does not support ejectuation");
+						WScript.Echo("Drive "+ letter + " does not support ejection");
 						WScript.Quit(2);
 					}
 					driveFound=true;
