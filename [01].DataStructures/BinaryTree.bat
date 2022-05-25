@@ -34,10 +34,10 @@ GOTO :EOF
    :: The following commands find for the value 1 in the tree.
    :: If the FFIND method finds the value 1, the variable %ERRORLEVEL% has the value 1.
    ECHO.
-   ECHO [VDebug:MAIN] Searching for value 5
-   CALL :FFIND VTreeName 5
+   ECHO [VDebug:MAIN] Searching for value 1
+   CALL :FFIND VTreeName 1
    ECHO [VDebug:MAIN] Return Value: %ERRORLEVEL%
-   IF %ERRORLEVEL% EQU 0 (ECHO [VDebug:MAIN] 5 was found in the three.) ELSE (ECHO [VDebug:MAIN] 5 not found in tree.)
+   IF %ERRORLEVEL% EQU 0 (ECHO [VDebug:MAIN] 1 was found in the three.) ELSE (ECHO [VDebug:MAIN] 1 not found in tree.)
    
    :: The following commands find for the value 1 in the tree.
    :: If the FFIND method does not find the value 8, the variable %ERRORLEVEL% will have the value 0.
