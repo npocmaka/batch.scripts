@@ -2,8 +2,6 @@
 :: @file            W32DOW.bat
 :: @brief           Prints the day of the week 
 :: @syntax          W32DOW.bat
-:: @usage           
-:: @description     
 :: @see             https://github.com/sebetci/batch.script/[02].DateAndTime/W32DOW.bat
 :: @reference       https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/ff799054(v=ws.11)
 :: @reference       https://en.wikipedia.org/wiki/W32tm
