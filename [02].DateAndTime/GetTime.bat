@@ -1,4 +1,4 @@
-:: ===============================================================================================
+:: ===========================================================================================================
 :: @file            GetTime.bat
 :: @brief           Gets time using typeperf command with put some effort to be made fast and 
 ::                  maximum compatible.
@@ -7,7 +7,7 @@
 :: @reference       https://www.progress.com/blogs/understanding-iso-8601-date-and-time-format
 :: @reference       https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/typeperf
 :: @todo
-:: ===============================================================================================
+:: ===========================================================================================================
 
 @ECHO OFF
 SETLOCAL 

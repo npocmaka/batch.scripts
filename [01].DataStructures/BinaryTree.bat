@@ -1,24 +1,24 @@
-:: ===============================================================================================
-:: @file          BinaryTree.cmd
+:: ===========================================================================================================
+:: @file          BinaryTree.bat
 :: @brief         Binary tree implementation in batch file
-:: @usage         BinaryTree.cmd
-:: @see           https://github.com/sebetci/batch.script/[01].DataStructures/BinaryTree.cmd
+:: @usage         BinaryTree.bat
+:: @see           https://github.com/sebetci/batch.script/[01].DataStructures/BinaryTree.bat
 :: @reference     https://en.wikipedia.org/wiki/Binary_tree
 :: @reference     https://github.com/npocmaka/batch.scripts/tree/master/dataStructures
 :: @reference     https://www.dostips.com/forum/viewtopic.php?t=7642
 :: @todo          The FFIND method does not search after the first level of the tree.
 :: @todo          The FDELETE method will be developed.
-:: ===============================================================================================
+:: ===========================================================================================================
 
 @ECHO OFF
 CALL :FMAIN
 GOTO :EOF
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: @function   This function inserts new values to the tree and then finds for some values in the tree.
 :: @parameter  None
 :: @return     None
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :FMAIN
    SETLOCAL ENABLEDELAYEDEXPANSION
 
@@ -54,13 +54,13 @@ GOTO :EOF
    CALL :FDELETE VTreeName
    EXIT /B 0
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: @function   This function searches the Value value in the VTreeName tree. It returns 0 if the 
 ::             searched value is found in the tree.
 :: @parameter  VTreeName This parameter is the name of the node.
 :: @parameter  VValue This parameter is the value of the node.
 :: @return     Returns 0 if value is found in the tree.
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :FFIND VTreeName VValue
    :: SETLOCAL ENABLEDELAYEDEXPANSION
    SET /A VValue=%~2
@@ -102,12 +102,12 @@ GOTO :EOF
 
    EXIT /B 
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: @function   This function adds a new node to the tree.
 :: @parameter  VTreeName This parameter is the name of the node.
 :: @parameter  VValue This parameter is the value of the node.
 :: @return     None
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :FINSERT VTreeName VValue
    SETLOCAL
    SET /A VValue=%~2
@@ -146,21 +146,21 @@ GOTO :EOF
    )
    EXIT /B 0
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: @function   This function prints the names and values of the node nodes in the tree.
 :: @parameter  VTreeName This parameter is the name of the node.
 :: @return     None
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :FPRINT VTreeName
    ECHO.
    SET VTreeName
    EXIT /B 0
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: @function   This function deletes all nodes in a tree.
 :: @parameter  VTreeName This parameter is the name of the node.
 :: @return     None
 :: @todo       Investigate the feasibility of this method.
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :FDELETE VTreeName
    EXIT /B 0
