@@ -1,6 +1,6 @@
 @echo off 
 
-:isInterer  input [returnVar] 
+:isInteger  input [returnVar] 
 setlocal enableDelayedexpansion 
 set "input=%~1" 
 
