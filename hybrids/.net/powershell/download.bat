@@ -92,7 +92,11 @@ function dl($url, $to, $progress) {
       dl_progress $read $total $(split-path $to -leaf)
     }
   } else {
-    write-host "Downloading $url ($(filesize $total))..."
+    if($total -gt 0) {
+      write-host "Downloading $url ($(filesize $total))..."
+    } else {
+      write-host "Downloading $url ..."
+    }
     function dl_onProgress {
       #no op
     }
