@@ -13,7 +13,7 @@ FSOObj = new ActiveXObject("Scripting.FileSystemObject");
 var ARGS = WScript.Arguments;
 if (ARGS.Length < 1 ) {
  WScript.Echo("No file passed");
- WScript.Echo("Usage (prints with default printer a file if possible)");
+ WScript.Echo("Puts file or folder in recycle bin.");
  WScript.Echo(WScript.ScriptName + " file|folder");
  WScript.Quit(1);
 }
