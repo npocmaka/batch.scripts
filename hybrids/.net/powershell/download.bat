@@ -6,44 +6,40 @@
 #>
 
 function filesize($length) {
-  $gb = [math]::pow(2, 30)
-  $mb = [math]::pow(2, 20)
-  $kb = [math]::pow(2, 10)
-
-  if($length -gt $gb) {
-    "{0:n1} GB" -f ($length / $gb)
-  } elseif($length -gt $mb) {
-    "{0:n1} MB" -f ($length / $mb)
-  } elseif($length -gt $kb) {
-    "{0:n1} KB" -f ($length / $kb)
+  if($length -gt 1073741824) {
+    "{0:n1} GB" -f ($length / 1073741824)
+  } elseif($length -gt 1048576) {
+    "{0:n1} MB" -f ($length / 1048576)
+  } elseif($length -gt 1024) {
+    "{0:n1} KB" -f ($length / 1024)
   } else {
     "$($length) B"
   }
 }
 
 function ftp_file_size($url) {
-    $request = [net.ftpwebrequest]::create($url)
-    $request.method = [net.webrequestmethods+ftp]::getfilesize
-    $request.getresponse().contentlength
+  $request = [net.ftpwebrequest]::create($url)
+  $request.method = [net.webrequestmethods+ftp]::getfilesize
+  $request.getresponse().contentlength
 }
 
 function url_remote_filename($url) {
   $uri = (new-object URI $url)
   $basename = split-path $uri.PathAndQuery -leaf
-  If ($basename -match ".*[?=]+([\w._-]+)") {
+  if($basename -match ".*[?=]+([\w._-]+)") {
     $basename = $matches[1]
   }
-  If (($basename -notlike "*.*") -or ($basename -match "^[v.\d]+$")) {
+  if(($basename -notlike "*.*") -or ($basename -match "^[v.\d]+$")) {
     $basename = split-path $uri.AbsolutePath -leaf
   }
-  If (($basename -notlike "*.*") -and ($uri.Fragment -ne "")) {
+  if(($basename -notlike "*.*") -and ($uri.Fragment -ne "")) {
     $basename = $uri.Fragment.Trim('/', '#')
   }
   return $basename
 }
 
 function dl($url, $to, $progress) {
-  [System.Net.ServicePointManager]::SecurityProtocol = 3072 -bor 768 -bor 192
+  [System.Net.ServicePointManager]::SecurityProtocol = 4032
   $reqUrl = ($url -split "#")[0]
   $wreq = [net.webrequest]::create($reqUrl)
 
@@ -53,8 +49,8 @@ function dl($url, $to, $progress) {
     $exc = $_.Exception
     $handledCodes = @(
       [System.Net.HttpStatusCode]::MovedPermanently,  # HTTP 301
-      [System.Net.HttpStatusCode]::Found,       # HTTP 302
-      [System.Net.HttpStatusCode]::SeeOther,      # HTTP 303
+      [System.Net.HttpStatusCode]::Found,             # HTTP 302
+      [System.Net.HttpStatusCode]::SeeOther,          # HTTP 303
       [System.Net.HttpStatusCode]::TemporaryRedirect  # HTTP 307
     )
 
