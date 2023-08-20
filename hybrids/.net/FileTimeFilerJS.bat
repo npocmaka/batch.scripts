@@ -248,7 +248,7 @@ if (min_date > max_date) {
 
 
 function listItems(funct,getFunct){
-	var files:String[]=funct(directory,"*",System.IO.SearchOption.AllDirectories);
+	var files:String[]=funct(directory,mask,System.IO.SearchOption.AllDirectories);
 	for (var f=0;f<files.length;f++){
 		if (getFunct(files[f]).Ticks >= min_date && getFunct(files[f]).Ticks <= max_date){
 			
